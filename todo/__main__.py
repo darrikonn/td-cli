@@ -4,6 +4,5 @@ import sys
 
 import todo
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(todo.main())
