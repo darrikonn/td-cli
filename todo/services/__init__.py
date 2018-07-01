@@ -1,9 +1,9 @@
-import configparser
 import sqlite3
 from urllib.request import pathname2url
 
 from .group import GroupService
 from .todo import TodoService
+from todo.settings import config
 
 
 class Service:
@@ -15,11 +15,7 @@ class Service:
     }
 
     def __init__(self):
-        config = configparser.SafeConfigParser({'name': 'todo.db'})
-        config.read('todo/todo.cfg')  # TODO: get full path and use .rc
-
-        database_name = config.get('Database', 'name')
-        db_uri = 'file:{}'.format(pathname2url(database_name))
+        db_uri = 'file:{}'.format(pathname2url('{}.db'.format(config['database_name'])))
 
         try:
             self.connection = sqlite3.connect('{}?mode=rw'.format(db_uri), uri=True)
