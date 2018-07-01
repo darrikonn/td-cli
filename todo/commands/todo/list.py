@@ -2,11 +2,12 @@ import textwrap
 from os import get_terminal_size
 
 from todo.commands.base import Command
+from todo.utils import Fore, Style
 
 
 class STATES:
-    COMPLETED = 'completed'
-    UNCOMPLETED = 'uncompleted'
+    COMPLETED = "completed"
+    UNCOMPLETED = "uncompleted"
 
 
 class List(Command):
