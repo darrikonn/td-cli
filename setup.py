@@ -31,8 +31,7 @@ setup(
     install_requires=[],
     entry_points={
         'console_scripts': [
-            # TODO
-            'todo=todo:main',
+            'td=todo:main',
         ],
     },
     project_urls={
