@@ -11,7 +11,7 @@ def get_user_input(editor, initial_message=b''):
     with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
         tf.write(initial_message)
         tf.flush()
-        call([editor, tf.name])
+        call([editor, '+set backupcopy=yes', tf.name])
 
         tf.seek(0)
         edited_message = tf.read()
