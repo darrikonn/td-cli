@@ -114,12 +114,12 @@ class GroupService(BaseService):
     def get_all(self):
         self.cursor.execute(
             """
-            SELECT IFNULL(name, ?), todos.items, todos.uncompleted, todos.completed
+            SELECT IFNULL(name, ?), todos.items, todos.completed, todos.uncompleted
             FROM (
                 SELECT group_name,
                    COUNT(*) as items,
-                   SUM(completed = 0) as uncompleted,
-                   SUM(completed = 1) as completed
+                   SUM(completed = 1) as completed,
+                   SUM(completed = 0) as uncompleted
                 FROM todo
                 GROUP BY group_name
             ) todos
