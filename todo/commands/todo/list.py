@@ -20,6 +20,9 @@ class List(Command):
 
         cols, _ = get_terminal_size()
 
+        subsequent_indent = " " * 8
+        self._print_header(active_group[0] or "global", subsequent_indent)
+
         for todo in todos:
             prefix = '\033[34m{}  \033[37m'.format(todo[0])
             wrapper = textwrap.TextWrapper(
@@ -28,3 +31,10 @@ class List(Command):
                 subsequent_indent=' ' * 8,
             )
             print(wrapper.fill(todo[1]))
+
+    def _print_header(self, name, subsequent_indent):
+        print(
+            "{subsequent_indent}{bold}{blue}{name}{reset}\n".format(
+                name=name, subsequent_indent=subsequent_indent, blue=Fore.BLUE, bold=Style.BOLD, reset=Style.RESET_ALL
+            )
+        )
