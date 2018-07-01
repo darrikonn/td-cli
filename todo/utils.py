@@ -16,3 +16,7 @@ def get_user_input(editor, initial_message=b''):
         tf.seek(0)
         edited_message = tf.read()
         return edited_message.decode("utf-8").strip()
+
+
+def singular_or_plural(n):
+    return "" if n == 1 else "s"
