@@ -105,3 +105,6 @@ venv.bak/
 
 # tmp/
 todo.db
+
+# Other
+.DS_Store
