@@ -7,7 +7,7 @@ class Commands:
         'add_todo': todo.Add,
         'complete_todo': todo.Complete,
         'delete_todo': todo.Delete,
-        'edit_todo': todo.Edit,
+        'edit_todo': todo.EditDetails,
         'get_todo': todo.Get,
         'list_todos': todo.List,
         'uncomplete_todo': todo.Uncomplete,
