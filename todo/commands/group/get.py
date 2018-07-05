@@ -3,8 +3,8 @@ from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 
 
 class STATES:
-    COMPLETED = 'completed'
-    UNCOMPLETED = 'uncompleted'
+    COMPLETED = "completed"
+    UNCOMPLETED = "uncompleted"
 
 
 class Get(Command):
