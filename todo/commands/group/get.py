@@ -1,7 +1,5 @@
-import textwrap
-from os import get_terminal_size
-
 from todo.commands.base import Command
+from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 
 
 class STATES:
@@ -18,13 +16,18 @@ class Get(Command):
         uncompleted_todos = self.service.todo.get_all(*group)
         todos = completed_todos if state == STATES.COMPLETED else uncompleted_todos
 
-        cols, _ = get_terminal_size()
+        RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(
+            subsequent_indent=" " * 8, group_name=group[0] or "global"
+        )
 
         for todo in todos:
-            prefix = '\033[34m{}  \033[37m'.format(todo[0])
-            wrapper = textwrap.TextWrapper(
-                initial_indent=prefix,
-                width=cols,
-                subsequent_indent=' ' * 8,
-            )
-            print(wrapper.fill(todo[1]))
+            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{details}").render(details=todo[1], todo_id=todo[0])
+
+        completed = len(completed_todos)
+        uncompleted = len(uncompleted_todos)
+        RenderOutput("{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted").render(
+            prefix="\n" if len(todos) > 0 else "",
+            items=completed + uncompleted,
+            completed=completed,
+            uncompleted=uncompleted,
+        )

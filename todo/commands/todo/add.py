@@ -1,6 +1,8 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.renderers import RenderOutput
+from todo.settings import config
 from todo.utils import get_user_input
 
 
@@ -8,15 +10,16 @@ class Add(Command):
     def is_valid_argument(self, arg):
         return bool(arg)
 
-    def run(self, title, edit_description=None):
+    def run(self, name, edit_details=None):
         try:
-            if edit_description:
-                description = get_user_input('nvim')
+            if edit_details:
+                details = get_user_input(config["editor"])
             else:
-                description = title
+                details = name
 
             active_group = self.service.group.get_active_group()
-            todo_id = self.service.todo.add(title, description, *active_group)
-            print(u'[*] Added todo "{}"'.format(todo_id))
+            todo_id = self.service.todo.add(name, details, *active_group)
+
+            RenderOutput("Created todo {bold}{todo_id}").render(todo_id=todo_id)
         except Error as e:
             print(u'[*] Could not add a todo due to "{}"'.format(e))

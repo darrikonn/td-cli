@@ -1,6 +1,8 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.renderers import RenderInput, RenderOutput
+from todo.utils import singular_or_plural
 
 
 class Delete(Command):
@@ -8,21 +10,30 @@ class Delete(Command):
         try:
             group = self._get_group_or_raise(name)
             if group[0] is None:
-                raise Exception('Cannot delete group global')
+                raise Exception("Cannot delete group global")
             if not skip_prompt:
                 completed_todos = self.service.todo.get_all(*group, completed=True)
                 uncompleted_todos = self.service.todo.get_all(*group)
                 todo_count = len(completed_todos) + len(uncompleted_todos)
+                post_text = ""
                 if todo_count > 0:
-                    print("By deleting {}, you'll also delete {} todo{} in that group".format(
-                        name, todo_count, 's' if todo_count > 1 else '')
-                    )
-                choice = input(
-                    '[?] Are you sure you want to delete group \033[34m{}\033[37m? [Y|n] '.format(group[0])
-                ).lower()
-                if choice not in ('y', 'yes', ''):
-                    raise Exception('Abort!')
+                    RenderOutput(
+                        "By deleting group {blue}{group_name}{white}, "
+                        "you'll also delete {bold}{todo_count}{normal} todo{singular_or_plural} in that group"
+                    ).render(group_name=name, todo_count=todo_count, singular_or_plural=singular_or_plural(todo_count))
+                    post_text = ", and {todo_count} todo{singular_or_plural}"
+                choice = RenderInput(
+                    "[?] Are you sure you want to delete group {blue}{group_name}{white}? [Y|n] "
+                ).render(group_name=group[0])
+                if choice not in ("y", "yes", ""):
+                    raise Exception("Abort!")
             self.service.group.delete(group[0])
-            print(u'[-] {} deleted'.format(group[0]))
+
+            RenderOutput("{red}Deleted{white} {bold}{group_name}{normal}" + post_text).render(
+                group_name=group[0],
+                todos=post_text,
+                singular_or_plural=singular_or_plural(todo_count),
+                todo_count=todo_count,
+            )
         except Error as e:
             print(u'[*] Could not delete a group due to "{}"'.format(e))

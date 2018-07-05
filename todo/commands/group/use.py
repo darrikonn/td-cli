@@ -1,4 +1,5 @@
 from todo.commands.base import Command
+from todo.renderers import RenderOutput
 
 
 class Use(Command):
@@ -6,4 +7,5 @@ class Use(Command):
         group = self._get_group_or_raise(name)
 
         self.service.group.use(group[0])
-        print('Using group "{}"'.format(group[0] or 'global'))
+
+        RenderOutput("Using group {blue}{group_name}").render(group_name=group[0] or "global")
