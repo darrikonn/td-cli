@@ -10,6 +10,7 @@ class Commands:
         'edit_todo': todo.EditDetails,
         'get_todo': todo.Get,
         'list_todos': todo.List,
+        'name_todo': todo.EditName,
         'uncomplete_todo': todo.Uncomplete,
 
         'add_group': group.Add,
