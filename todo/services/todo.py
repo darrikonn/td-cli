@@ -12,8 +12,8 @@ class TodoService(BaseService):
                 id TEXT PRIMARY KEY NOT NULL,
                 created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                title TEXT NOT NULL,
-                description TEXT,
+                name TEXT NOT NULL,
+                details TEXT,
                 completed BOOLEAN NOT NULL DEFAULT 0,
                 group_name TEXT,
                 FOREIGN KEY (group_name) REFERENCES "group" (name) ON DELETE CASCADE
@@ -32,14 +32,14 @@ class TodoService(BaseService):
         )
 
     # POST
-    def add(self, title, description, group):
+    def add(self, name, details, group):
         id = generate_random_hex()
         self.cursor.execute(
             """
-            INSERT INTO todo (id, title, description, group_name)
+            INSERT INTO todo (id, name, details, group_name)
             VALUES (?, ?, ?, ?);
             """,
-            (id, title, description, group)
+            (id, name, details, group)
         )
         self.connection.commit()
         return id
@@ -78,25 +78,25 @@ class TodoService(BaseService):
         )
         self.connection.commit()
 
-    def edit_description(self, id, description):
+    def edit_details(self, id, details):
         self.cursor.execute(
             """
             UPDATE todo
-            SET description = ?
+            SET details = ?
             WHERE id = ?;
             """,
-            (description, id)
+            (details, id)
         )
         self.connection.commit()
 
-    def edit_title(self, id, title):
+    def edit_name(self, id, name):
         self.cursor.execute(
             """
             UPDATE todo
-            SET title = ?
+            SET name = ?
             WHERE id = ?;
             """,
-            (title, id)
+            (name, id)
         )
         self.connection.commit()
 
@@ -104,7 +104,7 @@ class TodoService(BaseService):
     def get(self, id):
         self.cursor.execute(
             """
-            SELECT id, title, description
+            SELECT id, group_name, name, details, completed
             FROM todo
             WHERE id LIKE ('%' || ? || '%');
             """,
@@ -115,7 +115,7 @@ class TodoService(BaseService):
     def get_all(self, group=None, completed=False):
         self.cursor.execute(
             """
-            SELECT id, title
+            SELECT id, name
             FROM todo
             WHERE completed = ? AND
                   (group_name = ? OR ? IS NULL)
