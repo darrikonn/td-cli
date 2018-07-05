@@ -16,6 +16,7 @@ class Commands:
         'add_group': group.Add,
         'delete_group': group.Delete,
         'get_group': group.Get,
+        'initialize_group': group.Initialize,
         'list_groups': group.List,
         'use_group': group.Use,
 
