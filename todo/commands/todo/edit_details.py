@@ -10,8 +10,8 @@ class EditDetails(Command):
     def run(self, id):
         try:
             todo = self._get_todo_or_raise(id)
-            description = get_user_input(config["editor"], str.encode(todo[2]))
-            self.service.todo.edit_description(todo[0], description)
+            details = get_user_input(config["editor"], str.encode(todo[2]))
+            self.service.todo.edit_details(todo[0], details)
 
             RenderOutput("[*] {todo_id} edited").render(todo_id=todo[0])
         except Error as e:

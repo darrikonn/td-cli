@@ -18,18 +18,18 @@ class Delete(Command):
                 post_text = ""
                 if todo_count > 0:
                     RenderOutput(
-                        "By deleting group {blue}{group_name}{white}, "
+                        "By deleting group {blue}{group_name}{reset}, "
                         "you'll also delete {bold}{todo_count}{normal} todo{singular_or_plural} in that group"
                     ).render(group_name=name, todo_count=todo_count, singular_or_plural=singular_or_plural(todo_count))
                     post_text = ", and {todo_count} todo{singular_or_plural}"
                 choice = RenderInput(
-                    "[?] Are you sure you want to delete group {blue}{group_name}{white}? [Y|n] "
+                    "[?] Are you sure you want to delete group {blue}{group_name}{reset}? [Y|n] "
                 ).render(group_name=group[0])
                 if choice not in ("y", "yes", ""):
                     raise Exception("Abort!")
             self.service.group.delete(group[0])
 
-            RenderOutput("{red}Deleted{white} {bold}{group_name}{normal}" + post_text).render(
+            RenderOutput("{red}Deleted{reset} {bold}{group_name}{normal}" + post_text).render(
                 group_name=group[0],
                 todos=post_text,
                 singular_or_plural=singular_or_plural(todo_count),

@@ -115,7 +115,7 @@ class TodoService(BaseService):
     def get_all(self, group=None, completed=False):
         self.cursor.execute(
             """
-            SELECT id, name
+            SELECT id, name, details, completed
             FROM todo
             WHERE completed = ? AND
                   (group_name = ? OR ? IS NULL)

@@ -21,7 +21,7 @@ class Get(Command):
         )
 
         for todo in todos:
-            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{details}").render(details=todo[1], todo_id=todo[0])
+            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{name}").render(name=todo[1], todo_id=todo[0])
 
         completed = len(completed_todos)
         uncompleted = len(uncompleted_todos)

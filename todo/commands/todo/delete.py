@@ -16,7 +16,7 @@ class Delete(Command):
                     raise Exception("Abort!")
             self.service.todo.delete(todo[0])
 
-            RenderOutputWithTextwrap("{red}Deleted{white} {bold}{todo_id}{reset}: ", "{text}").render(
+            RenderOutputWithTextwrap("{red}Deleted{reset} {bold}{todo_id}{reset}: ", "{text}").render(
                 text=todo[2], todo_id=todo[0], subsequent_indent=" " * 7
             )
         except Error as e:
