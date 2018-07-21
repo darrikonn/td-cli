@@ -1,18 +1,7 @@
-from todo.services.base import BaseService
-
-
-GLOBAL = 'global'
+from todo.services.base import GLOBAL, BaseService
 
 
 class GroupService(BaseService):
-    def _translate_name(self, name):
-        if name is None:
-            return None
-        return name.strip().lower()
-
-    def _is_global(self, name):
-        return name is None or self._translate_name(name) == GLOBAL
-
     def initialise_table(self):
         self.cursor.execute(
             """
@@ -25,29 +14,31 @@ class GroupService(BaseService):
 
     # POST
     def add(self, name):
-        if self._is_global(name):
-            raise Exception('"global" is a reserved group name. You can`t create that group')
+        group_name = self._interpret_group_name(name)
+        if group_name is None:
+            raise Exception('"{}" is a reserved group name. You can`t create that group'.format(GLOBAL))
 
         self.cursor.execute(
             """
             INSERT INTO "group" (name)
             VALUES (?);
             """,
-            (self._translate_name(name), )
+            (group_name, )
         )
         self.connection.commit()
-        return name
+        return group_name
 
     # DELETE
     def delete(self, name):
-        if self._is_global(name):
-            raise Exception('"global" is a reserved group name. You can`t delete that group')
+        group_name = self._interpret_group_name(name)
+        if group_name is None:
+            raise Exception('"{}" is a reserved group name. You can`t delete that group'.format(GLOBAL))
         self.cursor.execute(
             """
             DELETE FROM "group"
             WHERE name = ?;
             """,
-            (name, )
+            (group_name, )
         )
         self.connection.commit()
 
@@ -59,14 +50,14 @@ class GroupService(BaseService):
             SET name = ?
             WHERE name = ?;
             """,
-            (self._translate_name(new_name), self._translate_name(old_name))
+            (self._interpret_group_name(new_name), self._interpret_group_name(old_name))
         )
         self.connection.commit()
 
     def use(self, name):
-        group_exists = self.get(name) or self._is_global(name)
+        group = self.get(name)
 
-        if not group_exists:
+        if group is None:
             raise Exception('Group "{}" not found'.format(name))
 
         self.cursor.execute(

@@ -34,12 +34,13 @@ class TodoService(BaseService):
     # POST
     def add(self, name, details, group):
         id = generate_random_hex()
+        group_name = self._interpret_group_name(group)
         self.cursor.execute(
             """
             INSERT INTO todo (id, name, details, group_name)
             VALUES (?, ?, ?, ?);
             """,
-            (id, name, details, group)
+            (id, name, details, group_name)
         )
         self.connection.commit()
         return id
@@ -113,14 +114,14 @@ class TodoService(BaseService):
         return self.cursor.fetchone()
 
     def get_all(self, group=None, completed=False):
+        group_name = self._interpret_group_name(group)
         self.cursor.execute(
             """
             SELECT id, name, details, completed
             FROM todo
-            WHERE completed = ? AND
-                  (group_name = ? OR ? IS NULL)
-            ORDER BY modified DESC;
+            WHERE (completed = ? OR ? IS NULL) AND
+                  (group_name = ? OR ? IS NULL) ORDER BY modified DESC;
             """,
-            (completed, group, group)
+            (completed, completed, group_name, group_name, )
         )
         return self.cursor.fetchall()

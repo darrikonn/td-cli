@@ -20,3 +20,7 @@ def get_user_input(editor, initial_message=b""):
 
 def singular_or_plural(n):
     return "" if n == 1 else "s"
+
+
+def to_lower(string):
+    return string.strip().lower()
