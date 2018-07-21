@@ -12,4 +12,4 @@ class List(Command):
 
     def run(self, state):
         active_group = self.service.group.get_active_group()
-        GetGroup.run(self, state, *active_group)
+        GetGroup.run(self, state, active_group[0])

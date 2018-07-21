@@ -12,9 +12,7 @@ class Delete(Command):
             if group[0] is None:
                 raise Exception("Cannot delete group global")
             if not skip_prompt:
-                completed_todos = self.service.todo.get_all(*group, completed=True)
-                uncompleted_todos = self.service.todo.get_all(*group)
-                todo_count = len(completed_todos) + len(uncompleted_todos)
+                todo_count = len(group[2]) + len(group[1])
                 post_text = ""
                 if todo_count > 0:
                     RenderOutput(

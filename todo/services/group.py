@@ -82,22 +82,20 @@ class GroupService(BaseService):
             SET in_use = 1
             WHERE name = ?;
             """,
-            (self._translate_name(name), )
+            (group[0], )
         )
         self.connection.commit()
 
     # GET
     def get(self, name):
-        if self._is_global(name):
-            return (None, )
-
+        group_name = self._interpret_group_name(name)
         self.cursor.execute(
             """
-            SELECT name
-            FROM "group"
-            WHERE name = ?;
+            SELECT IFNULL(group_name, ?), sum(completed = False) as uncompleted, sum(completed = True) as completed
+            FROM todo
+            WHERE group_name = ? OR ? IS NULL;
             """,
-            (self._translate_name(name), )
+            (GLOBAL, group_name, group_name, )
         )
         return self.cursor.fetchone()
 
@@ -109,7 +107,8 @@ class GroupService(BaseService):
             WHERE in_use = 1;
             """
         )
-        return self.cursor.fetchone() or (None, )
+        active_group = self.cursor.fetchone() or (None, )
+        return self.get(*active_group)
 
     def get_all(self):
         self.cursor.execute(

@@ -12,8 +12,8 @@ class Get(Command):
 
     def run(self, state, name):
         group = self._get_group_or_raise(name)
-        completed_todos = self.service.todo.get_all(*group, completed=True)
-        uncompleted_todos = self.service.todo.get_all(*group)
+        completed_todos = self.service.todo.get_all(group[0], completed=True)
+        uncompleted_todos = self.service.todo.get_all(group[0])
         todos = completed_todos if state == STATES.COMPLETED else uncompleted_todos
 
         RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(

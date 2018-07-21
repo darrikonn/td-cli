@@ -18,7 +18,7 @@ class Add(Command):
                 details = name
 
             active_group = self.service.group.get_active_group()
-            todo_id = self.service.todo.add(name, details, *active_group)
+            todo_id = self.service.todo.add(name, details, active_group[0])
 
             RenderOutput("Created todo {bold}{todo_id}").render(todo_id=todo_id)
         except Error as e:
