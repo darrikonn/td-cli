@@ -3,15 +3,25 @@ from todo.constants import INTERACTIVE_COMMAND as COMMAND
 from todo.utils.menu import Menu
 
 
+class STATES:
+    COMPLETED = "completed"
+    UNCOMPLETED = "uncompleted"
+
+
 class Interactive(Command):
-    def run(self):
-        active_group = self.service.group.get_active_group()
-        completed_todos = self.service.todo.get_all(*active_group, completed=True)
-        uncompleted_todos = self.service.todo.get_all(*active_group)
-        completed = len(completed_todos)
-        uncompleted = len(uncompleted_todos)
-        completed_count = completed
-        uncompleted_count = uncompleted
+    arguments = (STATES.COMPLETED, STATES.UNCOMPLETED)
+
+    def run(self, state=None, group_name=None):
+        if group_name is None:
+            group = self.service.group.get_active_group()
+        else:
+            group = self.service.group.get(group_name)
+
+        todos = self.service.todo.get_all(
+            group[0],
+            True if state == STATES.COMPLETED else False if state == STATES.UNCOMPLETED else None  # TODO
+        )
+        todos_count = len(todos)
 
         with Menu() as menu:
             menu.clear()
