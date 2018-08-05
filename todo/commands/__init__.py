@@ -1,4 +1,4 @@
-from todo.commands import group, interactive, todo
+from todo.commands import group, todo
 from todo.services import Service
 
 
@@ -9,16 +9,15 @@ class Commands:
         "delete_todo": todo.Delete,
         "edit_todo": todo.EditDetails,
         "get_todo": todo.Get,
+        "interactive": todo.Interactive,
         "list_todos": todo.List,
         "name_todo": todo.EditName,
         "uncomplete_todo": todo.Uncomplete,
         "add_group": group.Add,
         "delete_group": group.Delete,
         "get_group": group.Get,
-        "initialize_group": group.Initialize,
         "list_groups": group.List,
         "preset_group": group.Preset,
-        "interactive": interactive.Interactive,
     }
 
     def __init__(self, arguments):

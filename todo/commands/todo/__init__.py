@@ -5,5 +5,6 @@ from .delete import Delete
 from .edit_details import EditDetails
 from .edit_name import EditName
 from .get import Get
+from .interactive import Interactive
 from .list import List
 from .uncomplete import Uncomplete

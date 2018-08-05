@@ -3,14 +3,7 @@ from todo.constants import INTERACTIVE_COMMAND as COMMAND
 from todo.utils.menu import Menu
 
 
-class STATES:
-    COMPLETED = "completed"
-    UNCOMPLETED = "uncompleted"
-
-
 class Interactive(Command):
-    arguments = (STATES.COMPLETED, STATES.UNCOMPLETED)
-
     def run(self, state=None, group_name=None):
         if group_name is None:
             group = self.service.group.get_active_group()
