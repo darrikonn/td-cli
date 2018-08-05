@@ -24,3 +24,4 @@ class GroupParser(BaseParser):
             action=set_value(STATES.COMPLETED),
         )
         parser_group.add_argument('--add', '-a', action='store')
+        parser_group.add_argument("--preset", "-p", action="store_true", dest="preset_group")

@@ -1,6 +1,5 @@
 import argparse
 
-from todo.parsers.config import ConfigParser
 from todo.parsers.group import GroupParser
 from todo.parsers.groups import GroupsParser
 from todo.parsers.todo import TodoParser
@@ -26,9 +25,7 @@ class Parser:
     def _get_root_parser(self, command, argument):
         if command is None:
             return TodosParser(command)
-        elif command == 'use':
-            return ConfigParser(command)
-        elif command == 'group':
+        elif command == "group":
             if argument is None:
                 return GroupsParser(command)
             return GroupParser(command)
