@@ -80,15 +80,28 @@ class GroupService(BaseService):
     # GET
     def get(self, name):
         group_name = self._interpret_group_name(name)
+        group = self.cursor.execute(
+            """
+            SELECT IFNULL(?, ?)
+            FROM "group"
+            WHERE name = ? OR ? IS NULL;
+            """,
+            (group_name, GLOBAL, group_name, group_name, )
+        ).fetchone()
+        if group is None:
+            return None
+
         self.cursor.execute(
             """
-            SELECT IFNULL(group_name, ?), sum(completed = False) as uncompleted, sum(completed = True) as completed
+            SELECT COUNT(id) AS items,
+               COALESCE(SUM(completed = 0), 0) AS uncompleted,
+               COALESCE(SUM(completed = 1), 0) AS completed
             FROM todo
             WHERE group_name = ? OR ? IS NULL;
             """,
-            (GLOBAL, group_name, group_name, )
+            (group_name, group_name, )
         )
-        return self.cursor.fetchone()
+        return group + self.cursor.fetchone()
 
     def get_active_group(self):
         self.cursor.execute(
@@ -104,12 +117,12 @@ class GroupService(BaseService):
     def get_all(self):
         self.cursor.execute(
             """
-            SELECT IFNULL(g.name, ?), todos.items, todos.completed, todos.uncompleted
+            SELECT IFNULL(g.name, ?), todos.items, todos.uncompleted, todos.completed
             FROM (
                 SELECT group_name,
                    COUNT(*) as items,
-                   SUM(completed = 1) as completed,
-                   SUM(completed = 0) as uncompleted
+                   SUM(completed = 0) as uncompleted,
+                   SUM(completed = 1) as completed
                 FROM todo
                 GROUP BY group_name
             ) todos
