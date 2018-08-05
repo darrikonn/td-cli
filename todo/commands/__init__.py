@@ -23,8 +23,7 @@ class Commands:
         'interactive': interactive.Interactive
     }
 
-    def __init__(self, arguments, commands):
-        self.commands = commands
+    def __init__(self, arguments):
         self.arguments = arguments
 
     def _get_arg(self, arg, is_valid):
@@ -34,9 +33,8 @@ class Commands:
 
     def run(self):
         with Service() as service:
-            for cmd, arg in self.commands.items():
+            for cmd, kwargs in self.arguments.items():
                 command = self.commands_dict[cmd](service)
                 command.run(
-                    *self._get_arg(arg, command.is_valid_argument(arg)),
-                    **self.arguments
+                    **kwargs
                 )

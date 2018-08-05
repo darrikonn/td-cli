@@ -34,14 +34,7 @@ class Parser:
                 return TodoParser(command)
         except ValueError:
             pass
-        raise UsageError('Unknown command "todo {}"'.format(' '.join(self.args)))
-
-    def _get_arguments(self, args):
-        return {k: v for k, v in vars(args).items() if k in self.parser.arguments}
-
-    def _get_commands(self, args):
-        return {k: v for k, v in vars(args).items() if v and k not in self.parser.arguments}
+        raise UsageError('Unknown command "todo {}"'.format(" ".join(self.args)))
 
     def parseopts(self):
-        opts = self.parser.parseopts(self.args)
-        return (self._get_arguments(opts), self._get_commands(opts))
+        return self.parser.parseopts(self.args)

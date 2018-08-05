@@ -1,6 +1,3 @@
-import sys
-
-from todo.commands.group.get import STATES
 from todo.parsers.base import BaseParser, set_value
 
 
@@ -8,10 +5,15 @@ class GroupParser(BaseParser):
     arguments = ('name', )
     has_command_prefix = True
 
-    def _normalize(self, parsed_args):
-        if len(sys.argv[2:]) == 1:
-            setattr(parsed_args, 'get_group', STATES.UNCOMPLETED)
-        return parsed_args
+    def _interpret(self, parsed_args):
+        if parsed_args.delete_group:
+            return {"delete_group": {"name": parsed_args.name}}
+        elif parsed_args.preset_group:
+            return {"preset_group": {"name": parsed_args.name}}
+        elif parsed_args.add_todo:
+            return {"add_todo": {"group_name": parsed_args.name, "name": parsed_args.add_todo}}
+        else:
+            return {"get_group": {"name": parsed_args.name, "state": parsed_args.state}}
 
     def _add_arguments(self):
         parser_group = self.parser.add_mutually_exclusive_group()

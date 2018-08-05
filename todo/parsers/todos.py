@@ -1,17 +1,14 @@
-import sys
-
-from todo.commands.todo.list import STATES
 from todo.parsers.base import BaseParser, set_value
 
 
 class TodosParser(BaseParser):
-    def _normalize(self, parsed_args):
-        if len(sys.argv[1:]) == 0:
-            setattr(parsed_args, 'list_todos', STATES.UNCOMPLETED)
+    def _interpret(self, parsed_args):
+        if parsed_args.add_todo:
+            return {"add_todo": {"name": parsed_args.add_todo, "group_name": parsed_args.group}}
         elif parsed_args.interactive:
-            setattr(parsed_args, 'interactive', parsed_args.list_todos or True)
-            setattr(parsed_args, 'list_todos', None)
-        return parsed_args
+            return {"interactive": {"state": parsed_args.state, "group_name": parsed_args.group}}
+        else:
+            return {"list_todos": {"state": parsed_args.state, "group_name": parsed_args.group}}
 
     def _add_arguments(self):
         self.parser.add_argument('--interactive', '-i', action='store_true')

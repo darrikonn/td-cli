@@ -25,9 +25,9 @@ class BaseParser:
     def _add_arguments(self):
         pass
 
-    def _normalize(self, parsed_args):
+    def _interpret(self, parsed_args):
         return parsed_args
 
     def parseopts(self, args):
         self._add_arguments()
-        return self._normalize(self._parser.parse_args(args))
+        return self._interpret(self._parser.parse_args(args))

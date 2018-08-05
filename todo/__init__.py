@@ -9,6 +9,6 @@ from todo.commands import Commands
 def main(args=None):
     if args is None:
         args = sys.argv[1:]
-    arguments, commands = Parser(args).parseopts()
+    arguments = Parser(args).parseopts()
 
-    Commands(arguments, commands).run()
+    Commands(arguments).run()
