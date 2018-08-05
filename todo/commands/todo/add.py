@@ -7,9 +7,6 @@ from todo.utils import get_user_input
 
 
 class Add(Command):
-    def is_valid_argument(self, arg):
-        return bool(arg)
-
     def run(self, name, group_name, edit_details=None):
         try:
             if edit_details:

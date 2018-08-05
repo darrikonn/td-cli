@@ -5,9 +5,6 @@ from todo.renderers import RenderOutput
 
 
 class Add(Command):
-    def is_valid_argument(self, arg):
-        return bool(arg)
-
     def run(self, name):
         try:
             group_name = self.service.group.add(name)

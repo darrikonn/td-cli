@@ -2,11 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class Command(ABC):
-    arguments = tuple()
-
-    def is_valid_argument(self, arg):
-        return arg in self.arguments
-
     def __init__(self, service):
         self.service = service
 
