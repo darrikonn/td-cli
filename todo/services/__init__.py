@@ -9,19 +9,16 @@ from .todo import TodoService
 
 
 class Service:
-    __slots__ = ('connection', 'cursor')
+    __slots__ = ("connection", "cursor")
 
-    service_dict = {
-        'todo': TodoService,
-        'group': GroupService,
-    }
+    service_dict = {"todo": TodoService, "group": GroupService}
 
     def __init__(self):
-        database_path = os.path.expanduser('~/.{}.db'.format(config['database_name']))
-        db_uri = 'file:{}'.format(pathname2url(database_path))
+        database_path = os.path.expanduser("~/.{}.db".format(config["database_name"]))
+        db_uri = "file:{}".format(pathname2url(database_path))
 
         try:
-            self.connection = sqlite3.connect('{}?mode=rw'.format(db_uri), uri=True)
+            self.connection = sqlite3.connect("{}?mode=rw".format(db_uri), uri=True)
             self.cursor = self.connection.cursor()
         except sqlite3.OperationalError:
             self._initialise_database(db_uri)

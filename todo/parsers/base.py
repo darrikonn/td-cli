@@ -5,6 +5,7 @@ def set_value(value):
     class Action(argparse.Action):
         def __call__(self, parser, args, values, option_string=None):
             setattr(args, self.dest, value)
+
     return Action
 
 

@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 from todo.utils import to_lower
 
-GLOBAL = 'global'
+GLOBAL = "global"
 
 
 class BaseService(ABC):
-    __slots__ = ('connection', 'cursor')
+    __slots__ = ("connection", "cursor")
 
     def __init__(self, connection, cursor):
         self.connection = connection

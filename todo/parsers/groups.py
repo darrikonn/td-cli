@@ -10,4 +10,4 @@ class GroupsParser(BaseParser):
         return {"list_groups": {}}
 
     def _add_arguments(self):
-        self.parser.add_argument('--add', '-a', dest='add_group', action='store')
+        self.parser.add_argument("--add", "-a", dest="add_group", action="store")

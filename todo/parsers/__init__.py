@@ -14,13 +14,15 @@ class Parser:
     def __init__(self, args):
         parser = argparse.ArgumentParser()
 
-        parser.add_argument('command', nargs='?')
-        parser.add_argument('argument', nargs='?')
+        parser.add_argument("command", nargs="?")
+        parser.add_argument("argument", nargs="?")
         command_root, _ = parser.parse_known_args(args[:1])
         argument_root, _ = parser.parse_known_args(args[:2])
 
         self.args = args
-        self.parser = self._get_root_parser(command_root.command, argument_root.argument)
+        self.parser = self._get_root_parser(
+            command_root.command, argument_root.argument
+        )
 
     def _get_root_parser(self, command, argument):
         if command is None:

@@ -8,4 +8,6 @@ class Preset(Command):
 
         self.service.group.use(group[0])
 
-        RenderOutput("Set {blue}{group_name}{reset} as default").render(group_name=group[0] or "global")
+        RenderOutput("Set {blue}{group_name}{reset} as default").render(
+            group_name=group[0] or "global"
+        )

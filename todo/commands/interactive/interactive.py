@@ -43,9 +43,13 @@ class Interactive(Command):
                 command = menu.get_command()
 
                 if command == COMMAND.DOWN:
-                    current_pos = current_pos + 1 if current_pos + 1 < todos_count else 0
+                    current_pos = (
+                        current_pos + 1 if current_pos + 1 < todos_count else 0
+                    )
                 elif command == COMMAND.UP:
-                    current_pos = current_pos - 1 if current_pos > 0 else todos_count - 1
+                    current_pos = (
+                        current_pos - 1 if current_pos > 0 else todos_count - 1
+                    )
 
                 todo = todos[current_pos]
                 if command == COMMAND.TOGGLE:

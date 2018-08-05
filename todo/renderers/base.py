@@ -11,11 +11,9 @@ class Render(ABC):
             blue=Fore.BLUE,
             white=Fore.WHITE,
             grey=Fore.GREY,
-
             bold=Style.BOLD,
             normal=Style.NORMAL,
             reset=Style.RESET_ALL,
-
             **kwargs
         )
 

@@ -40,7 +40,7 @@ class TodoService(BaseService):
             INSERT INTO todo (id, name, details, group_name)
             VALUES (?, ?, ?, ?);
             """,
-            (id, name, details, group_name)
+            (id, name, details, group_name),
         )
         self.connection.commit()
         return id
@@ -52,7 +52,7 @@ class TodoService(BaseService):
             DELETE FROM todo
             WHERE id = ?;
             """,
-            (id, )
+            (id,),
         )
         self.connection.commit()
 
@@ -64,7 +64,7 @@ class TodoService(BaseService):
             SET completed = 1
             WHERE id = ?;
             """,
-            (id, )
+            (id,),
         )
         self.connection.commit()
 
@@ -75,7 +75,7 @@ class TodoService(BaseService):
             SET completed = 0
             WHERE id = ?;
             """,
-            (id, )
+            (id,),
         )
         self.connection.commit()
 
@@ -86,7 +86,7 @@ class TodoService(BaseService):
             SET details = ?
             WHERE id = ?;
             """,
-            (details, id)
+            (details, id),
         )
         self.connection.commit()
 
@@ -97,7 +97,7 @@ class TodoService(BaseService):
             SET name = ?
             WHERE id = ?;
             """,
-            (name, id)
+            (name, id),
         )
         self.connection.commit()
 
@@ -109,7 +109,7 @@ class TodoService(BaseService):
             FROM todo
             WHERE id LIKE ('%' || ? || '%');
             """,
-            (id, )
+            (id,),
         )
         return self.cursor.fetchone()
 
@@ -122,6 +122,6 @@ class TodoService(BaseService):
             WHERE (completed = ? OR ? IS NULL) AND
                   (group_name = ? OR ? IS NULL) ORDER BY modified DESC;
             """,
-            (completed, completed, group_name, group_name, )
+            (completed, completed, group_name, group_name),
         )
         return self.cursor.fetchall()

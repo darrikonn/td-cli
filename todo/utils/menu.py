@@ -16,8 +16,13 @@ class InitializeMenuError(Exception):
 class Menu:
     __slots__ = ("stdscr", "color")
 
-    commands = namedtuple("Command", (COMMAND.DOWN, COMMAND.UP, COMMAND.TOGGLE, COMMAND.QUIT))(
-        down=(curses.KEY_DOWN, 106), up=(curses.KEY_UP, 107), toggle=(32,), quit=(113, 27)
+    commands = namedtuple(
+        "Command", (COMMAND.DOWN, COMMAND.UP, COMMAND.TOGGLE, COMMAND.QUIT)
+    )(
+        down=(curses.KEY_DOWN, 106),
+        up=(curses.KEY_UP, 107),
+        toggle=(32,),
+        quit=(113, 27),
     )
 
     class Color:
@@ -73,7 +78,7 @@ class Menu:
         curses.curs_set(0)
 
     def _reset_screen(self):
-        if hasattr(self, 'stdscr'):
+        if hasattr(self, "stdscr"):
             # reverse the curses-friendly terminal settings
             self.stdscr.keypad(False)
         curses.nocbreak()
@@ -104,25 +109,23 @@ class Menu:
 
     def render_header(self, text):
         self.stdscr.addstr(
-            Y_OFFSET,
-            X_OFFSET + MARGIN,
-            text,
-            curses.A_BOLD | self.color.blue,
+            Y_OFFSET, X_OFFSET + MARGIN, text, curses.A_BOLD | self.color.blue
         )
 
     def render_subheader(self, text):
-        self.stdscr.addstr(
-            Y_OFFSET + NEXT_LINE,
-            X_OFFSET + MARGIN,
-            text,
-        )
+        self.stdscr.addstr(Y_OFFSET + NEXT_LINE, X_OFFSET + MARGIN, text)
 
     def render_todo(self, todo, offset, current_pos):
         extra_style = 1
         if offset == current_pos:
             extra_style = self.color.blue
             # render active cursor
-            self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET, "❯", curses.A_BOLD | self.color.blue)
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN + NEXT_LINE,
+                X_OFFSET,
+                "❯",
+                curses.A_BOLD | self.color.blue,
+            )
         else:
             # render non-active cursor
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET, " ")
@@ -143,13 +146,19 @@ class Menu:
         )
         # render todo name
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET + MARGIN * 5, ": {name}".format(name=todo[1]), extra_style
+            offset + Y_OFFSET + MARGIN + NEXT_LINE,
+            X_OFFSET + MARGIN * 5,
+            ": {name}".format(name=todo[1]),
+            extra_style,
         )
 
     def render_commands(self, offset):
         # space
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE, X_OFFSET + MARGIN, "space", curses.A_BOLD | self.color.grey
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
+            X_OFFSET + MARGIN,
+            "space",
+            curses.A_BOLD | self.color.grey,
         )
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
@@ -160,8 +169,14 @@ class Menu:
 
         # quit
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2, X_OFFSET + MARGIN, "q", curses.A_BOLD | self.color.grey
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "q",
+            curses.A_BOLD | self.color.grey,
         )
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2, X_OFFSET + MARGIN * 5, "to quit", self.color.grey
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to quit",
+            self.color.grey,
         )

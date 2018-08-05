@@ -12,9 +12,13 @@ class Get(Command):
         )
 
         for todo in todos:
-            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{name}").render(name=todo[1], todo_id=todo[0])
+            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{name}").render(
+                name=todo[1], todo_id=todo[0]
+            )
 
-        RenderOutput("{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted").render(
+        RenderOutput(
+            "{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted"
+        ).render(
             prefix="\n" if group[1] > 0 else "",
             items=group[1],
             uncompleted=group[2],
