@@ -17,11 +17,10 @@ class Interactive(Command):
         else:
             group = self.service.group.get(group_name)
 
-        todos = self.service.todo.get_all(
-            group[0],
-            True if state == STATES.COMPLETED else False if state == STATES.UNCOMPLETED else None  # TODO
-        )
+        todos = self.service.todo.get_all(group[0], state)
         todos_count = len(todos)
+        if todos_count == 0:
+            raise Exception("No todos in group {}".format(group[0]))
 
         with Menu() as menu:
             menu.clear()
@@ -32,7 +31,7 @@ class Interactive(Command):
                 menu.refresh()
                 menu.render_subheader(
                     "{items} items: {completed} completed, {uncompleted} left".format(
-                        items=todos_count, completed=group[2], uncompleted=group[1]
+                        items=group[1], completed=group[3], uncompleted=group[2]
                     )
                 )
 
@@ -54,11 +53,11 @@ class Interactive(Command):
                     if todo[3]:
                         # uncomplete todo
                         self.service.todo.uncomplete(todo[0])
-                        group = group[:1] + (group[1] + 1, group[2] - 1)
+                        group = group[:2] + (group[2] + 1, group[3] - 1)
                     else:
                         # complete todo
                         self.service.todo.complete(todo[0])
-                        group = group[:1] + (group[1] - 1, group[2] + 1)
+                        group = group[:2] + (group[2] - 1, group[3] + 1)
                     # update list
                     todos[current_pos] = todo[:3] + (not todo[3],)
                 elif command == COMMAND.QUIT:
