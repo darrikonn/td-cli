@@ -17,7 +17,7 @@ class TodoParser(BaseParser):
                 }
             }
         elif parsed_args.name_todo:
-            return {"name_todo": {"id": parsed_args.id, "name": parsed_args.name}}
+            return {"name_todo": {"id": parsed_args.id, "name": parsed_args.name_todo}}
         elif parsed_args.edit_todo:
             return {"edit_todo": {"id": parsed_args.id}}
         else:
