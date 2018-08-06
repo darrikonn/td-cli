@@ -1,23 +1,24 @@
 from todo.commands import group, todo
 from todo.services import Service
+from todo.constants import COMMANDS
 
 
 class Commands:
     commands_dict = {
-        "add_todo": todo.Add,
-        "complete_todo": todo.Complete,
-        "delete_todo": todo.Delete,
-        "edit_todo": todo.EditDetails,
-        "get_todo": todo.Get,
-        "list_interactive_todos": todo.ListInteractive,
-        "list_todos": todo.List,
-        "name_todo": todo.EditName,
-        "uncomplete_todo": todo.Uncomplete,
-        "add_group": group.Add,
-        "delete_group": group.Delete,
-        "get_group": group.Get,
-        "list_groups": group.List,
-        "preset_group": group.Preset,
+        COMMANDS.ADD_TODO: todo.Add,
+        COMMANDS.COMPLETE_TODO: todo.Complete,
+        COMMANDS.DELETE_TODO: todo.Delete,
+        COMMANDS.EDIT_TODO: todo.EditDetails,
+        COMMANDS.GET_TODO: todo.Get,
+        COMMANDS.LIST_INTERACTIVE_TODOS: todo.ListInteractive,
+        COMMANDS.LIST_TODOS: todo.List,
+        COMMANDS.NAME_TODO: todo.EditName,
+        COMMANDS.UNCOMPLETE_TODO: todo.Uncomplete,
+        COMMANDS.ADD_GROUP: group.Add,
+        COMMANDS.DELETE_GROUP: group.Delete,
+        COMMANDS.GET_GROUP: group.Get,
+        COMMANDS.LIST_GROUPS: group.List,
+        COMMANDS.PRESET_GROUP: group.Preset,
     }
 
     def __init__(self, arguments):

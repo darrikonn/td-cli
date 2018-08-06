@@ -3,7 +3,7 @@ from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.utils.menu import Menu
 
 
-class Interactive(Command):
+class ListInteractive(Command):
     def run(self, state=None, group_name=None):
         if group_name is None:
             group = self.service.group.get_active_group()
