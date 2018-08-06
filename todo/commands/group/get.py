@@ -8,19 +8,14 @@ class Get(Command):
         todos = self.service.todo.get_all(group[0], state)
 
         RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(
-            subsequent_indent=" " * 8, group_name=group[0] or "global"
+            subsequent_indent=" " * 4, group_name=group[0] or "global"
         )
 
         for todo in todos:
-            RenderOutputWithTextwrap("{bold}{todo_id}{reset}  ", "{name}").render(
-                name=todo[1], todo_id=todo[0]
+            RenderOutputWithTextwrap("{completed} {bold}{todo_id}{reset}  ", "{name}").render(
+                completed="✓" if todo[3] else "x", name=todo[1], todo_id=todo[0]
             )
 
-        RenderOutput(
-            "{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted"
-        ).render(
-            prefix="\n" if group[1] > 0 else "",
-            items=group[1],
-            uncompleted=group[2],
-            completed=group[3],
+        RenderOutput("{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted").render(
+            prefix="\n" if group[1] > 0 else "", items=group[1], uncompleted=group[2], completed=group[3]
         )

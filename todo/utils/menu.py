@@ -1,7 +1,7 @@
 import curses
 from collections import namedtuple
 
-from todo.constants import INTERACTIVE_COMMAND as COMMAND
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 
 X_OFFSET = 2
 Y_OFFSET = 4
@@ -17,7 +17,7 @@ class Menu:
     __slots__ = ("stdscr", "color")
 
     commands = namedtuple(
-        "Command", (COMMAND.DOWN, COMMAND.UP, COMMAND.TOGGLE, COMMAND.QUIT)
+        "Command", (COMMANDS.DOWN, COMMANDS.UP, COMMANDS.TOGGLE, COMMANDS.QUIT)
     )(
         down=(curses.KEY_DOWN, 106),
         up=(curses.KEY_UP, 107),
@@ -97,13 +97,13 @@ class Menu:
     def get_command(self):
         command = self.stdscr.getch()
         if command in self.commands.down:
-            return COMMAND.DOWN
+            return COMMANDS.DOWN
         elif command in self.commands.up:
-            return COMMAND.UP
+            return COMMANDS.UP
         elif command in self.commands.toggle:
-            return COMMAND.TOGGLE
+            return COMMANDS.TOGGLE
         elif command in self.commands.quit:
-            return COMMAND.QUIT
+            return COMMANDS.QUIT
         else:
             return None
 

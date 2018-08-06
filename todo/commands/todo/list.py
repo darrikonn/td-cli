@@ -8,4 +8,4 @@ class List(Command):
             group = self.service.group.get_active_group()
         else:
             group = self.service.group.get(group_name)
-        GetGroup.run(self, state or False, group[0])
+        GetGroup.run(self, state, group[0])

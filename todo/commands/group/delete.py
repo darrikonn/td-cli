@@ -12,7 +12,7 @@ class Delete(Command):
             if group[0] is None:
                 raise Exception("Cannot delete group global")
             if not skip_prompt:
-                todo_count = len(group[2]) + len(group[1])
+                todo_count = group[2] + group[1]
                 post_text = ""
                 if todo_count > 0:
                     RenderOutput(
