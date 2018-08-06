@@ -9,7 +9,7 @@ class Commands:
         "delete_todo": todo.Delete,
         "edit_todo": todo.EditDetails,
         "get_todo": todo.Get,
-        "interactive": todo.Interactive,
+        "list_interactive_todos": todo.ListInteractive,
         "list_todos": todo.List,
         "name_todo": todo.EditName,
         "uncomplete_todo": todo.Uncomplete,

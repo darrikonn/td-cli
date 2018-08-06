@@ -1,5 +1,5 @@
 from todo.commands.base import Command
-from todo.constants import INTERACTIVE_COMMAND as COMMAND
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.utils.menu import Menu
 
 
@@ -35,17 +35,17 @@ class Interactive(Command):
 
                 command = menu.get_command()
 
-                if command == COMMAND.DOWN:
+                if command == COMMANDS.DOWN:
                     current_pos = (
                         current_pos + 1 if current_pos + 1 < todos_count else 0
                     )
-                elif command == COMMAND.UP:
+                elif command == COMMANDS.UP:
                     current_pos = (
                         current_pos - 1 if current_pos > 0 else todos_count - 1
                     )
 
                 todo = todos[current_pos]
-                if command == COMMAND.TOGGLE:
+                if command == COMMANDS.TOGGLE:
                     # toggle todo
                     if todo[3]:
                         # uncomplete todo
@@ -57,5 +57,5 @@ class Interactive(Command):
                         group = group[:2] + (group[2] - 1, group[3] + 1)
                     # update list
                     todos[current_pos] = todo[:3] + (not todo[3],)
-                elif command == COMMAND.QUIT:
+                elif command == COMMANDS.QUIT:
                     break
