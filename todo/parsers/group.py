@@ -1,4 +1,5 @@
 from todo.parsers.base import BaseParser, set_value
+from todo.settings import config
 
 
 class GroupParser(BaseParser):
