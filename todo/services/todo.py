@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from todo.services.base import BaseService
-from todo.utils import generate_random_hex
+from todo.utils import generate_random_int
 
 
 class TodoService(BaseService):
@@ -32,8 +32,8 @@ class TodoService(BaseService):
         )
 
     # POST
-    def add(self, name, details, group):
-        id = generate_random_hex()
+    def add(self, name, details, group, completed):
+        id = generate_random_int()
         group_name = self._interpret_group_name(group)
         self.cursor.execute(
             """

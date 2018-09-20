@@ -3,8 +3,8 @@ import tempfile
 from subprocess import call
 
 
-def generate_random_hex():
-    return "%06x" % random.randrange(16 ** 6)
+def generate_random_int():
+    return "%06i" % random.randrange(10 ** 6)
 
 
 def get_user_input(editor, initial_message=b""):
