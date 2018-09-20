@@ -14,8 +14,13 @@ class Get(Command):
 
             RenderOutput("{details}").render(details=todo[3])
 
-            RenderOutputWithTextwrap("\n{grey}{completed} {bold}{todo_id}{normal}: ", "{details}").render(
-                details=todo[2], completed="✓" if todo[4] else "x", todo_id=todo[0], subsequent_indent=" " * 7
+            RenderOutputWithTextwrap(
+                "\n{grey}{completed} {bold}{todo_id}{normal}: ", "{details}"
+            ).render(
+                details=todo[2],
+                completed="✓" if todo[4] else "x",
+                todo_id=todo[0],
+                subsequent_indent=" " * 7,
             )
         except Error as e:
             print(u'[*] Could not get a todo due to "{}"'.format(e))

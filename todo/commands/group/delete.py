@@ -31,9 +31,7 @@ class Delete(Command):
                     raise Exception("Abort!")
             self.service.group.delete(group[0])
 
-            RenderOutput(
-                "{red}Deleted{reset} {bold}{group_name}{normal}" + post_text
-            ).render(
+            RenderOutput("{red}Deleted{reset} {bold}{group_name}{normal}" + post_text).render(
                 group_name=group[0],
                 todos=post_text,
                 singular_or_plural=singular_or_plural(todo_count),

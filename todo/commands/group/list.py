@@ -7,7 +7,7 @@ class List(Command):
     def run(self, args):
         groups = self.service.group.get_all(args.state)
         if not groups:
-            raise Exception("No {} groups".format('completed' if args.state else 'uncompleted'))
+            raise Exception("No {} groups".format("completed" if args.state else "uncompleted"))
 
         for group in groups:
             RenderOutput(

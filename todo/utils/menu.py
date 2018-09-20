@@ -16,13 +16,8 @@ class InitializeMenuError(Exception):
 class Menu:
     __slots__ = ("stdscr", "color")
 
-    commands = namedtuple(
-        "Command", (COMMANDS.DOWN, COMMANDS.UP, COMMANDS.TOGGLE, COMMANDS.QUIT)
-    )(
-        down=(curses.KEY_DOWN, 106),
-        up=(curses.KEY_UP, 107),
-        toggle=(32,),
-        quit=(113, 27),
+    commands = namedtuple("Command", (COMMANDS.DOWN, COMMANDS.UP, COMMANDS.TOGGLE, COMMANDS.QUIT))(
+        down=(curses.KEY_DOWN, 106), up=(curses.KEY_UP, 107), toggle=(32,), quit=(113, 27)
     )
 
     class Color:
@@ -108,9 +103,7 @@ class Menu:
             return None
 
     def render_header(self, text):
-        self.stdscr.addstr(
-            Y_OFFSET, X_OFFSET + MARGIN, text, curses.A_BOLD | self.color.blue
-        )
+        self.stdscr.addstr(Y_OFFSET, X_OFFSET + MARGIN, text, curses.A_BOLD | self.color.blue)
 
     def render_subheader(self, text):
         self.stdscr.addstr(Y_OFFSET + NEXT_LINE, X_OFFSET + MARGIN, text)

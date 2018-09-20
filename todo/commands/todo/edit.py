@@ -19,6 +19,8 @@ class Edit(Command):
                 if args.details:
                     self.service.todo.edit_details(todo[0], args.details)
 
-            RenderOutput("Edited {bold}{todo_id}{reset}: {name}").render(todo_id=todo[0], name=args.name or todo[2])
+            RenderOutput("Edited {bold}{todo_id}{reset}: {name}").render(
+                todo_id=todo[0], name=args.name or todo[2]
+            )
         except Error as e:
             print(u'[*] Could not edit a todo due to "{}"'.format(e))

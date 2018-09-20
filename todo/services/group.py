@@ -17,9 +17,7 @@ class GroupService(BaseService):
         group_name = self._interpret_group_name(name)
         if group_name is None:
             raise Exception(
-                '"{}" is a reserved group name. You can`t create that group'.format(
-                    GLOBAL
-                )
+                '"{}" is a reserved group name. You can`t create that group'.format(GLOBAL)
             )
 
         self.cursor.execute(
@@ -37,9 +35,7 @@ class GroupService(BaseService):
         group_name = self._interpret_group_name(name)
         if group_name is None:
             raise Exception(
-                '"{}" is a reserved group name. You can`t delete that group'.format(
-                    GLOBAL
-                )
+                '"{}" is a reserved group name. You can`t delete that group'.format(GLOBAL)
             )
         self.cursor.execute(
             """
@@ -58,10 +54,7 @@ class GroupService(BaseService):
             SET name = ?
             WHERE name = ?;
             """,
-            (
-                self._interpret_group_name(new_name),
-                self._interpret_group_name(old_name),
-            ),
+            (self._interpret_group_name(new_name), self._interpret_group_name(old_name)),
         )
         self.connection.commit()
 
@@ -148,6 +141,6 @@ class GroupService(BaseService):
             WHERE todo.group_name IS NULL
                AND (? IS TRUE OR ? IS NULL);
             """,
-            (GLOBAL, *(completed,) * 5)
+            (GLOBAL, *(completed,) * 5),
         )
         return self.cursor.fetchall()
