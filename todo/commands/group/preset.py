@@ -3,8 +3,8 @@ from todo.renderers import RenderOutput
 
 
 class Preset(Command):
-    def run(self, name):
-        group = self._get_group_or_raise(name)
+    def run(self, args):
+        group = self._get_group_or_raise(args.name)
 
         self.service.group.use(group[0])
 

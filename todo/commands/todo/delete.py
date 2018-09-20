@@ -5,10 +5,10 @@ from todo.renderers import RenderInput, RenderOutputWithTextwrap
 
 
 class Delete(Command):
-    def run(self, id, skip_prompt=False):
+    def run(self, args):
         try:
-            todo = self._get_todo_or_raise(id)
-            if not skip_prompt:
+            todo = self._get_todo_or_raise(args.id)
+            if not args.skip_prompt:
                 choice = RenderInput(
                     "[?] Are you sure you want to delete todo {bold}{todo_id}{normal}? [Y|n]"
                 ).render(todo_id=todo[0])

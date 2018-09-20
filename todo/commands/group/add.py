@@ -5,9 +5,9 @@ from todo.renderers import RenderOutput
 
 
 class Add(Command):
-    def run(self, name):
+    def run(self, args):
         try:
-            group_name = self.service.group.add(name)
+            group_name = self.service.group.add(args.name)
 
             RenderOutput("Created group {blue}{group_name}").render(
                 group_name=group_name

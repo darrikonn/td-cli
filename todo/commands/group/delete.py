@@ -6,12 +6,12 @@ from todo.utils import singular_or_plural
 
 
 class Delete(Command):
-    def run(self, name, skip_prompt=False):
+    def run(self, args):
         try:
-            group = self._get_group_or_raise(name)
+            group = self._get_group_or_raise(args.name)
             if group[0] is None:
                 raise Exception("Cannot delete group global")
-            if not skip_prompt:
+            if not args.skip_prompt:
                 todo_count = group[2] + group[1]
                 post_text = ""
                 if todo_count > 0:
@@ -19,7 +19,7 @@ class Delete(Command):
                         "By deleting group {blue}{group_name}{reset}, "
                         "you'll also delete {bold}{todo_count}{normal} todo{singular_or_plural} in that group"
                     ).render(
-                        group_name=name,
+                        group_name=args.name,
                         todo_count=todo_count,
                         singular_or_plural=singular_or_plural(todo_count),
                     )

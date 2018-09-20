@@ -5,9 +5,9 @@ from todo.renderers import RenderOutput
 
 
 class Complete(Command):
-    def run(self, id):
+    def run(self, args):
         try:
-            todo = self._get_todo_or_raise(id)
+            todo = self._get_todo_or_raise(args.id)
             self.service.todo.complete(todo[0])
 
             RenderOutput("{bold}{green}✓ {reset}{bold}{todo_id}{reset}: {name}").render(

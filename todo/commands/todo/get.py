@@ -5,9 +5,9 @@ from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 
 
 class Get(Command):
-    def run(self, id):
+    def run(self, args):
         try:
-            todo = self._get_todo_or_raise(id)
+            todo = self._get_todo_or_raise(args.id)
             RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(
                 group_name=todo[1] or "global", subsequent_indent=" " * 4
             )

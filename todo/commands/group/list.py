@@ -4,8 +4,11 @@ from todo.utils import singular_or_plural
 
 
 class List(Command):
-    def run(self):
-        groups = self.service.group.get_all()
+    def run(self, args):
+        groups = self.service.group.get_all(args.state)
+        if not groups:
+            raise Exception("No {} groups".format('completed' if args.state else 'uncompleted'))
+
         for group in groups:
             RenderOutput(
                 "{bold}{blue}{group_name}{reset}: {items} item{singular_or_plural}: "

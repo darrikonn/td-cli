@@ -7,18 +7,18 @@ from todo.utils import get_user_input
 
 
 class Add(Command):
-    def run(self, name, group_name, edit_details=None):
+    def run(self, args):
         try:
-            if edit_details:
+            if args.edit:
                 details = get_user_input(config["editor"])
             else:
-                details = name
+                details = args.details or args.name
 
-            if group_name is None:
+            if args.group is None:
                 group = self.service.group.get_active_group()
             else:
-                group = self.service.group.get(group_name)
-            todo_id = self.service.todo.add(name, details, group[0])
+                group = self.service.group.get(args.group)
+            todo_id = self.service.todo.add(args.name, details, group[0], completed=args.state)
 
             RenderOutput("Created todo {bold}{todo_id}").render(todo_id=todo_id)
         except Error as e:
