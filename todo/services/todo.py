@@ -37,10 +37,10 @@ class TodoService(BaseService):
         group_name = self._interpret_group_name(group)
         self.cursor.execute(
             """
-            INSERT INTO todo (id, name, details, group_name)
-            VALUES (?, ?, ?, ?);
+            INSERT INTO todo (id, name, details, group_name, completed)
+            VALUES (?, ?, ?, ?, ?);
             """,
-            (id, name, details, group_name),
+            (id, name, details, group_name, completed),
         )
         self.connection.commit()
         return id
@@ -113,7 +113,7 @@ class TodoService(BaseService):
         )
         return self.cursor.fetchone()
 
-    def get_all(self, group=None, completed=False):
+    def get_all(self, group=None, completed=None):
         group_name = self._interpret_group_name(group)
         self.cursor.execute(
             """
