@@ -1,9 +1,11 @@
 import argparse
 
-from todo.parsers.group import GroupParser
-from todo.parsers.groups import GroupsParser
+from todo.parsers.add_group import AddGroupParser
+from todo.parsers.add_todo import AddTodoParser
 from todo.parsers.todo import TodoParser
-from todo.parsers.todos import TodosParser
+from todo.parsers.group import GroupParser
+from todo.parsers.list_groups import ListGroupsParser
+from todo.parsers.list_todos import ListTodosParser
 
 
 class UsageError(Exception):
@@ -11,32 +13,34 @@ class UsageError(Exception):
 
 
 class Parser:
-    def __init__(self, args):
-        parser = argparse.ArgumentParser()
+    def __init__(self):
+        self.parser = argparse.ArgumentParser()
+        self.parser.add_argument("command", nargs="?")
 
-        parser.add_argument("command", nargs="?")
-        parser.add_argument("argument", nargs="?")
-        command_root, _ = parser.parse_known_args(args[:1])
-        argument_root, _ = parser.parse_known_args(args[:2])
+    _subparsers = {
+        "a": AddTodoParser,
+        "add": AddTodoParser,
+        "add_group": AddGroupParser,
+        "ag": AddGroupParser,
+        "g": GroupParser,
+        "group": GroupParser,
+        "groups": ListGroupsParser,
+        "gs": ListGroupsParser,
+    }
 
-        self.args = args
-        self.parser = self._get_root_parser(
-            command_root.command, argument_root.argument
-        )
-
-    def _get_root_parser(self, command, argument):
+    def _get_parser(self, args):
+        command = self.parser.parse_known_args(args[:1])[0].command
         if command is None:
-            return TodosParser(command)
-        elif command == "group":
-            if argument is None:
-                return GroupsParser(command)
-            return GroupParser(command)
-        try:
-            if int(command, 16) and len(command) <= 6:
-                return TodoParser(command)
-        except ValueError:
-            pass
-        raise UsageError('Unknown command "todo {}"'.format(" ".join(self.args)))
+            return ListTodosParser()
+        elif command.isdigit() and len(command) <= 6:
+            return TodoParser()
 
-    def parseopts(self):
-        return self.parser.parseopts(self.args)
+        parser = self._subparsers.get(command)
+        if parser is None:
+            raise UsageError('Unknown command "todo {}"'.format(" ".join(args)))
+
+        return parser(command)
+
+    def parseopts(self, args):
+        parser = self._get_parser(args)
+        return parser.parseopts(args)

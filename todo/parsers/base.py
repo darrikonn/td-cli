@@ -1,4 +1,5 @@
 import argparse
+from abc import ABCMeta, abstractproperty
 
 
 def set_value(value):
@@ -10,25 +11,23 @@ def set_value(value):
 
 
 class BaseParser:
-    arguments = tuple()
-    has_command_prefix = False
+    __metaclass__ = ABCMeta
 
-    def __init__(self, command):
-        self._parser = argparse.ArgumentParser()
-        if self.has_command_prefix:
-            self.parser = self._parser.add_subparsers().add_parser(command)
+    @abstractproperty
+    def command(self):
+        raise NotImplementedError
+
+    def __init__(self, command=None):
+        self.root_parser = argparse.ArgumentParser()
+        if command is None:
+            self.parser = self.root_parser
         else:
-            self.parser = self._parser
-
-        for arg in self.arguments:
-            self.parser.add_argument(arg)
+            self.parser = self.root_parser.add_subparsers().add_parser(command)
 
     def _add_arguments(self):
         pass
 
-    def _interpret(self, parsed_args):
-        return parsed_args
-
     def parseopts(self, args):
         self._add_arguments()
-        return self._interpret(self._parser.parse_args(args))
+        parsed_args = self.root_parser.parse_args(args)
+        return (getattr(parsed_args, "command", None) or self.command, parsed_args)
