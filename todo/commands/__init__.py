@@ -19,16 +19,10 @@ class Commands:
         COMMANDS.PRESET_GROUP: group.Preset,
     }
 
-    def __init__(self, arguments):
-        self.arguments = arguments
+    def __init__(self, command):
+        self.command = command
 
-    def _get_arg(self, arg, is_valid):
-        if is_valid:
-            return (arg,)
-        return tuple()
-
-    def run(self):
+    def run(self, arguments):
         with Service() as service:
-            for cmd, kwargs in self.arguments.items():
-                command = self.commands_dict[cmd](service)
-                command.run(**kwargs)
+            command = self.commands_dict[self.command](service)
+            command.run(arguments)
