@@ -10,6 +10,25 @@ def set_value(value):
     return Action
 
 
+def set_default_subparser(self, name, args, positional_args):
+    for arg in args:
+        if arg in ["-h", "--help"]:
+            break
+    else:
+        for x in self._subparsers._actions:
+            if not isinstance(x, argparse._SubParsersAction):
+                continue
+            for sp_name in x._name_parser_map.keys():
+                if sp_name in args:
+                    return
+                if sp_name == name:  # check existance of default parser
+                    args.insert(positional_args, name)
+                    return
+
+
+argparse.ArgumentParser.set_default_subparser = set_default_subparser
+
+
 class BaseParser:
     __metaclass__ = ABCMeta
 
@@ -27,7 +46,11 @@ class BaseParser:
     def _add_arguments(self):
         pass
 
+    def _set_defaults(self, args):
+        pass
+
     def parseopts(self, args):
         self._add_arguments()
+        self._set_defaults(args)
         parsed_args = self.root_parser.parse_args(args)
         return (getattr(parsed_args, "command", None) or self.command, parsed_args)
