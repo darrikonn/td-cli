@@ -1,5 +1,5 @@
 from todo.constants import COMMANDS
-from todo.parsers.base import BaseParser, set_value
+from todo.parser.base import BaseParser, set_value
 
 
 class AddTodoParser(BaseParser):

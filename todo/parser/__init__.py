@@ -1,11 +1,13 @@
 import argparse
 
-from todo.parsers.add_group import AddGroupParser
-from todo.parsers.add_todo import AddTodoParser
-from todo.parsers.todo import TodoParser
-from todo.parsers.group import GroupParser
-from todo.parsers.list_groups import ListGroupsParser
-from todo.parsers.list_todos import ListTodosParser
+from todo.parser.subparsers import (
+    AddGroupParser,
+    AddTodoParser,
+    GroupParser,
+    ListGroupsParser,
+    ListTodosParser,
+    TodoParser,
+)
 
 
 class UsageError(Exception):

@@ -1,5 +1,5 @@
 from todo.constants import COMMANDS
-from todo.parsers.base import BaseParser
+from todo.parser.base import BaseParser
 
 
 class AddGroupParser(BaseParser):

@@ -2,7 +2,7 @@
 
 import sys
 
-from todo.parsers import Parser
+from todo.parser import Parser
 from todo.commands import Commands
 
 
