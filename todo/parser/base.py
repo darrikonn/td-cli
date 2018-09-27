@@ -3,6 +3,9 @@ from abc import ABCMeta, abstractproperty
 
 from pkg_resources import get_distribution
 
+from todo.renderers import RenderHelp
+
+
 def set_value(value):
     class Action(argparse.Action):
         def __call__(self, parser, args, values, option_string=None):
@@ -57,6 +60,9 @@ class BaseParser:
 
     def _set_defaults(self, args):
         pass
+
+    def print_help(self):
+        RenderHelp(self.__doc__).render()
 
     def parseopts(self, args):
         self._add_arguments()
