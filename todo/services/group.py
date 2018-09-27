@@ -1,3 +1,4 @@
+from todo.exceptions import TodoException
 from todo.services.base import GLOBAL, BaseService
 
 
@@ -16,9 +17,7 @@ class GroupService(BaseService):
     def add(self, name):
         group_name = self._interpret_group_name(name)
         if group_name is None:
-            raise Exception(
-                '"{}" is a reserved group name. You can`t create that group'.format(GLOBAL)
-            )
+            raise TodoException("`{bold}<Group: %s>{reset}` already exists." % GLOBAL)
 
         self.cursor.execute(
             """
@@ -34,9 +33,7 @@ class GroupService(BaseService):
     def delete(self, name):
         group_name = self._interpret_group_name(name)
         if group_name is None:
-            raise Exception(
-                '"{}" is a reserved group name. You can`t delete that group'.format(GLOBAL)
-            )
+            raise TodoException("`{bold}<Group: %s>{reset}` can't be deleted." % GLOBAL)
         self.cursor.execute(
             """
             DELETE FROM "group"
@@ -62,7 +59,7 @@ class GroupService(BaseService):
         group = self.get(name)
 
         if group is None:
-            raise Exception('Group "{}" not found'.format(name))
+            raise TodoException("<Group: {name}> not found".format(name=name))
 
         self.cursor.execute(
             """
@@ -84,16 +81,19 @@ class GroupService(BaseService):
     # GET
     def get(self, name):
         group_name = self._interpret_group_name(name)
-        group = self.cursor.execute(
-            """
-            SELECT IFNULL(?, ?)
-            FROM "group"
-            WHERE name = ? OR ? IS NULL;
-            """,
-            (group_name, GLOBAL, group_name, group_name),
-        ).fetchone()
-        if group is None:
-            return None
+        if group_name is None:
+            group = (None,)
+        else:
+            group = self.cursor.execute(
+                """
+                SELECT IFNULL(?, ?)
+                FROM "group"
+                WHERE name = ? OR ? IS NULL;
+                """,
+                (group_name, GLOBAL, group_name, group_name),
+            ).fetchone()
+            if group is None:
+                return None
 
         self.cursor.execute(
             """
@@ -141,6 +141,6 @@ class GroupService(BaseService):
             WHERE todo.group_name IS NULL
                AND (? IS TRUE OR ? IS NULL);
             """,
-            (GLOBAL, *(completed,) * 5),
+            (GLOBAL, *(completed,) * 5),  # noqa: E999
         )
         return self.cursor.fetchall()

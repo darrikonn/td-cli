@@ -31,21 +31,27 @@ class Parser:
     `td` defaults to `td list`
     """
 
-class Parser:
     def __init__(self):
         self.parser = argparse.ArgumentParser()
         self.parser.print_help = self._print_help
         self.parser.add_argument("command", nargs="?")
 
     _subparsers = {
+        # add todo
         "a": AddTodoParser,
         "add": AddTodoParser,
-        "add_group": AddGroupParser,
+        # add group
         "ag": AddGroupParser,
+        "add_group": AddGroupParser,
+        # get group
         "g": GroupParser,
         "group": GroupParser,
-        "groups": ListGroupsParser,
-        "gs": ListGroupsParser,
+        # list groups
+        "lg": ListGroupsParser,
+        "list_groups": ListGroupsParser,
+        # list todos
+        "l": ListTodosParser,
+        "list": ListTodosParser,
     }
 
     def _print_help(self):
@@ -55,7 +61,7 @@ class Parser:
         command = self.parser.parse_known_args(args[:1])[0].command
         if command is None:
             return ListTodosParser()
-        elif command.isdigit() and len(command) <= 6:
+        if command.isdigit() and len(command) <= 6:
             return TodoParser()
 
         parser = self._subparsers.get(command)
