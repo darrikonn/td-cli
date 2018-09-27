@@ -79,6 +79,18 @@ class TodoService(BaseService):
         )
         self.connection.commit()
 
+    def set_group(self, id, group):
+        group_name = self._interpret_group_name(group)
+        self.cursor.execute(
+            """
+            UPDATE todo
+            SET group_name = ?
+            WHERE id = ?;
+            """,
+            (group_name, id),
+        )
+        self.connection.commit()
+
     def edit_details(self, id, details):
         self.cursor.execute(
             """
