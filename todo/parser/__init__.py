@@ -1,5 +1,6 @@
 import argparse
 
+from todo.exceptions import TodoException
 from todo.parser.subparsers import (
     AddGroupParser,
     AddTodoParser,
@@ -59,7 +60,9 @@ class Parser:
 
         parser = self._subparsers.get(command)
         if parser is None:
-            raise UsageError('Unknown command "todo {}"'.format(" ".join(args)))
+            raise TodoException(
+                "Unknown command `{bold}td %s{reset}`" % " ".join(args), type="UsageError"
+            )
 
         return parser(command)
 

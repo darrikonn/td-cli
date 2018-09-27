@@ -41,7 +41,10 @@ class BaseParser:
         raise NotImplementedError
 
     def __init__(self, command=None):
-        self.root_parser = argparse.ArgumentParser()
+        self.parent = argparse.ArgumentParser(add_help=False)
+        self.parent.add_argument(
+            "--verbose", "-v", dest="verbose", action="store_true", help=argparse.SUPPRESS
+        )
         self.parent.add_argument(
             "--version",
             action="version",
