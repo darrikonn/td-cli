@@ -37,10 +37,12 @@ class List(Command):
             completed=group[3],
         )
 
-    def _render_todos_interactive(self, todos, group):
+    def _render_todos_interactive(self, todos, group, state):
         todos_count = len(todos)
         if todos_count == 0:
-            raise Exception("No todos in group {}".format(group[0]))
+            return RenderOutput("No{state} todos in `{bold}<Group: {name}>{reset}`").render(
+                state=interpret_state(state), name=group[0]
+            )
 
         with Menu() as menu:
             menu.clear()

@@ -1,6 +1,7 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.exceptions import TodoException
 from todo.renderers import RenderInput, RenderOutputWithTextwrap
 
 
@@ -20,4 +21,4 @@ class Delete(Command):
                 "{red}Deleted{reset} {bold}{todo_id}{reset}: ", "{name}"
             ).render(name=todo[2], todo_id=todo[0], subsequent_indent=" " * 7)
         except Error as e:
-            print(u'[*] Could not delete a todo due to "{}"'.format(e))
+            raise TodoException("Error occurred, could not delete <Todo: %s>" % args.id, e)

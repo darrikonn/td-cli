@@ -1,13 +1,13 @@
 from todo.commands.base import Command
 from todo.renderers import RenderOutput
-from todo.utils import singular_or_plural
+from todo.utils import interpret_state, singular_or_plural
 
 
 class List(Command):
     def run(self, args):
         groups = self.service.group.get_all(args.state)
         if not groups:
-            raise Exception("No {} groups".format("completed" if args.state else "uncompleted"))
+            return RenderOutput("No {state} groups exist").render(state=interpret_state(args.state))
 
         for group in groups:
             RenderOutput(

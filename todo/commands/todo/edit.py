@@ -1,6 +1,7 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.exceptions import TodoException
 from todo.renderers import RenderOutput
 from todo.settings import config
 from todo.utils import get_user_input
@@ -23,4 +24,4 @@ class Edit(Command):
                 todo_id=todo[0], name=args.name or todo[2]
             )
         except Error as e:
-            print(u'[*] Could not edit a todo due to "{}"'.format(e))
+            raise TodoException("Error occurred, could not edit <Todo: %s>" % args.id, e)

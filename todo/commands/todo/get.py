@@ -1,6 +1,7 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.exceptions import TodoException
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 
 
@@ -23,4 +24,6 @@ class Get(Command):
                 subsequent_indent=" " * 7,
             )
         except Error as e:
-            print(u'[*] Could not get a todo due to "{}"'.format(e))
+            raise TodoException(
+                "Error occurred, could not get {bold}<Todo: %s>{reset}" % args.id, e
+            )

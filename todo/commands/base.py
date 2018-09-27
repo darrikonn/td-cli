@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from todo.exceptions import TodoException
+
 
 class Command(ABC):
     def __init__(self, service):
@@ -8,14 +10,14 @@ class Command(ABC):
     def _get_todo_or_raise(self, id):
         todo = self.service.todo.get(id)
         if todo is None:
-            raise Exception("not found")
+            raise TodoException("{bold}<Todo: %s>{reset} not found" % id)
 
         return todo
 
     def _get_group_or_raise(self, name):
         group = self.service.group.get(name)
         if group is None and name != "global":
-            raise Exception("not found")
+            raise TodoException("<Group: {name}> not found".format(name=name))
 
         return group
 

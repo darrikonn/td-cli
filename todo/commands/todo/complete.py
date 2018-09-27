@@ -1,6 +1,7 @@
 from sqlite3 import Error
 
 from todo.commands.base import Command
+from todo.exceptions import TodoException
 from todo.renderers import RenderOutput
 
 
@@ -14,4 +15,4 @@ class Complete(Command):
                 todo_id=todo[0], name=todo[2]
             )
         except Error as e:
-            print('[*] Could not complete a todo due to "{}"'.format(e))
+            raise TodoException("Error occurred, could not complete <Todo: %s>" % args.id, e)
