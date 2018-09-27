@@ -1,6 +1,7 @@
 from todo.commands.base import Command
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
+from todo.utils import interpret_state
 from todo.utils.menu import Menu
 
 
@@ -14,7 +15,7 @@ class List(Command):
         todos = self.service.todo.get_all(group[0], args.state)
 
         if args.interactive:
-            self._render_todos_interactive(todos, group)
+            self._render_todos_interactive(todos, group, args.state)
         else:
             self._render_todos(todos, group)
 
@@ -29,7 +30,7 @@ class List(Command):
             )
 
         RenderOutput(
-            "{prefix}{grey}{items} items: {completed} completed, {uncompleted} uncompleted"
+            "{prefix}{grey}{items} items: {completed} completed, {uncompleted} left"
         ).render(
             prefix="\n" if group[1] > 0 else "",
             items=group[1],

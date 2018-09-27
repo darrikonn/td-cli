@@ -24,3 +24,11 @@ def singular_or_plural(n):
 
 def to_lower(string):
     return string.strip().lower()
+
+
+def interpret_state(state):
+    if state is None:
+        return ""
+    elif state:
+        return " completed"
+    return " uncompleted"
