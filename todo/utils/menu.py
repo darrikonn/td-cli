@@ -2,15 +2,12 @@ import curses
 from collections import namedtuple
 
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
+from todo.exceptions import TodoException
 
 X_OFFSET = 2
 Y_OFFSET = 4
 MARGIN = 2
 NEXT_LINE = 1
-
-
-class InitializeMenuError(Exception):
-    pass
 
 
 class Menu:
@@ -44,9 +41,9 @@ class Menu:
         self.stdscr = curses.initscr()
         try:
             self._setup_screen()
-        except Exception as exc:
+        except Exception as e:
             self._reset_screen()
-            raise InitializeMenuError(exc)
+            raise TodoException("Error occurred, could not initialize menu", e)
         self.color = self.Color()
 
     def __enter__(self):
