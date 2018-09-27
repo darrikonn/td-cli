@@ -53,10 +53,21 @@ class BaseParser:
                 version=get_distribution("td-cli").version
             ),
         )
+
+        self.root_parser = argparse.ArgumentParser(parents=[self.parent])
         if command is None:
             self.parser = self.root_parser
         else:
-            self.parser = self.root_parser.add_subparsers().add_parser(command)
+            self.parser = self.root_parser.add_subparsers().add_parser(
+                command, parents=[self.parent]
+            )
+        self.parser.print_help = self.print_help
+
+    def _add_parser(self, parent, *args, **kwargs):
+        parser = parent.add_parser(parents=[self.parent], *args, **kwargs)
+        if "help" not in kwargs:
+            parser.print_help = self.print_help
+        return parser
 
     def _add_arguments(self):
         pass
