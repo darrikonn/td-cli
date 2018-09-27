@@ -1,6 +1,7 @@
 import argparse
 from abc import ABCMeta, abstractproperty
 
+from pkg_resources import get_distribution
 
 def set_value(value):
     class Action(argparse.Action):
@@ -38,6 +39,14 @@ class BaseParser:
 
     def __init__(self, command=None):
         self.root_parser = argparse.ArgumentParser()
+        self.parent.add_argument(
+            "--version",
+            action="version",
+            help=argparse.SUPPRESS,
+            version="td version {version} - (C) Darri Steinn Konn Konradsson".format(
+                version=get_distribution("td-cli").version
+            ),
+        )
         if command is None:
             self.parser = self.root_parser
         else:
