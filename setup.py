@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='td-cli',
-    version='0.1.0',
+    version='0.1.1',
     description='A todo command line tool',
     url='https://github.com/darrikonn/td-cli',
     author='Darri Steinn Konn Konradsson',
