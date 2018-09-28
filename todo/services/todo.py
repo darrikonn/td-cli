@@ -119,7 +119,8 @@ class TodoService(BaseService):
             """
             SELECT id, group_name, name, details, completed
             FROM todo
-            WHERE id LIKE ('%' || ? || '%');
+            WHERE id LIKE ('%' || ? || '%')
+            ORDER BY completed, modified DESC;
             """,
             (id,),
         )
