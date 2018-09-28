@@ -3,7 +3,7 @@ FLAKE8=$(shell which flake8 || echo venv/bin/flake8)
 lint:
 	$(FLAKE8) todo
 
-dist:
+build:
 	python3 setup.py sdist bdist_wheel
 
 upload_test:
@@ -18,6 +18,6 @@ install_test:
 install:
 	python3 -m pip install td-cli
 
-publish_test: dist upload_test install_test
+publish_test: build upload_test install_test
 
-publish: dist upload install
+publish: build upload install
