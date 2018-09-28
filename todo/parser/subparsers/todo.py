@@ -8,12 +8,14 @@ class TodoParser(BaseParser):
     """
     usage: td [id] {get,delete,uncomplete,complete,edit} ...
 
+    manage todo
+
     positional arguments:
       id                    the id of the todo
       {...}                 commands
-        get (g)             get todo
+        get (g)             show todo's details
         delete (d)          delete todo
-        uncomplete (u)  uncomplete todo
+        uncomplete (u)      uncomplete todo
         complete (c)        complete todo
         edit (e)            edit todo
 
@@ -33,6 +35,7 @@ class TodoParser(BaseParser):
         get_parser.set_defaults(command=COMMANDS.GET_TODO)
         get_parser.usage = "td [id]\n       td [id] get\n       td [id] g"
         get_parser.epilog = "`td [id]` is the shortcut to `td [id] get`"
+        get_parser.description = "show todo's details"
 
         delete_parser = self._add_parser(subparser, "delete", aliases=["d"], help="delete todo")
         delete_parser.add_argument(
@@ -44,18 +47,21 @@ class TodoParser(BaseParser):
         )
         delete_parser.set_defaults(command=COMMANDS.DELETE_TODO)
         delete_parser.usage = "td [id] delete [-yes]\n       td [id] d [-y]"
+        delete_parser.description = "delete todo"
 
         uncomplete_parser = self._add_parser(
             subparser, "uncomplete", aliases=["u"], help="uncomplete todo"
         )
         uncomplete_parser.set_defaults(command=COMMANDS.NAME_TODO)
         uncomplete_parser.usage = "td [id] uncomplete\n       td [id] u"
+        uncomplete_parser.description = "uncomplete todo"
 
         complete_parser = self._add_parser(
             subparser, "complete", aliases=["c"], help="complete todo"
         )
         complete_parser.set_defaults(command=COMMANDS.COMPLETE_TODO)
         complete_parser.usage = "td [id] complete\n       td [id] c"
+        complete_parser.description = "complete todo"
 
         edit_parser = self._add_parser(
             subparser,
@@ -78,3 +84,4 @@ in ~/.td.cfg
         edit_parser.add_argument("--group", "-g", action="store", help="set todo's group")
         edit_parser.set_defaults(command=COMMANDS.EDIT_TODO)
         edit_parser.usage = "td [id] edit [--name NAME] [--details DETAILS]\n       td [id] e [-n NAME] [-d DETAILS]"
+        edit_parser.description = "edit todo"

@@ -1,9 +1,8 @@
 import argparse
 from abc import ABCMeta, abstractproperty
 
-from pkg_resources import get_distribution
-
 from todo.renderers import RenderHelp
+from todo.utils import get_version
 
 
 def set_value(value):
@@ -50,7 +49,7 @@ class BaseParser:
             action="version",
             help=argparse.SUPPRESS,
             version="td version {version} - (C) Darri Steinn Konn Konradsson".format(
-                version=get_distribution("td-cli").version
+                version=get_version()
             ),
         )
 

@@ -4,7 +4,6 @@ class COMMANDS:
     DELETE_TODO = "delete_todo"
     EDIT_TODO = "edit_todo"
     GET_TODO = "get_todo"
-    LIST_INTERACTIVE_TODOS = "list_interactive_todos"
     LIST_TODOS = "list_todos"
     NAME_TODO = "name_todo"
     UNCOMPLETE_TODO = "uncomplete_todo"

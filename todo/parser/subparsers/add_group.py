@@ -7,6 +7,8 @@ class AddGroupParser(BaseParser):
     usage: td add_group [name]
            td ag [name]
 
+    add group
+
     positional arguments:
       name        the new group's name
 

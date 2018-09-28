@@ -7,6 +7,8 @@ class AddTodoParser(BaseParser):
     usage: td add [name] [--complete] [--uncomplete] [--group GROUP] [--edit | --details DETAILS]
            td a [name] [-c] [-u] [-g GROUP] [-e | -d DETAILS]
 
+    add todo
+
     positional arguments:
       name                  the new todo's name
 

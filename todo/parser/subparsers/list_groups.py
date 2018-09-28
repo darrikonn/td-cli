@@ -7,6 +7,8 @@ class ListGroupsParser(BaseParser):
     usage: td list_groups [--completed] [--uncompleted]
            td lg [-c] [-u]
 
+    list groups
+
     optional arguments:
       -h, --help         show this help message and exit
       --completed, -c    filter by completed groups

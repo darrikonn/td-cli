@@ -8,6 +8,8 @@ class ListTodosParser(BaseParser):
            td l [-c] [-u] [-g GROUP] [-i]
            td list [-c] [-u] [-g GROUP] [-i]
 
+    list todos
+
     optional arguments:
       -h, --help            show this help message and exit
       --completed, -c       filter by completed todos

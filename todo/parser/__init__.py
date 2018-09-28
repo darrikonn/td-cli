@@ -10,18 +10,27 @@ from todo.parser.subparsers import (
     TodoParser,
 )
 from todo.renderers import RenderHelp
+from todo.utils import docstring, get_version
 
 
+@docstring(get_version())
 class Parser:
     """
     usage: td {add,add_group,[id],group,list,list_groups} ...
+
+    td-cli %s
+    Darri Steinn Konn Konradsson <darrikonn@gmail.com>
+    https://github.com/darrikonn/td-cli
+
+    td-cli (td) is a command line todo manager,
+    where you can organize and manage your todos across multiple projects.
 
     positional arguments:
       {...}                 commands
         add (a)             add todo
         add_group (ag)      add group
-        [id]                todo commands
-        group (g)           group commands
+        [id]                manage todo
+        group (g)           manage group
         list (l)            list todos       *DEFAULT*
         list_groups (lg)    list groups
 

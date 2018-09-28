@@ -2,6 +2,8 @@ import random
 import tempfile
 from subprocess import call
 
+from pkg_resources import get_distribution
+
 
 def generate_random_int():
     return "%06i" % random.randrange(10 ** 6)
@@ -32,3 +34,15 @@ def interpret_state(state):
     elif state:
         return " completed"
     return " uncompleted"
+
+
+def docstring(*sub):
+    def dec(obj):
+        obj.__doc__ = obj.__doc__ % sub
+        return obj
+
+    return dec
+
+
+def get_version():
+    return get_distribution("td-cli").version
