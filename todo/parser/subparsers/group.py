@@ -1,5 +1,3 @@
-import argparse
-
 from todo.constants import COMMANDS
 from todo.parser.base import BaseParser, set_value
 
@@ -25,11 +23,11 @@ class GroupParser(BaseParser):
     command = COMMANDS.GET_GROUP
 
     def _set_defaults(self, args):
-        self.parser.set_default_subparser("list", args, 2)
+        self.parser.set_default_subparser("get", args, 2)
 
     def _add_arguments(self):
         self.parser.add_argument("name", action="store", help="name of the group")
-        subparser = self.parser.add_subparsers(dest="command", help=argparse.SUPPRESS)
+        subparser = self.parser.add_subparsers(dest="command", help="commands")
 
         delete_parser = self._add_parser(
             subparser, "delete", aliases=["d"], help="delete group and its todos"
