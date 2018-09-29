@@ -11,8 +11,10 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='td-cli',
-    version='0.1.2',
-    description='A todo command line tool',
+    version='0.1.4',
+    description='A todo command line manager',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/darrikonn/td-cli',
     author='Darri Steinn Konn Konradsson',
     author_email='darrikonn@gmail.com',
@@ -27,7 +29,7 @@ setup(
     ],
     keywords='todo commandline',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
-    python_requires='!=3.0.*, !=3.1.*, !=3.2.*, <4',
+    python_requires='>=3.0.*, <4',
     install_requires=[],
     entry_points={
         'console_scripts': [
