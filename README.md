@@ -1,9 +1,9 @@
-<p align="center"><img src="img/td-cli3.png" width=80 alt="Icon"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.png" width=80 alt="Icon"/></p>
 
 <h1 align="center">td-cli</h1>
 
 <p align="center"><a href="https://pypi.org/project/td-cli/"><strong>td-cli</strong></a> is a command line todo manager, <br/>where you can organize and manage your todos across multiple projects</p>
-<p align="center"><img class="img-responsive" width="500" border="100" src="img/td-cli.gif" alt="gif"/></p>
+<p align="center"><img class="img-responsive" width="500" border="100" src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.gif" alt="gif"/></p>
 <p align="center"><img src="https://badge.fury.io/py/td-cli.svg" /></p>
 
 <hr />
@@ -26,7 +26,7 @@ Here are some to get you started:
 
 
 ## API
-Check out the [`api`](API.md).
+Check out the [`api`](https://github.com/darrikonn/td-cli/blob/master/API.md).
 
 ## Configuring
 ### Database name
