@@ -3,6 +3,9 @@ FLAKE8=$(shell which flake8 || echo venv/bin/flake8)
 lint:
 	$(FLAKE8) todo
 
+clean:
+	rm -r dist build td_cli.egg-info 2> /dev/null
+
 build:
 	python3 setup.py sdist bdist_wheel
 
@@ -18,6 +21,6 @@ install_test:
 install:
 	python3 -m pip install td-cli
 
-publish_test: build upload_test install_test
+publish_test: clean build upload_test install_test
 
-publish: build upload install
+publish: clean build upload install
