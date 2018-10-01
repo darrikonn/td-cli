@@ -4,7 +4,7 @@ lint:
 	$(FLAKE8) todo
 
 clean:
-	rm -r dist build td_cli.egg-info 2> /dev/null
+	-rm -r dist build td_cli.egg-info
 
 build:
 	python3 setup.py sdist bdist_wheel
