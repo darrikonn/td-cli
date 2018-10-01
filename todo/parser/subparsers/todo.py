@@ -52,7 +52,7 @@ class TodoParser(BaseParser):
         uncomplete_parser = self._add_parser(
             subparser, "uncomplete", aliases=["u"], help="uncomplete todo"
         )
-        uncomplete_parser.set_defaults(command=COMMANDS.NAME_TODO)
+        uncomplete_parser.set_defaults(command=COMMANDS.UNCOMPLETE_TODO)
         uncomplete_parser.usage = "td [id] uncomplete\n       td [id] u"
         uncomplete_parser.description = "uncomplete todo"
 
