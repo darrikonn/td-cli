@@ -55,7 +55,9 @@ class GroupParser(BaseParser):
         preset_parser.usage = "td group [name] preset\n       td group [name] p"
         preset_parser.description = "set group as the default group when listing todos"
 
-        list_parser = self._add_parser(subparser, "list", aliases=["ls", "l"], help="list group's todos")
+        list_parser = self._add_parser(
+            subparser, "list", aliases=["ls", "l"], help="list group's todos"
+        )
         list_parser.add_argument(
             "--completed",
             "-c",
