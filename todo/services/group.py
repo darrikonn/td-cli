@@ -121,7 +121,7 @@ class GroupService(BaseService):
     def get_all(self, completed=None):
         self.cursor.execute(
             """
-            SELECT IFNULL(todos.group_name, ?), todos.items, todos.uncompleted, todos.completed
+            SELECT IFNULL(todos.group_name, 'UNGROUPED'), todos.items, todos.uncompleted, todos.completed
             FROM (
                 SELECT group_name,
                    COUNT(*) as items,
@@ -134,7 +134,7 @@ class GroupService(BaseService):
                OR (todos.uncompleted = 0 AND ? = 1)
                OR ? IS NULL
             UNION ALL
-            SELECT 'global', 0, 0, 0 WHERE NOT EXISTS (SELECT 1/0 FROM todo)
+            SELECT 'ungrouped', 0, 0, 0 WHERE NOT EXISTS (SELECT 1/0 FROM todo)
             UNION ALL
             SELECT g2.name, 0, 0, 0
             FROM "group" g2
@@ -142,6 +142,6 @@ class GroupService(BaseService):
             WHERE todo.group_name IS NULL
                AND (? = 1 OR ? IS NULL);
             """,
-            ("UNGROUPED", *(completed,) * 5),  # noqa: E999
+            (completed,) * 5,
         )
         return self.cursor.fetchall()

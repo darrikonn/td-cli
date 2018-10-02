@@ -79,11 +79,13 @@ class Parser:
         if parser is None:
             if command == "list_groups":
                 raise TodoException(
-                    "`{bold}list_groups{reset}` is deprecated, use `{bold}list-groups{reset} instead", type="DeprecatedException"
+                    "`{bold}list_groups{reset}` is deprecated, use `{bold}list-groups{reset} instead",
+                    type="DeprecatedException",
                 )
             if command == "add_group":
                 raise TodoException(
-                    "`{bold}add_group{reset}` is deprecated, use `{bold}add-group{reset} instead", type="DeprecatedException"
+                    "`{bold}add_group{reset}` is deprecated, use `{bold}add-group{reset} instead",
+                    type="DeprecatedException",
                 )
 
             raise TodoException(
