@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='td-cli',
-    version='0.1.12',
+    version='0.1.13',
     description='A todo command line manager',
     long_description=long_description,
     long_description_content_type='text/markdown',

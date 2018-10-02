@@ -11,6 +11,9 @@ DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi"}
 def _get_config():
     config_file = CONFIG_FILE_NAME and os.path.expanduser(CONFIG_FILE_NAME)
     settings = DEFAULT_CONFIG
+    environment_editor = os.environ.get("EDITOR")
+    if environment_editor:
+        settings["editor"] = environment_editor
     if os.path.exists(config_file):
         config = configparser.ConfigParser()
         config.read(config_file)
