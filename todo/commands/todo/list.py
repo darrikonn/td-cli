@@ -1,7 +1,7 @@
 from todo.commands.base import Command
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
-from todo.utils import interpret_state
+from todo.utils import interpret_state, singular_or_plural
 from todo.utils.menu import Menu
 
 
@@ -30,10 +30,11 @@ class List(Command):
             )
 
         RenderOutput(
-            "{prefix}{grey}{items} items: {completed} completed, {uncompleted} left"
+            "{prefix}{grey}{items} item{singular_or_plural}: {completed} completed, {uncompleted} left"
         ).render(
             prefix="\n" if group[1] > 0 else "",
             items=group[1],
+            singular_or_plural=singular_or_plural(group[1]),
             uncompleted=group[2],
             completed=group[3],
         )
@@ -53,8 +54,11 @@ class List(Command):
             while True:
                 menu.refresh()
                 menu.render_subheader(
-                    "{items} items: {completed} completed, {uncompleted} left".format(
-                        items=group[1], completed=group[3], uncompleted=group[2]
+                    "{items} item{singular_or_plural}: {completed} completed, {uncompleted} left".format(
+                        items=group[1],
+                        singular_or_plural=singular_or_plural(group[1]),
+                        completed=group[3],
+                        uncompleted=group[2],
                     )
                 )
 
