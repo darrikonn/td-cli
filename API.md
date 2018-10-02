@@ -1,15 +1,15 @@
 # td
 ```
-usage: td {add,add_group,[id],group,list,list_groups} ...
+usage: td {add,add-group,[id],group,list,list-groups} ...
 
 positional arguments:
-  {...}                 commands
-    add (a)             add todo
-    add_group (ag)      add group
-    [id]                manage todo
-    group (g)           manage group
-    list (l)            list todos       *DEFAULT*
-    list_groups (lg)    list groups
+  {...}                   commands
+    add (a)               add todo
+    add-group (ag)        add group
+    [id]                  manage todo
+    group (g)             manage group
+    list (l, ls)          list todos       *DEFAULT*
+    list-groups (lg, lsg) list groups
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -21,8 +21,9 @@ optional arguments:
 ## List todos
 ```
 usage: td [--completed] [--uncompleted] [--group GROUP] [--interactive]
-       td l [-c] [-u] [-g GROUP] [-i]
        td list [-c] [-u] [-g GROUP] [-i]
+       td ls [-c] [-u] [-g GROUP] [-i]
+       td l [-c] [-u] [-g GROUP] [-i]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -150,8 +151,9 @@ opened in your editor where you can edit the todo's details.
 
 ## List groups
 ```
-usage: td list_groups [--completed] [--uncompleted]
+usage: td list-groups [--completed] [--uncompleted]
        td lg [-c] [-u]
+       td lsg [-c] [-u]
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -163,7 +165,7 @@ optional arguments:
 
 ## Add a group
 ```
-usage: td add_group [name]
+usage: td add-group [name]
        td ag [name]
 
 positional arguments:

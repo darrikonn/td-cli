@@ -4,7 +4,7 @@ from todo.parser.base import BaseParser, set_value
 
 class ListGroupsParser(BaseParser):
     """
-    usage: td list_groups [--completed] [--uncompleted]
+    usage: td list-groups [--completed] [--uncompleted]
            td lg [-c] [-u]
 
     list groups

@@ -4,7 +4,7 @@ from todo.parser.base import BaseParser
 
 class AddGroupParser(BaseParser):
     """
-    usage: td add_group [name]
+    usage: td add-group [name]
            td ag [name]
 
     add group

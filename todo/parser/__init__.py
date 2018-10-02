@@ -26,13 +26,13 @@ class Parser:
     where you can organize and manage your todos across multiple projects.
 
     positional arguments:
-      {...}                 commands
-        add (a)             add todo
-        add_group (ag)      add group
-        [id]                manage todo
-        group (g)           manage group
-        list (l)            list todos       *DEFAULT*
-        list_groups (lg)    list groups
+      {...}                   commands
+        add (a)               add todo
+        add-group (ag)        add group
+        [id]                  manage todo
+        group (g)             manage group
+        list (l, ls)          list todos       *DEFAULT*
+        list-groups (lg, lsg) list groups
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -51,15 +51,17 @@ class Parser:
         "add": AddTodoParser,
         # add group
         "ag": AddGroupParser,
-        "add_group": AddGroupParser,
+        "add-group": AddGroupParser,
         # get group
         "g": GroupParser,
         "group": GroupParser,
         # list groups
         "lg": ListGroupsParser,
-        "list_groups": ListGroupsParser,
+        "lsg": ListGroupsParser,
+        "list-groups": ListGroupsParser,
         # list todos
         "l": ListTodosParser,
+        "ls": ListTodosParser,
         "list": ListTodosParser,
     }
 
@@ -75,6 +77,15 @@ class Parser:
 
         parser = self._subparsers.get(command)
         if parser is None:
+            if command == "list_groups":
+                raise TodoException(
+                    "`{bold}list_groups{reset}` is deprecated, use `{bold}list-groups{reset} instead", type="DeprecatedException"
+                )
+            if command == "add_group":
+                raise TodoException(
+                    "`{bold}add_group{reset}` is deprecated, use `{bold}add-group{reset} instead", type="DeprecatedException"
+                )
+
             raise TodoException(
                 "Unknown command `{bold}td %s{reset}`" % " ".join(args), type="UsageError"
             )

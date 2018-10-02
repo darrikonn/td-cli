@@ -6,6 +6,7 @@ class ListTodosParser(BaseParser):
     """
     usage: td [--completed] [--uncompleted] [--group GROUP] [--interactive]
            td l [-c] [-u] [-g GROUP] [-i]
+           td ls [-c] [-u] [-g GROUP] [-i]
            td list [-c] [-u] [-g GROUP] [-i]
 
     list todos
