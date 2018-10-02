@@ -42,7 +42,7 @@ class List(Command):
         todos_count = len(todos)
         if todos_count == 0:
             return RenderOutput("No{state} todos in `{bold}<Group: {name}>{reset}`").render(
-                state=interpret_state(state), name=group[0]
+                state=interpret_state(state), name=group[0] or "global"
             )
 
         with Menu() as menu:
