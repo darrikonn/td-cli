@@ -24,9 +24,7 @@ def set_default_subparser(self, name, args, positional_args):
             for sp_name in x._name_parser_map.keys():
                 if sp_name in args:
                     return
-                if sp_name == name:  # check existance of default parser
-                    args.insert(positional_args, name)
-                    return
+            return args.insert(positional_args, name)
 
 
 argparse.ArgumentParser.set_default_subparser = set_default_subparser
