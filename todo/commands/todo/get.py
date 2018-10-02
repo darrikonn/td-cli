@@ -10,7 +10,7 @@ class Get(Command):
         try:
             todo = self._get_todo_or_raise(args.id)
             RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(
-                group_name=todo[1] or "global", subsequent_indent=" " * 4
+                group_name=todo[1] or "UNGROUPED", subsequent_indent=" " * 4
             )
 
             RenderOutput("{details}").render(details=todo[3])

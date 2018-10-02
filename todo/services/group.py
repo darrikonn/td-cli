@@ -134,8 +134,6 @@ class GroupService(BaseService):
                OR (todos.uncompleted = 0 AND ? = 1)
                OR ? IS NULL
             UNION ALL
-            SELECT 'ungrouped', 0, 0, 0 WHERE NOT EXISTS (SELECT 1/0 FROM todo)
-            UNION ALL
             SELECT g2.name, 0, 0, 0
             FROM "group" g2
             LEFT OUTER JOIN todo ON todo.group_name = g2.name
