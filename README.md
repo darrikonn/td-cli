@@ -22,7 +22,7 @@ Here are some to get you started:
 
 - Run `td add "my new awesome todo"` to add a new todo.
 
-- Run `td <id> complete` to complete your todo.
+- Run `td <id> complete` to complete your todo. You don't have to specify the whole `id`, a substring will do. It'll fetch the first one that it finds in the same order as when you list your todos.
 
 
 ## API
@@ -41,7 +41,7 @@ database_name: something_else
 This results in a database instance at `~/.something_else.db`
 
 ### Editor
-When editing a todo, `td <id> edit`, you can both specify the todo's `name` and the todo's `details`. If no option is specified, your todo will be opened in `vi` by default where you can edit the todo's details. You can change the default editor by updating your config:
+When editing a todo, `td <id> edit`, you can both specify the todo's `name` and the todo's `details`. If no option is specified, your todo will be opened in `vi` by default (your `environement EDITOR` will override this) where you can edit the todo's details. You can change the default editor by updating your config:
 ```cfg
 [settings]
 editor: nvim

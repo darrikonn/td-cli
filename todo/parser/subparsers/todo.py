@@ -23,6 +23,7 @@ class TodoParser(BaseParser):
       -h, --help            show this help message and exit
 
     `td [id]` defaults to `td [id] get`
+    You don't have to specify the whole `id`, a substring will do
     """
 
     command = COMMANDS.GET_TODO
