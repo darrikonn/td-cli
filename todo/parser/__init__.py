@@ -31,7 +31,7 @@ class Parser:
         add-group (ag)        add group
         [id]                  manage todo
         group (g)             manage group
-        list (l, ls)          list todos       *DEFAULT*
+        list (ls, l)          list todos       *DEFAULT*
         list-groups (lg, lsg) list groups
 
     optional arguments:

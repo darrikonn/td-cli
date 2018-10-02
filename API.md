@@ -8,7 +8,7 @@ positional arguments:
     add-group (ag)        add group
     [id]                  manage todo
     group (g)             manage group
-    list (l, ls)          list todos       *DEFAULT*
+    list (ls, l)          list todos       *DEFAULT*
     list-groups (lg, lsg) list groups
 
 optional arguments:
@@ -179,26 +179,27 @@ optional arguments:
 
 ## Manage group
 ```
-usage: td group [name] {get,delete,preset} ...
-       td g [name] {g,d,p} ...
+usage: td group [name] {list,delete,preset} ...
+       td g [name] {l,d,p} ...
 
 positional arguments:
   name                  name of the group
   {...}                 commands
-    get (g)             list group's todos
+    list (ls, l)        list group's todos
     delete (d)          delete group and its todos
     preset (p)          set group as the default group when listing todos
 
 optional arguments:
   -h, --help  show this help message and exit
 ```
-`td group [name]` defaults to `td group [name] get`
+`td group [name]` defaults to `td group [name] list`
 
 ### List group's todos
 ```
 usage: td group [name]
-       td group [name] get
-       td group [name] g
+       td group [name] list
+       td group [name] ls
+       td group [name] l
 
 optional arguments:
   -h, --help         show this help message and exit
