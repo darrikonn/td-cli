@@ -1,5 +1,6 @@
 from todo.exceptions import TodoException
 from todo.services.base import GLOBAL, BaseService
+from todo.settings import config, get_git_project_config
 
 
 class GroupService(BaseService):
@@ -108,6 +109,19 @@ class GroupService(BaseService):
         return group + self.cursor.fetchone()
 
     def get_active_group(self):
+        if config["group"]:
+            group = self.get(config["group"])
+            if group is None:
+                raise TodoException(
+                    "{bold}<Group: %s>{reset} does not exist, falling back to currently active group"
+                    % config["group"],
+                    "Your config file at {bold}%s{reset} tries to\noverride the "
+                    % (get_git_project_config() or "~")
+                    + "default group with `{bold}%s{reset}`, but " % config["group"]
+                    + "{bold}<Group: %s>{reset} does not exist." % config["group"],
+                    "WARNING",
+                )
+            return group
         self.cursor.execute(
             """
             SELECT name

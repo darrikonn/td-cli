@@ -46,3 +46,25 @@ When editing a todo, `td <id> edit`, you can both specify the todo's `name` and 
 [settings]
 editor: nvim
 ```
+
+### Group
+When listing todos, you have the option of specifying what group to list from:
+```bash
+td -g my-group
+# or
+td g my-group
+```
+If no group is provided, `td` will list from the current default group. You can globally set the default group with:
+```bash
+td g my-group preset
+```
+
+However, there's an option to set the default group per git project (this is not possible from the root config `~/.td.cfg`).
+In the root of your git project, you can create a `.td.cfg` config file to specify what group to default on (this will override the global default group):
+```cfg
+[settings]
+group: my-group
+```
+If you run `td` within your git project, td will default to *my-group*.
+
+I recommend globally ignoring `.td.cfg` in `~/.gitignore`.
