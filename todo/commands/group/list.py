@@ -7,7 +7,9 @@ class List(Command):
     def run(self, args):
         groups = self.service.group.get_all(args.state)
         if not groups:
-            return RenderOutput("No{state} {bold}{blue}groups{reset} exist").render(state=interpret_state(args.state))
+            return RenderOutput("No{state} {bold}{blue}groups{reset} exist").render(
+                state=interpret_state(args.state)
+            )
 
         for group in groups:
             RenderOutput(

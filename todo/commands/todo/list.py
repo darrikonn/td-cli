@@ -42,9 +42,9 @@ class List(Command):
     def _render_todos_interactive(self, todos, group, state):
         todos_count = len(todos)
         if todos_count == 0:
-            return RenderOutput("No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed").render(
-                state=interpret_state(state), name=group[0] or "global"
-            )
+            return RenderOutput(
+                "No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed"
+            ).render(state=interpret_state(state), name=group[0] or "global")
 
         with Menu() as menu:
             menu.clear()

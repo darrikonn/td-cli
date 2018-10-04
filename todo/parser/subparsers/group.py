@@ -78,6 +78,9 @@ class GroupParser(BaseParser):
             "--interactive", "-i", action="store_true", help="toggle interactive mode"
         )
         list_parser.set_defaults(command=COMMANDS.GET_GROUP)
-        list_parser.usage = "td group [name]\n       td group [name] list\n       td group [name] ls\n       td group [name] l"
+        list_parser.usage = (
+            "td group [name]\n       td group [name] list\n       "
+            "td group [name] ls\n       td group [name] l"
+        )
         list_parser.epilog = "`td group [name]` is the shortcut to `td group [name] list`"
         list_parser.description = "list group's todos"
