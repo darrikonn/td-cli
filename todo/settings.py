@@ -12,7 +12,7 @@ DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None}
 def get_git_project_config():
     """ returns the absolute path of the repository root """
     try:
-        base = check_output("git rev-parse --show-toplevel", shell=True)
+        base = check_output("git rev-parse --show-toplevel 2> /dev/null", shell=True)
         path = base.decode("utf-8").strip()
         return "{path}/.td.cfg".format(path=path)
     except Exception:
