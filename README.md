@@ -24,6 +24,11 @@ Here are some to get you started:
 
 - Run `td <id> complete` to complete your todo. You don't have to specify the whole `id`, a substring will do. It'll fetch the first one that it finds in the same order as when you list your todos.
 
+Note that `global` is a preserved group name where you can list all your global groups. You can always set it as the default with:
+```bash
+td group global preset
+```
+
 
 ## API
 Check out the [`api`](https://github.com/darrikonn/td-cli/blob/master/API.md).
