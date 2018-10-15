@@ -8,7 +8,8 @@ from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 class Get(Command):
     def run(self, args):
         try:
-            todo = self._get_todo_or_raise(args.id)
+            group = self.service.group.get_active_group()
+            todo = self._get_todo_or_raise(args.id, group[0])
             RenderOutput("{subsequent_indent}{bold}{blue}{group_name}{reset}\n").render(
                 group_name=todo[1] or "UNGROUPED", subsequent_indent=" " * 4
             )

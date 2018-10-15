@@ -7,8 +7,8 @@ class Command(ABC):
     def __init__(self, service):
         self.service = service
 
-    def _get_todo_or_raise(self, id):
-        todo = self.service.todo.get(id)
+    def _get_todo_or_raise(self, id, group=None):
+        todo = self.service.todo.get(id, group)
         if todo is None:
             raise TodoException("{bold}<Todo: %s>{reset} not found" % id)
 

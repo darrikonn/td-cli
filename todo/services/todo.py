@@ -114,15 +114,15 @@ class TodoService(BaseService):
         self.connection.commit()
 
     # GET
-    def get(self, id):
+    def get(self, id, group):
         self.cursor.execute(
             """
             SELECT id, group_name, name, details, completed
             FROM todo
             WHERE id LIKE ('%' || ? || '%')
-            ORDER BY completed, modified DESC;
+            ORDER BY group_name = ? DESC, completed, modified DESC;
             """,
-            (id,),
+            (id, group),
         )
         return self.cursor.fetchone()
 
