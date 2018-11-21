@@ -1,5 +1,6 @@
 from todo.commands.base import Command
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
+from todo.exceptions import TodoException
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 from todo.utils import interpret_state, singular_or_plural
 from todo.utils.menu import Menu
@@ -11,6 +12,9 @@ class List(Command):
             group = self.service.group.get_active_group()
         else:
             group = self.service.group.get(args.group)
+
+        if group is None:
+            raise TodoException("<Group: {name}> not found".format(name=args.group))
 
         todos = self.service.todo.get_all(group[0], args.state)
 
