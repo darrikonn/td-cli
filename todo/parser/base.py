@@ -24,6 +24,8 @@ def set_default_subparser(self, name, args, positional_args):
             for sp_name in x._name_parser_map.keys():
                 if sp_name in args:
                     return
+            if len(args) < positional_args:
+                return args
             return args.insert(positional_args, name)
 
 
