@@ -133,7 +133,8 @@ class TodoService(BaseService):
             SELECT id, name, details, completed
             FROM todo
             WHERE (completed = ? OR ? IS NULL) AND
-                  (group_name = ? OR ? IS NULL) ORDER BY completed, modified DESC;
+                  (group_name = ? OR ? IS NULL)
+            ORDER BY completed, modified DESC;
             """,
             (completed, completed, group_name, group_name),
         )
