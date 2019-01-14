@@ -67,9 +67,12 @@ class List(Command):
                 )
 
                 for index, todo in enumerate(todos):
-                    menu.render_todo(todo, index, current_pos)
+                    is_deleted = todo[0] in deleted_todos
+                    menu.render_todo(todo, index, current_pos, is_deleted)
 
-                menu.render_commands(todos_count)
+                current_todo = todos[current_pos]
+                is_current_deleted = current_todo[0] in deleted_todos
+                menu.render_commands(todos_count, is_current_deleted)
 
                 command = menu.get_command()
 
