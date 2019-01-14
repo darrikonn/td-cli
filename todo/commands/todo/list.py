@@ -50,6 +50,7 @@ class List(Command):
                 "No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed"
             ).render(state=interpret_state(state), name=group[0] or "global")
 
+        deleted_todos = set()
         with Menu() as menu:
             menu.clear()
             menu.render_header("{group_name}".format(group_name=group[0]))
@@ -81,18 +82,24 @@ class List(Command):
                 elif command == COMMANDS.UP:
                     current_pos = current_pos - 1 if current_pos > 0 else todos_count - 1
 
-                todo = todos[current_pos]
-                if command == COMMANDS.TOGGLE:
-                    # toggle todo
-                    if todo[3]:
-                        # uncomplete todo
-                        self.service.todo.uncomplete(todo[0])
-                        group = group[:2] + (group[2] + 1, group[3] - 1)
-                    else:
-                        # complete todo
-                        self.service.todo.complete(todo[0])
-                        group = group[:2] + (group[2] - 1, group[3] + 1)
-                    # update list
-                    todos[current_pos] = todo[:3] + (not todo[3],)
-                elif command == COMMANDS.QUIT:
+                if current_todo[0] in deleted_todos:
+                    if command == COMMANDS.RECOVER:
+                        deleted_todos.discard(current_todo[0])
+                else:
+                    if command == COMMANDS.TOGGLE:
+                        # toggle todo
+                        if current_todo[3]:
+                            # uncomplete todo
+                            self.service.todo.uncomplete(current_todo[0])
+                            group = group[:2] + (group[2] + 1, group[3] - 1)
+                        else:
+                            # complete todo
+                            self.service.todo.complete(current_todo[0])
+                            group = group[:2] + (group[2] - 1, group[3] + 1)
+                        # update list
+                        todos[current_pos] = current_todo[:3] + (not current_todo[3],)
+                    elif command == COMMANDS.DELETE:
+                        deleted_todos.add(current_todo[0])
+
+                if command == COMMANDS.QUIT:
                     break
