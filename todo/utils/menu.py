@@ -13,8 +13,23 @@ NEXT_LINE = 1
 class Menu:
     __slots__ = ("stdscr", "color")
 
-    commands = namedtuple("Command", (COMMANDS.DOWN, COMMANDS.UP, COMMANDS.TOGGLE, COMMANDS.QUIT))(
-        down=(curses.KEY_DOWN, 106), up=(curses.KEY_UP, 107), toggle=(32,), quit=(113, 27)
+    commands = namedtuple(
+        "Command",
+        (
+            COMMANDS.DELETE,
+            COMMANDS.DOWN,
+            COMMANDS.QUIT,
+            COMMANDS.RECOVER,
+            COMMANDS.TOGGLE,
+            COMMANDS.UP,
+        ),
+    )(
+        delete=(100,),
+        down=(curses.KEY_DOWN, 106),
+        quit=(113, 27),
+        recover=(114,),
+        toggle=(32,),
+        up=(curses.KEY_UP, 107),
     )
 
     class Color:
@@ -88,14 +103,18 @@ class Menu:
 
     def get_command(self):
         command = self.stdscr.getch()
-        if command in self.commands.down:
+        if command in self.commands.delete:
+            return COMMANDS.DELETE
+        elif command in self.commands.down:
             return COMMANDS.DOWN
-        elif command in self.commands.up:
-            return COMMANDS.UP
-        elif command in self.commands.toggle:
-            return COMMANDS.TOGGLE
         elif command in self.commands.quit:
             return COMMANDS.QUIT
+        elif command in self.commands.recover:
+            return COMMANDS.RECOVER
+        elif command in self.commands.toggle:
+            return COMMANDS.TOGGLE
+        elif command in self.commands.up:
+            return COMMANDS.UP
         else:
             return None
 

@@ -15,10 +15,12 @@ class COMMANDS:
 
 
 class INTERACTIVE_COMMANDS:
+    DELETE = "delete"
     DOWN = "down"
-    UP = "up"
-    TOGGLE = "toggle"
     QUIT = "quit"
+    RECOVER = "recover"
+    TOGGLE = "toggle"
+    UP = "up"
 
 
 class STATES:
