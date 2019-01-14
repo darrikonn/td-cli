@@ -46,3 +46,7 @@ def docstring(*sub):
 
 def get_version():
     return get_distribution("td-cli").version
+
+
+def strikethrough(string):
+    return "\u0336".join("{string}\u0336".format(string=string))
