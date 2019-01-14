@@ -169,30 +169,103 @@ class Menu:
             extra_style,
         )
 
-    def render_commands(self, offset):
-        # space
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
-            X_OFFSET + MARGIN,
-            "space",
-            curses.A_BOLD | self.color.grey,
-        )
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
-            X_OFFSET + MARGIN * 5,
-            "to toggle completed/uncompleted",
-            self.color.grey,
-        )
+    def render_commands(self, offset, is_deleted):
+        line_count = 1
+        if is_deleted:
+            # recover
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN,
+                "r",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN * 5,
+                "to recover deleted todo          ",
+                self.color.grey,
+            )
+            line_count += 1
+
+            # clear screen for other commands
+            for i in range(5):
+                self.stdscr.addstr(
+                    offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
+                    X_OFFSET + MARGIN,
+                    " ",
+                    curses.A_BOLD | self.color.grey,
+                )
+                self.clear_leftovers()
+        else:
+            # add
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN,
+                "a",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN * 5,
+                "to add a todo",
+                self.color.grey,
+            )
+            line_count += 1
+
+            # edit
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN,
+                "e",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN * 5,
+                "to edit todo",
+                self.color.grey,
+            )
+            line_count += 1
+
+            # delete
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN,
+                "d",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN * 5,
+                "to delete todo",
+                self.color.grey,
+            )
+            line_count += 1
+
+            # space
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN,
+                "space",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
+                X_OFFSET + MARGIN * 5,
+                "to toggle completed/uncompleted",
+                self.color.grey,
+            )
+            line_count += 1
 
         # quit
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
             X_OFFSET + MARGIN,
             "q",
             curses.A_BOLD | self.color.grey,
         )
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
             X_OFFSET + MARGIN * 5,
             "to quit",
             self.color.grey,
