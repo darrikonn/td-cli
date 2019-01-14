@@ -1,6 +1,7 @@
 import curses
 from collections import namedtuple
 
+from todo.utils import strikethrough
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 
@@ -124,7 +125,7 @@ class Menu:
     def render_subheader(self, text):
         self.stdscr.addstr(Y_OFFSET + NEXT_LINE, X_OFFSET + MARGIN, text)
 
-    def render_todo(self, todo, offset, current_pos):
+    def render_todo(self, todo, offset, current_pos, is_deleted):
         extra_style = 1
         if offset == current_pos:
             extra_style = self.color.blue
@@ -139,25 +140,32 @@ class Menu:
             # render non-active cursor
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET, " ")
 
-        # render completed
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN + NEXT_LINE,
-            X_OFFSET + MARGIN,
-            "{completed}".format(completed="✓" if todo[3] else "x"),
-            extra_style,
-        )
+        # render empty state
+        if is_deleted:
+            self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET + MARGIN, " ")
+        else:
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN + NEXT_LINE,
+                X_OFFSET + MARGIN,
+                "{completed}".format(completed="✓" if todo[3] else "x"),
+                extra_style,
+            )
+
         # render todo id
+        todo_id_text = "{todo_id}".format(todo_id=todo[0])
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN + NEXT_LINE,
             X_OFFSET + MARGIN * 2,
-            "{todo_id}".format(todo_id=todo[0]),
+            strikethrough(todo_id_text) if is_deleted else todo_id_text,
             curses.A_BOLD | extra_style,
         )
+
         # render todo name
+        todo_name_text = "{name}".format(name=todo[1])
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN + NEXT_LINE,
             X_OFFSET + MARGIN * 5,
-            ": {name}".format(name=todo[1]),
+            ": {name}".format(name=strikethrough(todo_name_text) if is_deleted else todo_name_text),
             extra_style,
         )
 
