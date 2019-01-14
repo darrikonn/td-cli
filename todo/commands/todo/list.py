@@ -85,6 +85,10 @@ class List(Command):
                 if current_todo[0] in deleted_todos:
                     if command == COMMANDS.RECOVER:
                         deleted_todos.discard(current_todo[0])
+                        if current_todo[3]:
+                            group = (group[0], group[1] + 1, group[2], group[3] + 1)
+                        else:
+                            group = (group[0], group[1] + 1, group[2] + 1, group[3])
                 else:
                     if command == COMMANDS.TOGGLE:
                         # toggle todo
@@ -100,6 +104,10 @@ class List(Command):
                         todos[current_pos] = current_todo[:3] + (not current_todo[3],)
                     elif command == COMMANDS.DELETE:
                         deleted_todos.add(current_todo[0])
+                        if current_todo[3]:
+                            group = (group[0], group[1] - 1, group[2], group[3] - 1)
+                        else:
+                            group = (group[0], group[1] - 1, group[2] - 1, group[3])
 
                 if command == COMMANDS.QUIT:
                     break
