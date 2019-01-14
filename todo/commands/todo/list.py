@@ -43,7 +43,7 @@ class List(Command):
             completed=group[3],
         )
 
-    def _render_todos_interactive(self, todos, group, state):
+    def _render_todos_interactive(self, todos, group, state):  # noqa: C901
         todos_count = len(todos)
         if todos_count == 0:
             return RenderOutput(
