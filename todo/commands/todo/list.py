@@ -111,3 +111,6 @@ class List(Command):
 
                 if command == COMMANDS.QUIT:
                     break
+
+            for deleted_todo in deleted_todos:
+                self.service.todo.delete(deleted_todo)
