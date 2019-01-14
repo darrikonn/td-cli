@@ -15,8 +15,10 @@ class COMMANDS:
 
 
 class INTERACTIVE_COMMANDS:
+    ADD = "add"
     DELETE = "delete"
     DOWN = "down"
+    EDIT = "edit"
     QUIT = "quit"
     RECOVER = "recover"
     TOGGLE = "toggle"

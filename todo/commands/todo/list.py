@@ -102,6 +102,12 @@ class List(Command):
                             group = group[:2] + (group[2] - 1, group[3] + 1)
                         # update list
                         todos[current_pos] = current_todo[:3] + (not current_todo[3],)
+                    elif command == COMMANDS.ADD:
+                        # TODO
+                        pass
+                    elif command == COMMANDS.EDIT:
+                        # TODO
+                        pass
                     elif command == COMMANDS.DELETE:
                         deleted_todos.add(current_todo[0])
                         if current_todo[3]:

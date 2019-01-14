@@ -17,16 +17,20 @@ class Menu:
     commands = namedtuple(
         "Command",
         (
+            COMMANDS.ADD,
             COMMANDS.DELETE,
             COMMANDS.DOWN,
+            COMMANDS.EDIT,
             COMMANDS.QUIT,
             COMMANDS.RECOVER,
             COMMANDS.TOGGLE,
             COMMANDS.UP,
         ),
     )(
+        add=(97,),
         delete=(100,),
         down=(curses.KEY_DOWN, 106),
+        edit=(101,),
         quit=(113, 27),
         recover=(114,),
         toggle=(32,),
@@ -108,10 +112,14 @@ class Menu:
 
     def get_command(self):
         command = self.stdscr.getch()
-        if command in self.commands.delete:
+        if command in self.commands.add:
+            return COMMANDS.ADD
+        elif command in self.commands.delete:
             return COMMANDS.DELETE
         elif command in self.commands.down:
             return COMMANDS.DOWN
+        elif command in self.commands.edit:
+            return COMMANDS.EDIT
         elif command in self.commands.quit:
             return COMMANDS.QUIT
         elif command in self.commands.recover:
