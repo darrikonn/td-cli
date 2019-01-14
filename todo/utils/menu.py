@@ -99,6 +99,10 @@ class Menu:
         # clear screen
         self.stdscr.clear()
 
+    def clear_leftovers(self):
+        # clear leftovers in line
+        self.stdscr.clrtoeol()
+
     def refresh(self):
         self.stdscr.refresh()
 
@@ -124,6 +128,7 @@ class Menu:
 
     def render_subheader(self, text):
         self.stdscr.addstr(Y_OFFSET + NEXT_LINE, X_OFFSET + MARGIN, text)
+        self.clear_leftovers()
 
     def render_todo(self, todo, offset, current_pos, is_deleted):
         extra_style = 1
