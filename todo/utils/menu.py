@@ -55,7 +55,7 @@ class Menu:
 
                 # add blue
                 curses.init_pair(1, curses.COLOR_BLUE, -1)
-                self.blue = curses.color_pair(1)
+                self.blue = curses.color_pair(True)
 
                 # add grey
                 curses.init_pair(2, 8, -1)
@@ -95,7 +95,7 @@ class Menu:
         self.stdscr.keypad(True)
 
         # remove curser
-        curses.curs_set(0)
+        curses.curs_set(False)
 
     def _reset_screen(self):
         if hasattr(self, "stdscr"):
@@ -341,7 +341,7 @@ class Menu:
         self.refresh()
         try:
             # show cursor
-            curses.curs_set(1)
+            curses.curs_set(True)
             while True:
                 char = self.stdscr.getch()
                 y_pos, x_pos = self.stdscr.getyx()
@@ -376,5 +376,5 @@ class Menu:
                 self.stdscr.move(y_pos, x_pos)
                 self.stdscr.refresh()
         finally:
-            curses.curs_set(0)
+            curses.curs_set(False)
         return string
