@@ -1,10 +1,10 @@
-import os
 import curses
+import os
 from collections import namedtuple
 
-from todo.utils import strikethrough
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
+from todo.utils import strikethrough
 
 X_OFFSET = 2
 Y_OFFSET = 4
@@ -331,12 +331,7 @@ class Menu:
 
         # copy text
         string = text
-        self.stdscr.addstr(
-            Y_ORIGIN,
-            X_ORIGIN,
-            string,
-            self.color.blue,
-        )
+        self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, string, self.color.blue)
         self.clear_leftovers()
         self.refresh()
         try:
@@ -367,12 +362,7 @@ class Menu:
                     string = string[:relative_x_pos] + chr(char) + string[relative_x_pos:]
                     x_pos += 1
 
-                self.stdscr.addstr(
-                    Y_ORIGIN,
-                    X_ORIGIN,
-                    string,
-                    self.color.blue,
-                )
+                self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, string, self.color.blue)
                 self.stdscr.move(y_pos, x_pos)
                 self.stdscr.refresh()
         finally:
