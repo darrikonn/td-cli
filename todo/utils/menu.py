@@ -10,6 +10,8 @@ Y_OFFSET = 4
 MARGIN = 2
 NEXT_LINE = 1
 
+NUMBER_OF_COMMANDS = 5
+
 
 class Menu:
     __slots__ = ("stdscr", "color")
@@ -182,6 +184,16 @@ class Menu:
             extra_style,
         )
 
+    def clear_commands(self, offset):
+        # clear screen for other commands
+        for i in range(NUMBER_OF_COMMANDS):
+            self.stdscr.addstr(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
+                X_OFFSET + MARGIN,
+                " ",
+                curses.A_BOLD | self.color.grey,
+            )
+            self.clear_leftovers()
     def render_commands(self, offset, is_deleted):
         line_count = 1
         if is_deleted:
@@ -195,20 +207,13 @@ class Menu:
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
-                "to recover deleted todo          ",
+                "to recover deleted todo",
                 self.color.grey,
             )
             line_count += 1
 
             # clear screen for other commands
-            for i in range(5):
-                self.stdscr.addstr(
-                    offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
-                    X_OFFSET + MARGIN,
-                    " ",
-                    curses.A_BOLD | self.color.grey,
-                )
-                self.clear_leftovers()
+            self.clear_commands(offset)
         else:
             # add
             self.stdscr.addstr(
