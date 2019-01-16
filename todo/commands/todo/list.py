@@ -107,8 +107,12 @@ class List(Command):
                         # TODO
                         pass
                     elif command == COMMANDS.EDIT:
-                        # TODO
-                        pass
+                        menu.clear_commands(todos_count)
+                        menu.render_commands_for_edit_mode(todos_count)
+                        new_todo_name = menu.edit_text(current_todo[1], current_pos)
+                        if new_todo_name is not None:
+                            self.service.todo.edit_name(current_todo[0], new_todo_name)
+                            todos[current_pos] = (current_todo[0], new_todo_name) + current_todo[2:]
                     elif command == COMMANDS.DELETE:
                         deleted_todos.add(current_todo[0])
                         if current_todo[3]:
