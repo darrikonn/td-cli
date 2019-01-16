@@ -19,6 +19,8 @@ class INTERACTIVE_COMMANDS:
     DELETE = "delete"
     DOWN = "down"
     EDIT = "edit"
+    ENTER = "enter"
+    ESCAPE = "escape"
     QUIT = "quit"
     RECOVER = "recover"
     TOGGLE = "toggle"
