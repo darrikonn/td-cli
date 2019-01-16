@@ -73,6 +73,7 @@ class List(Command):
 
                 current_todo = todos[current_pos]
                 is_current_deleted = current_todo[0] in deleted_todos
+                menu.clear_commands(todos_count)
                 menu.render_commands(todos_count, is_current_deleted)
 
                 command = menu.get_command()
