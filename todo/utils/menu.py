@@ -194,6 +194,36 @@ class Menu:
                 curses.A_BOLD | self.color.grey,
             )
             self.clear_leftovers()
+
+    def render_commands_for_edit_mode(self, offset):
+        # save
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
+            X_OFFSET + MARGIN,
+            "enter",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
+            X_OFFSET + MARGIN * 5,
+            "to save new title",
+            self.color.grey,
+        )
+
+        # abort
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "escape",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to exit edit mode without saving",
+            self.color.grey,
+        )
+
     def render_commands(self, offset, is_deleted):
         line_count = 1
         if is_deleted:
