@@ -23,6 +23,8 @@ class Menu:
             COMMANDS.DELETE,
             COMMANDS.DOWN,
             COMMANDS.EDIT,
+            COMMANDS.ENTER,
+            COMMANDS.ESCAPE,
             COMMANDS.QUIT,
             COMMANDS.RECOVER,
             COMMANDS.TOGGLE,
@@ -33,6 +35,8 @@ class Menu:
         delete=(100,),
         down=(curses.KEY_DOWN, 106),
         edit=(101,),
+        enter=(10,),
+        escape=(27,),
         quit=(113, 27),
         recover=(114,),
         toggle=(32,),
@@ -318,3 +322,57 @@ class Menu:
             "to quit",
             self.color.grey,
         )
+
+    def edit_text(self, text, offset):
+        Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
+        X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
+
+        # copy text
+        string = text
+        self.stdscr.addstr(
+            Y_ORIGIN,
+            X_ORIGIN,
+            string,
+            self.color.blue,
+        )
+        self.clear_leftovers()
+        self.refresh()
+        try:
+            # show cursor
+            curses.curs_set(1)
+            while True:
+                char = self.stdscr.getch()
+                y_pos, x_pos = self.stdscr.getyx()
+                relative_x_pos = x_pos - X_ORIGIN
+                if char in self.commands.enter:
+                    break
+                elif char in self.commands.escape:
+                    string = None
+                    break
+                elif char == curses.KEY_LEFT:
+                    x_pos = max(x_pos - 1, X_ORIGIN)
+                elif char == curses.KEY_RIGHT:
+                    x_pos = min(x_pos + 1, len(string) + X_ORIGIN)
+                elif char == 8 or char == 127 or char == curses.KEY_BACKSPACE:
+                    string = string[:relative_x_pos - 1] + string[relative_x_pos:]
+                    # move cursor to end
+                    self.stdscr.move(y_pos, len(string) + X_ORIGIN)
+                    # clear the line
+                    self.clear_leftovers()
+                    # recover cursor to the right place
+                    x_pos = max(x_pos - 1, X_ORIGIN)
+                else:
+                    string = string[:relative_x_pos] + chr(char) + string[relative_x_pos:]
+                    x_pos += 1
+
+                self.stdscr.addstr(
+                    Y_ORIGIN,
+                    X_ORIGIN,
+                    string,
+                    self.color.blue,
+                )
+                self.stdscr.move(y_pos, x_pos)
+                self.stdscr.refresh()
+        finally:
+            curses.curs_set(0)
+        return string
