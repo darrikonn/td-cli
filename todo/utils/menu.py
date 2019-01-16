@@ -1,3 +1,4 @@
+import os
 import curses
 from collections import namedtuple
 
@@ -64,6 +65,7 @@ class Menu:
                 self.grey = 1
 
     def __init__(self):
+        os.environ.setdefault("ESCDELAY", "25")
         self.stdscr = curses.initscr()
         try:
             self._setup_screen()
