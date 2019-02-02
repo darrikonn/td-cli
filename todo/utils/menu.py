@@ -15,7 +15,7 @@ NUMBER_OF_COMMANDS = 5
 
 
 class Menu:
-    __slots__ = ("stdscr", "color")
+    __slots__ = ("stdscr", "color", "cols")
 
     commands = namedtuple(
         "Command",
@@ -66,6 +66,7 @@ class Menu:
 
     def __init__(self):
         os.environ.setdefault("ESCDELAY", "25")
+        self.cols, _ = os.get_terminal_size()
         self.stdscr = curses.initscr()
         try:
             self._setup_screen()
