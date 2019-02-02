@@ -107,6 +107,33 @@ class Menu:
         # restore the terminal to its original operating mode.
         curses.endwin()
 
+    def _hellip_string(self, string, string_pos, cursor, max_length):
+        # 21 3 128
+        string_length = len(string)
+        diff = string_length - max_length
+        tmp = string
+        # string_length = 146
+        # string_pos = 146
+        # cursor = 127
+        # max_length = 127
+
+        # print(string, string_pos, cursor, max_length)
+        # 0 0 127
+        if diff > 0:
+            x_left = cursor  # 127
+            x_right = max_length - cursor  # 0
+
+            string_left = string_pos  # 146
+            string_right = string_length - string_pos  # 0
+
+            if string_left > x_left:
+                tmp = "…" + tmp[(string_pos - x_left + 2):]
+
+            if string_right > x_right:
+                # TODO: not matching the right size
+                tmp = tmp[:max_length - 2] + "…"
+        return tmp
+
     def clear(self):
         # clear screen
         self.stdscr.clear()
@@ -182,7 +209,9 @@ class Menu:
         )
 
         # render todo name
-        todo_name_text = "{name}".format(name=todo[1])
+        todo_name_text = "{name}".format(
+            name=self._hellip_string(todo[1], 0, 0, self.cols - (X_OFFSET + MARGIN * 5 + 2))
+        )
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN + NEXT_LINE,
             X_OFFSET + MARGIN * 5,
