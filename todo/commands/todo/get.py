@@ -17,12 +17,7 @@ class Get(Command):
 
             RenderOutputWithTextwrap(
                 "\n{grey}{completed} {bold}{todo_id}{normal}: ", "{details}"
-            ).render(
-                details=todo[2],
-                completed="✓" if todo[4] else "x",
-                todo_id=todo[0],
-                subsequent_indent=" " * 7,
-            )
+            ).render(details=todo[2], completed="✓" if todo[4] else "x", todo_id=todo[0])
         except Error as e:
             raise TodoException(
                 "Error occurred, could not get {bold}<Todo: %s>{reset}" % args.id, e

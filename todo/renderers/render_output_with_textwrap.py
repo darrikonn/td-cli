@@ -10,7 +10,7 @@ class RenderOutputWithTextwrap(Render):
         self.text_to_wrap = text_to_wrap
 
     def render(self, **kwargs):
-        kwargs.setdefault("subsequent_indent", " " * 8)
+        kwargs.setdefault("subsequent_indent", " " * 10)
 
         cols, _ = get_terminal_size()
 

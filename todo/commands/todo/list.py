@@ -29,7 +29,7 @@ class List(Command):
         )
 
         for todo in todos:
-            RenderOutputWithTextwrap("{completed} {bold}{todo_id}{reset}  ", "{name}").render(
+            RenderOutputWithTextwrap("{completed} {bold}{todo_id}{reset}: ", "{name}").render(
                 completed="✓" if todo[3] else "x", name=todo[1], todo_id=todo[0]
             )
 
