@@ -220,6 +220,9 @@ class Menu:
             extra_style,
         )
 
+        # clear leftovers
+        self.clear_leftovers()
+
     def clear_commands(self, offset):
         # clear screen for other commands
         for i in range(NUMBER_OF_COMMANDS):
