@@ -361,41 +361,77 @@ class Menu:
     def edit_text(self, text, offset):
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
         X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
+        max_length = self.cols - X_ORIGIN
 
         # copy text
         string = text
-        self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, string, self.color.blue)
+
+        self.stdscr.addstr(
+            Y_ORIGIN,
+            X_ORIGIN,
+            self._hellip_string(string, len(string), max_length, max_length),
+            self.color.blue
+        )
         self.clear_leftovers()
         self.refresh()
         try:
             # show cursor
             curses.curs_set(True)
+            current_string_pos = len(string)
             while True:
                 char = self.stdscr.getch()
                 y_pos, x_pos = self.stdscr.getyx()
                 relative_x_pos = x_pos - X_ORIGIN
+                string_length = len(string)
                 if char in self.commands.enter:
                     break
                 elif char in self.commands.escape:
                     string = None
                     break
                 elif char == curses.KEY_LEFT:
-                    x_pos = max(x_pos - 1, X_ORIGIN)
+                    current_string_pos = max(current_string_pos - 1, 0)
+                    if not (current_string_pos > 1 and relative_x_pos == 2):
+                        x_pos = max(x_pos - 1, X_ORIGIN)
                 elif char == curses.KEY_RIGHT:
-                    x_pos = min(x_pos + 1, len(string) + X_ORIGIN)
+                    current_string_pos = min(current_string_pos + 1, string_length)
+                    if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
+                        x_pos = min(x_pos + 1, min(string_length + X_ORIGIN, self.cols - 1))
                 elif char == 8 or char == 127 or char == curses.KEY_BACKSPACE:
-                    string = string[:relative_x_pos - 1] + string[relative_x_pos:]
+                    string = string[:current_string_pos - 1] + string[current_string_pos:]
+                    current_string_pos = max(current_string_pos - 1, 0)
                     # move cursor to end
-                    self.stdscr.move(y_pos, len(string) + X_ORIGIN)
+                    # self.stdscr.move(y_pos, string_space + X_ORIGIN)
                     # clear the line
-                    self.clear_leftovers()
+                    # self.clear_leftovers()
                     # recover cursor to the right place
-                    x_pos = max(x_pos - 1, X_ORIGIN)
-                else:
+                    # x_pos = max(x_pos - 1, X_ORIGIN)
+                    if not (current_string_pos > 1 and relative_x_pos == 2):
+                        x_pos = max(x_pos - 1, X_ORIGIN)
+                elif not curses.keyname(char).startswith(b"KEY_"):
                     string = string[:relative_x_pos] + chr(char) + string[relative_x_pos:]
                     x_pos += 1
 
-                self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, string, self.color.blue)
+                self.clear_leftovers()
+                self.stdscr.addstr(
+                    Y_ORIGIN,
+                    X_ORIGIN,
+                    self._hellip_string(string, current_string_pos, x_pos - X_ORIGIN + 1, max_length),
+                    self.color.blue,
+                )
+
+                self.stdscr.addstr(
+                    31,
+                    0,
+                    string,
+                    self.color.blue,
+                )
+                self.stdscr.addstr(
+                    32,
+                    0,
+                    "{} {} ".format(current_string_pos, relative_x_pos),
+                    self.color.blue,
+                )
+
                 self.stdscr.move(y_pos, x_pos)
                 self.stdscr.refresh()
         finally:
