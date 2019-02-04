@@ -120,6 +120,15 @@ class Menu:
                 string = string[:max_length - 2] + "…"
         return string
 
+    def _clear_commands(self, offset):
+        # clear screen for commands
+        for i in range(NUMBER_OF_COMMANDS):
+            self.stdscr.move(
+                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
+                0
+            )
+            self.clear_leftovers()
+
     def clear(self):
         # clear screen
         self.stdscr.clear()
@@ -208,18 +217,10 @@ class Menu:
         # clear leftovers
         self.clear_leftovers()
 
-    def clear_commands(self, offset):
-        # clear screen for other commands
-        for i in range(NUMBER_OF_COMMANDS):
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
-                X_OFFSET + MARGIN,
-                " ",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-
     def render_commands_for_edit_mode(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
         # save
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
@@ -227,6 +228,7 @@ class Menu:
             "enter",
             curses.A_BOLD | self.color.grey,
         )
+        self.clear_leftovers()
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
             X_OFFSET + MARGIN * 5,
@@ -241,6 +243,7 @@ class Menu:
             "escape",
             curses.A_BOLD | self.color.grey,
         )
+        self.clear_leftovers()
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
             X_OFFSET + MARGIN * 5,
@@ -249,6 +252,9 @@ class Menu:
         )
 
     def render_commands(self, offset, is_deleted):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
         line_count = 1
         if is_deleted:
             # recover
@@ -258,6 +264,7 @@ class Menu:
                 "r",
                 curses.A_BOLD | self.color.grey,
             )
+            self.clear_leftovers()
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
@@ -265,9 +272,6 @@ class Menu:
                 self.color.grey,
             )
             line_count += 1
-
-            # clear screen for other commands
-            self.clear_commands(offset)
         else:
             # add
             self.stdscr.addstr(
@@ -276,6 +280,7 @@ class Menu:
                 "a",
                 curses.A_BOLD | self.color.grey,
             )
+            self.clear_leftovers()
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
@@ -291,6 +296,7 @@ class Menu:
                 "e",
                 curses.A_BOLD | self.color.grey,
             )
+            self.clear_leftovers()
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
@@ -306,6 +312,7 @@ class Menu:
                 "d",
                 curses.A_BOLD | self.color.grey,
             )
+            self.clear_leftovers()
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
@@ -321,6 +328,7 @@ class Menu:
                 "space",
                 curses.A_BOLD | self.color.grey,
             )
+            self.clear_leftovers()
             self.stdscr.addstr(
                 offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
                 X_OFFSET + MARGIN * 5,
@@ -336,6 +344,7 @@ class Menu:
             "q",
             curses.A_BOLD | self.color.grey,
         )
+        self.clear_leftovers()
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
             X_OFFSET + MARGIN * 5,

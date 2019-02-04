@@ -73,7 +73,6 @@ class List(Command):
 
                 current_todo = todos[current_pos]
                 is_current_deleted = current_todo[0] in deleted_todos
-                menu.clear_commands(todos_count)
                 menu.render_commands(todos_count, is_current_deleted)
 
                 command = menu.get_command()
@@ -107,7 +106,6 @@ class List(Command):
                         # TODO
                         pass
                     elif command == COMMANDS.EDIT:
-                        menu.clear_commands(todos_count)
                         menu.render_commands_for_edit_mode(todos_count)
                         new_todo_name = menu.edit_text(current_todo[1], current_pos)
                         if new_todo_name is not None:
