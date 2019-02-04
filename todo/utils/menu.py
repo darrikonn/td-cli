@@ -397,8 +397,10 @@ class Menu:
                     if current_string_pos < x_pos - X_ORIGIN:
                         x_pos = max(x_pos - 1, X_ORIGIN)
                 elif not curses.keyname(char).startswith(b"KEY_"):
-                    string = string[:relative_x_pos] + chr(char) + string[relative_x_pos:]
-                    x_pos += 1
+                    string = string[:current_string_pos] + chr(char) + string[current_string_pos:]
+                    current_string_pos = current_string_pos + 1
+                    if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
+                        x_pos = min(x_pos + 1, self.cols - 1)
 
                 self.clear_leftovers()
                 self.stdscr.addstr(
