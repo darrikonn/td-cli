@@ -108,32 +108,17 @@ class Menu:
         # restore the terminal to its original operating mode.
         curses.endwin()
 
-    def _hellip_string(self, string, string_pos, cursor, max_length):
-        # 21 3 128
+    def _hellip_string(self, string, string_pos, cursor_pos, max_length):
         string_length = len(string)
-        diff = string_length - max_length
-        tmp = string
-        # string_length = 146
-        # string_pos = 146
-        # cursor = 127
-        # max_length = 127
+        if string_length >= max_length:
+            if string_pos >= cursor_pos:
+                string = "…" + string[(string_pos - cursor_pos + 2):]
 
-        # print(string, string_pos, cursor, max_length)
-        # 0 0 127
-        if diff > 0:
-            x_left = cursor  # 127
-            x_right = max_length - cursor  # 0
-
-            string_left = string_pos  # 146
-            string_right = string_length - string_pos  # 0
-
-            if string_left > x_left:
-                tmp = "…" + tmp[(string_pos - x_left + 2):]
-
-            if string_right > x_right:
-                # TODO: not matching the right size
-                tmp = tmp[:max_length - 2] + "…"
-        return tmp
+            leftovers = string_length - string_pos
+            screen_space = max_length - cursor_pos
+            if leftovers > screen_space:
+                string = string[:max_length - 2] + "…"
+        return string
 
     def clear(self):
         # clear screen
