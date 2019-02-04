@@ -110,8 +110,8 @@ class Menu:
 
     def _hellip_string(self, string, string_pos, cursor_pos, max_length):
         string_length = len(string)
-        if string_length >= max_length:
-            if string_pos >= cursor_pos:
+        if max_length < string_length:
+            if cursor_pos < string_pos:
                 string = "…" + string[(string_pos - cursor_pos + 2):]
 
             leftovers = string_length - string_pos
