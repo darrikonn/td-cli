@@ -412,19 +412,6 @@ class Menu:
                     self.color.blue,
                 )
 
-                self.stdscr.addstr(
-                    31,
-                    0,
-                    string,
-                    self.color.blue,
-                )
-                self.stdscr.addstr(
-                    32,
-                    0,
-                    "{} {} ".format(current_string_pos, relative_x_pos),
-                    self.color.blue,
-                )
-
                 self.stdscr.move(y_pos, x_pos)
                 self.stdscr.refresh()
         finally:
