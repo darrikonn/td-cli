@@ -391,15 +391,10 @@ class Menu:
                     if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
                         x_pos = min(x_pos + 1, min(string_length + X_ORIGIN, self.cols - 1))
                 elif char == 8 or char == 127 or char == curses.KEY_BACKSPACE:
-                    string = string[:current_string_pos - 1] + string[current_string_pos:]
-                    current_string_pos = max(current_string_pos - 1, 0)
-                    # move cursor to end
-                    # self.stdscr.move(y_pos, string_space + X_ORIGIN)
-                    # clear the line
-                    # self.clear_leftovers()
-                    # recover cursor to the right place
-                    # x_pos = max(x_pos - 1, X_ORIGIN)
-                    if not (current_string_pos > 1 and relative_x_pos == 2):
+                    if current_string_pos > 0:
+                        string = string[:current_string_pos - 1] + string[current_string_pos:]
+                        current_string_pos = max(current_string_pos - 1, 0)
+                    if current_string_pos < x_pos - X_ORIGIN:
                         x_pos = max(x_pos - 1, X_ORIGIN)
                 elif not curses.keyname(char).startswith(b"KEY_"):
                     string = string[:relative_x_pos] + chr(char) + string[relative_x_pos:]
