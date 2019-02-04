@@ -402,6 +402,8 @@ class Menu:
                     if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
                         x_pos = min(x_pos + 1, self.cols - 1)
 
+                # clear the line before rewriting it
+                self.stdscr.move(y_pos, X_ORIGIN)
                 self.clear_leftovers()
                 self.stdscr.addstr(
                     Y_ORIGIN,
