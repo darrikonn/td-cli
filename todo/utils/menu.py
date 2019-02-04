@@ -196,7 +196,7 @@ class Menu:
 
         # render todo name
         todo_name_text = "{name}".format(
-            name=self._hellip_string(todo[1], 0, 0, self.cols - (X_OFFSET + MARGIN * 5 + 2))
+            name=self._hellip_string(todo[1], 0, 1, self.cols - (X_OFFSET + MARGIN * 5 + 2))
         )
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN + NEXT_LINE,
