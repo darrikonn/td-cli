@@ -112,21 +112,18 @@ class Menu:
         string_length = len(string)
         if string_length >= max_length:
             if string_pos >= cursor_pos:
-                string = "…" + string[(string_pos - cursor_pos + 2):]
+                string = "…" + string[(string_pos - cursor_pos + 2) :]
 
             leftovers = string_length - string_pos
             screen_space = max_length - cursor_pos
             if leftovers > screen_space:
-                string = string[:max_length - 2] + "…"
+                string = string[: max_length - 2] + "…"
         return string
 
     def _clear_commands(self, offset):
         # clear screen for commands
         for i in range(NUMBER_OF_COMMANDS):
-            self.stdscr.move(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2),
-                0
-            )
+            self.stdscr.move(offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2), 0)
             self.clear_leftovers()
 
     def clear(self):
@@ -364,7 +361,7 @@ class Menu:
             Y_ORIGIN,
             X_ORIGIN,
             self._hellip_string(string, len(string), max_length, max_length),
-            self.color.blue
+            self.color.blue,
         )
         self.clear_leftovers()
         self.refresh()
@@ -388,18 +385,22 @@ class Menu:
                         x_pos = max(x_pos - 1, X_ORIGIN)
                 elif key == curses.KEY_RIGHT:
                     current_string_pos = min(current_string_pos + 1, string_length)
-                    if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
+                    if not (
+                        current_string_pos < string_length - 1 and relative_x_pos == max_length - 3
+                    ):
                         x_pos = min(x_pos + 1, min(string_length + X_ORIGIN, self.cols - 1))
                 elif key == 8 or key == 127 or key == curses.KEY_BACKSPACE:
                     if current_string_pos > 0:
-                        string = string[:current_string_pos - 1] + string[current_string_pos:]
+                        string = string[: current_string_pos - 1] + string[current_string_pos:]
                         current_string_pos = max(current_string_pos - 1, 0)
                     if current_string_pos < x_pos - X_ORIGIN:
                         x_pos = max(x_pos - 1, X_ORIGIN)
                 elif not curses.keyname(key).startswith(b"KEY_"):
                     string = string[:current_string_pos] + chr(key) + string[current_string_pos:]
                     current_string_pos = current_string_pos + 1
-                    if not(current_string_pos < string_length - 1 and relative_x_pos == max_length - 3):
+                    if not (
+                        current_string_pos < string_length - 1 and relative_x_pos == max_length - 3
+                    ):
                         x_pos = min(x_pos + 1, self.cols - 1)
 
                 # clear the line and rewrite string
@@ -408,7 +409,9 @@ class Menu:
                 self.stdscr.addstr(
                     Y_ORIGIN,
                     X_ORIGIN,
-                    self._hellip_string(string, current_string_pos, x_pos - X_ORIGIN + 1, max_length),
+                    self._hellip_string(
+                        string, current_string_pos, x_pos - X_ORIGIN + 1, max_length
+                    ),
                     self.color.blue,
                 )
 
