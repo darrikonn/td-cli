@@ -372,9 +372,9 @@ class Menu:
             # show cursor
             curses.curs_set(True)
             current_string_pos = len(string)
+            y_pos, x_pos = self.stdscr.getyx()
             while True:
                 char = self.stdscr.getch()
-                y_pos, x_pos = self.stdscr.getyx()
                 relative_x_pos = x_pos - X_ORIGIN
                 string_length = len(string)
                 if char in self.commands.enter:
