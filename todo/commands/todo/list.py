@@ -1,5 +1,5 @@
 from todo.commands.base import Command
-from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS, COMMAND_MODES
 from todo.exceptions import TodoException
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 from todo.utils import interpret_state, singular_or_plural
@@ -72,8 +72,10 @@ class List(Command):
                     menu.render_todo(todo, index, current_pos, is_deleted)
 
                 current_todo = todos[current_pos]
-                is_current_deleted = current_todo[0] in deleted_todos
-                menu.render_commands(todos_count, is_current_deleted)
+                if current_todo[0] in deleted_todos:
+                    menu.render_commands(todos_count, mode=COMMAND_MODES.DELETE)
+                else:
+                    menu.render_commands(todos_count)
 
                 command = menu.get_command()
 
@@ -106,7 +108,7 @@ class List(Command):
                         # TODO
                         pass
                     elif command == COMMANDS.EDIT:
-                        menu.render_commands_for_edit_mode(todos_count)
+                        menu.render_commands(todos_count, mode=COMMAND_MODES.EDIT)
                         new_todo_name = menu.edit_text(current_todo[1], current_pos)
                         if new_todo_name is not None:
                             self.service.todo.edit_name(current_todo[0], new_todo_name)

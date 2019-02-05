@@ -2,7 +2,7 @@ import curses
 import os
 from collections import namedtuple
 
-from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS, COMMAND_MODES
 from todo.exceptions import TodoException
 from todo.utils import strikethrough
 
@@ -126,6 +126,153 @@ class Menu:
             self.stdscr.move(offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2), 0)
             self.clear_leftovers()
 
+    def _render_edit_commands(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
+        # save
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
+            X_OFFSET + MARGIN,
+            "enter",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
+            X_OFFSET + MARGIN * 5,
+            "to save new title",
+            self.color.grey,
+        )
+
+        # abort
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "escape",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to exit edit mode without saving",
+            self.color.grey,
+        )
+
+    def _render_delete_commands(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
+        # recover
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN,
+            "r",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN * 5,
+            "to recover deleted todo",
+            self.color.grey,
+        )
+
+        # quit
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "q",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to quit",
+            self.color.grey,
+        )
+
+    def _render_default_commands(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
+        # add
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN,
+            "a",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN * 5,
+            "to add a todo",
+            self.color.grey,
+        )
+
+        # edit
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "e",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to edit todo",
+            self.color.grey,
+        )
+
+        # delete
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            X_OFFSET + MARGIN,
+            "d",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            X_OFFSET + MARGIN * 5,
+            "to delete todo",
+            self.color.grey,
+        )
+
+        # space
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 4,
+            X_OFFSET + MARGIN,
+            "space",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 4,
+            X_OFFSET + MARGIN * 5,
+            "to toggle completed/uncompleted",
+            self.color.grey,
+        )
+
+        # quit
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 5,
+            X_OFFSET + MARGIN,
+            "q",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 5,
+            X_OFFSET + MARGIN * 5,
+            "to quit",
+            self.color.grey,
+        )
+
     def clear(self):
         # clear screen
         self.stdscr.clear()
@@ -214,140 +361,15 @@ class Menu:
         # clear leftovers
         self.clear_leftovers()
 
-    def render_commands_for_edit_mode(self, offset):
-        # clear screen for previous commands
-        self._clear_commands(offset)
-
-        # save
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
-            X_OFFSET + MARGIN,
-            "enter",
-            curses.A_BOLD | self.color.grey,
-        )
-        self.clear_leftovers()
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE,
-            X_OFFSET + MARGIN * 5,
-            "to save new title",
-            self.color.grey,
-        )
-
-        # abort
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
-            X_OFFSET + MARGIN,
-            "escape",
-            curses.A_BOLD | self.color.grey,
-        )
-        self.clear_leftovers()
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
-            X_OFFSET + MARGIN * 5,
-            "to exit edit mode without saving",
-            self.color.grey,
-        )
-
-    def render_commands(self, offset, is_deleted):
-        # clear screen for previous commands
-        self._clear_commands(offset)
-
-        line_count = 1
-        if is_deleted:
-            # recover
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN,
-                "r",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN * 5,
-                "to recover deleted todo",
-                self.color.grey,
-            )
-            line_count += 1
+    def render_commands(self, offset, mode=COMMAND_MODES.DEFAULT):
+        if mode == COMMAND_MODES.DEFAULT:
+            self._render_default_commands(offset)
+        elif mode == COMMAND_MODES.DELETE:
+            self._render_delete_commands(offset)
+        elif mode == COMMAND_MODES.EDIT:
+            self._render_edit_commands(offset)
         else:
-            # add
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN,
-                "a",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN * 5,
-                "to add a todo",
-                self.color.grey,
-            )
-            line_count += 1
-
-            # edit
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN,
-                "e",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN * 5,
-                "to edit todo",
-                self.color.grey,
-            )
-            line_count += 1
-
-            # delete
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN,
-                "d",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN * 5,
-                "to delete todo",
-                self.color.grey,
-            )
-            line_count += 1
-
-            # space
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN,
-                "space",
-                curses.A_BOLD | self.color.grey,
-            )
-            self.clear_leftovers()
-            self.stdscr.addstr(
-                offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-                X_OFFSET + MARGIN * 5,
-                "to toggle completed/uncompleted",
-                self.color.grey,
-            )
-            line_count += 1
-
-        # quit
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-            X_OFFSET + MARGIN,
-            "q",
-            curses.A_BOLD | self.color.grey,
-        )
-        self.clear_leftovers()
-        self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * line_count,
-            X_OFFSET + MARGIN * 5,
-            "to quit",
-            self.color.grey,
-        )
+            self._clear_commands()
 
     def edit_text(self, text, offset):
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
