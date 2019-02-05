@@ -2,7 +2,8 @@ import curses
 import os
 from collections import namedtuple
 
-from todo.constants import INTERACTIVE_COMMANDS as COMMANDS, COMMAND_MODES
+from todo.constants import COMMAND_MODES
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 from todo.utils import strikethrough
 

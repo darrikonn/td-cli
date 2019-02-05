@@ -1,5 +1,6 @@
 from todo.commands.base import Command
-from todo.constants import INTERACTIVE_COMMANDS as COMMANDS, COMMAND_MODES
+from todo.constants import COMMAND_MODES
+from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 from todo.utils import interpret_state, singular_or_plural
