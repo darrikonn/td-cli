@@ -50,3 +50,11 @@ def get_version():
 
 def strikethrough(string):
     return "\u0336".join("{string}\u0336".format(string=string))
+
+
+def hellip_prefix(string, sub_length):
+    return "…" + string[sub_length:]
+
+
+def hellip_postfix(string, sub_length):
+    return string[:sub_length] + "…"

@@ -30,3 +30,9 @@ class INTERACTIVE_COMMANDS:
 class STATES:
     COMPLETED = "completed"
     UNCOMPLETED = "uncompleted"
+
+
+class COMMAND_MODES:
+    DEFAULT = "default"
+    DELETE = "delete"
+    EDIT = "edit"

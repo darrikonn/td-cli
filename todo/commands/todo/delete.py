@@ -19,6 +19,6 @@ class Delete(Command):
 
             RenderOutputWithTextwrap(
                 "{red}Deleted{reset} {bold}{todo_id}{reset}: ", "{name}"
-            ).render(name=todo[2], todo_id=todo[0], subsequent_indent=" " * 7)
+            ).render(name=todo[2], todo_id=todo[0], subsequent_indent=" " * 16)
         except Error as e:
             raise TodoException("Error occurred, could not delete <Todo: %s>" % args.id, e)
