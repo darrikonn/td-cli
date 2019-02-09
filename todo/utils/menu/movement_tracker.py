@@ -41,12 +41,26 @@ class MovementTracker:
                 min(self._string_length + self._x_origin, self._terminal_width - 1),
             )
 
+    def move_to_start(self):
+        self._string_pos = 0
+        self._cursor_pos = self._x_origin
+
+    def move_to_end(self):
+        self._string_pos = self._string_length
+        self._cursor_pos = min(self._string_length + self._x_origin, self._terminal_width - 1)
+
     def delete(self):
         if self._string_pos > 0:
             self._string = self._string[: self._string_pos - 1] + self._string[self._string_pos :]
             self._string_pos = max(self._string_pos - 1, 0)
         if self._string_pos < self._relative_cursor_pos:
             self._cursor_pos = max(self._cursor_pos - 1, self._x_origin)
+
+    def delete_backwards(self):
+        if self._string_pos < self._string_length:
+            self._string = self._string[: self._string_pos] + self._string[self._string_pos + 1:]
+        if self._string_pos > self._relative_cursor_pos:
+            self._cursor_pos = min(self._cursor_pos + 1, self._terminal_width - 1)
 
     def add(self, char):
         self._string = self._string[: self._string_pos] + char + self._string[self._string_pos :]

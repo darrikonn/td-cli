@@ -364,7 +364,7 @@ class Menu:
         else:
             self._clear_commands()
 
-    def edit_text(self, text, offset):
+    def edit_text(self, text, offset):  # noqa: 901
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
         X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
 
@@ -387,10 +387,16 @@ class Menu:
                     break
                 elif key == curses.KEY_LEFT:
                     movement_tracker.move_left()
+                elif key == 262:  # fn + KEY_LEFT
+                    movement_tracker.move_to_start()
+                elif key == 360:  # fn + KEY_RIGHT
+                    movement_tracker.move_to_end()
                 elif key == curses.KEY_RIGHT:
                     movement_tracker.move_right()
                 elif key == 8 or key == 127 or key == curses.KEY_BACKSPACE:
                     movement_tracker.delete()
+                elif key == 330:  # fn + KEY_BACKSPACE
+                    movement_tracker.delete_backwards()
                 elif not curses.keyname(key).startswith(b"KEY_"):
                     movement_tracker.add(chr(key))
 
