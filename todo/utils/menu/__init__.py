@@ -5,7 +5,9 @@ from collections import namedtuple
 from todo.constants import COMMAND_MODES
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
-from todo.utils import strikethrough
+from todo.utils import strikethrough, hellip_postfix
+
+from .movement_tracker import MovementTracker
 
 X_OFFSET = 2
 Y_OFFSET = 4
@@ -108,18 +110,6 @@ class Menu:
 
         # restore the terminal to its original operating mode.
         curses.endwin()
-
-    def _hellip_string(self, string, string_pos, cursor_pos, max_length):
-        string_length = len(string)
-        if string_length >= max_length:
-            if string_pos >= cursor_pos:
-                string = "…" + string[(string_pos - cursor_pos + 2) :]
-
-            leftovers = string_length - string_pos
-            screen_space = max_length - cursor_pos
-            if leftovers > screen_space:
-                string = string[: max_length - 2] + "…"
-        return string
 
     def _clear_commands(self, offset):
         # clear screen for commands
@@ -349,8 +339,10 @@ class Menu:
         )
 
         # render todo name
+        screen_space = self.cols - (X_OFFSET + MARGIN * 5 + 4)
+        name_length = len(todo[1])
         todo_name_text = "{name}".format(
-            name=self._hellip_string(todo[1], 0, 1, self.cols - (X_OFFSET + MARGIN * 5 + 2))
+            name=hellip_postfix(todo[1], screen_space) if name_length > screen_space else todo[1]
         )
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN + NEXT_LINE,
@@ -375,72 +367,43 @@ class Menu:
     def edit_text(self, text, offset):
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
         X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
-        max_length = self.cols - X_ORIGIN
 
-        # copy text
-        string = text
-
+        movement_tracker = MovementTracker(text, X_ORIGIN, self.cols)
         self.stdscr.addstr(
-            Y_ORIGIN,
-            X_ORIGIN,
-            self._hellip_string(string, len(string), max_length, max_length),
-            self.color.blue,
+            Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
         )
+
         self.clear_leftovers()
         self.refresh()
         try:
             # show cursor
             curses.curs_set(True)
-            current_string_pos = len(string)
-            y_pos, x_pos = self.stdscr.getyx()
             while True:
-                string_length = len(string)
-                relative_x_pos = x_pos - X_ORIGIN
                 key = self.stdscr.getch()
                 if key in self.commands.enter:
                     break
                 elif key in self.commands.escape:
-                    string = None
+                    movement_tracker.erase_string()
                     break
                 elif key == curses.KEY_LEFT:
-                    current_string_pos = max(current_string_pos - 1, 0)
-                    if not (current_string_pos > 1 and relative_x_pos == 2):
-                        x_pos = max(x_pos - 1, X_ORIGIN)
+                    movement_tracker.move_left()
                 elif key == curses.KEY_RIGHT:
-                    current_string_pos = min(current_string_pos + 1, string_length)
-                    if not (
-                        current_string_pos < string_length - 1 and relative_x_pos == max_length - 3
-                    ):
-                        x_pos = min(x_pos + 1, min(string_length + X_ORIGIN, self.cols - 1))
+                    movement_tracker.move_right()
                 elif key == 8 or key == 127 or key == curses.KEY_BACKSPACE:
-                    if current_string_pos > 0:
-                        string = string[: current_string_pos - 1] + string[current_string_pos:]
-                        current_string_pos = max(current_string_pos - 1, 0)
-                    if current_string_pos < x_pos - X_ORIGIN:
-                        x_pos = max(x_pos - 1, X_ORIGIN)
+                    movement_tracker.delete()
                 elif not curses.keyname(key).startswith(b"KEY_"):
-                    string = string[:current_string_pos] + chr(key) + string[current_string_pos:]
-                    current_string_pos = current_string_pos + 1
-                    if not (
-                        current_string_pos < string_length - 1 and relative_x_pos == max_length - 3
-                    ):
-                        x_pos = min(x_pos + 1, self.cols - 1)
+                    movement_tracker.add(chr(key))
 
                 # clear the line and rewrite string
-                self.stdscr.move(y_pos, X_ORIGIN)
+                self.stdscr.move(Y_ORIGIN, X_ORIGIN)
                 self.clear_leftovers()
                 self.stdscr.addstr(
-                    Y_ORIGIN,
-                    X_ORIGIN,
-                    self._hellip_string(
-                        string, current_string_pos, x_pos - X_ORIGIN + 1, max_length
-                    ),
-                    self.color.blue,
+                    Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
                 )
 
                 # move cursor to correct place and refresh screen
-                self.stdscr.move(y_pos, x_pos)
+                self.stdscr.move(Y_ORIGIN, movement_tracker.get_cursor_pos())
                 self.stdscr.refresh()
         finally:
             curses.curs_set(False)
-        return string
+        return movement_tracker.get_string()
