@@ -54,11 +54,11 @@ class List(Command):
         deleted_todos = set()
         with Menu() as menu:
             menu.clear()
-            menu.render_header("{group_name}".format(group_name=group[0]))
 
             current_pos = 0
             while True:
                 menu.refresh()
+                menu.render_header("{group_name}".format(group_name=group[0]))
                 menu.render_subheader(
                     "{items} item{singular_or_plural}: {completed} completed, {uncompleted} left".format(
                         items=group[1],
