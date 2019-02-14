@@ -318,8 +318,8 @@ class Menu:
             # render non-active cursor
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET, " ")
 
-        # render empty state
-        if is_deleted:
+        if is_deleted or todo[3] is None:
+            # render empty state
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET + MARGIN, " ")
         else:
             self.stdscr.addstr(
@@ -355,7 +355,9 @@ class Menu:
         self.clear_leftovers()
 
     def render_commands(self, offset, mode=COMMAND_MODES.DEFAULT):
-        if mode == COMMAND_MODES.DEFAULT:
+        if mode == COMMAND_MODES.ADD:
+            self._render_add_commands(offset)
+        elif mode == COMMAND_MODES.DEFAULT:
             self._render_default_commands(offset)
         elif mode == COMMAND_MODES.DELETE:
             self._render_delete_commands(offset)

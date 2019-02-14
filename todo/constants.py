@@ -33,6 +33,7 @@ class STATES:
 
 
 class COMMAND_MODES:
+    ADD = "add"
     DEFAULT = "default"
     DELETE = "delete"
     EDIT = "edit"
