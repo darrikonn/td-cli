@@ -54,11 +54,15 @@ class List(Command):
                 "No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed"
             ).render(state=interpret_state(state), name=group[0] or "global")
 
+        import os
+        _, rows = os.get_terminal_size()
+        max_rows = rows - 15
         deleted_todos = set()
         with Menu() as menu:
             menu.clear()
 
             current_pos = 0
+            cursor = 0
             while True:
                 menu.refresh()
                 menu.render_header("{group_name}".format(group_name=group[0]))
@@ -76,10 +80,11 @@ class List(Command):
                     menu.render_todo(todo, index, current_pos, is_deleted)
 
                 current_todo = todos[current_pos]
+                commands_offset = min(max_rows, todos_count)
                 if current_todo[0] in deleted_todos:
-                    menu.render_commands(todos_count, mode=COMMAND_MODES.DELETE)
+                    menu.render_commands(commands_offset, mode=COMMAND_MODES.DELETE)
                 else:
-                    menu.render_commands(todos_count)
+                    menu.render_commands(commands_offset)
 
                 command = menu.get_command()
 
@@ -147,8 +152,8 @@ class List(Command):
                                 cursor -= 1
                             menu.clear()
                     elif command == COMMANDS.EDIT:
-                        menu.render_commands(todos_count, mode=COMMAND_MODES.EDIT)
-                        new_todo_name = menu.edit_text(current_todo[1], current_pos)
+                        menu.render_commands(commands_offset, mode=COMMAND_MODES.EDIT)
+                        new_todo_name = menu.edit_text(current_todo[1], cursor)
                         if new_todo_name is not None:
                             self.service.todo.edit_name(current_todo[0], new_todo_name)
                             todos[current_pos] = (current_todo[0], new_todo_name) + current_todo[2:]
