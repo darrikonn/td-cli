@@ -119,18 +119,18 @@ class Menu:
 
     def _render_add_commands(self, offset):
         # clear screen for previous commands
-        self._clear_commands(offset - 1)
+        self._clear_commands(offset)
 
         # save
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
             X_OFFSET + MARGIN,
             "enter",
             curses.A_BOLD | self.color.grey,
         )
         self.clear_leftovers()
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
             X_OFFSET + MARGIN * 5,
             "to save new title",
             self.color.grey,
@@ -138,14 +138,14 @@ class Menu:
 
         # abort
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
             X_OFFSET + MARGIN,
             "escape",
             curses.A_BOLD | self.color.grey,
         )
         self.clear_leftovers()
         self.stdscr.addstr(
-            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
             X_OFFSET + MARGIN * 5,
             "to exit edit mode without saving",
             self.color.grey,
