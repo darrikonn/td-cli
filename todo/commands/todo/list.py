@@ -81,9 +81,19 @@ class List(Command):
                 command = menu.get_command()
 
                 if command == COMMANDS.DOWN:
-                    current_pos = current_pos + 1 if current_pos + 1 < todos_count else 0
+                    current_pos += 1
+                    if current_pos == todos_count:  # on last todo
+                        cursor = 0
+                        current_pos = 0
+                    elif not (cursor + 2 == max_rows and current_pos != todos_count - 1):
+                        cursor += 1
                 elif command == COMMANDS.UP:
-                    current_pos = current_pos - 1 if current_pos > 0 else todos_count - 1
+                    current_pos -= 1
+                    if current_pos < 0:
+                        cursor = commands_offset - 1
+                        current_pos = todos_count - 1
+                    elif not (cursor - 1 == 0 and current_pos != 0):
+                        cursor -= 1
 
                 if current_todo[0] in deleted_todos:
                     if command == COMMANDS.RECOVER:
@@ -109,6 +119,9 @@ class List(Command):
                         # add empty line
                         todos = todos[:current_pos + 1] + [("??????", "", "", None)] + todos[current_pos + 1:]
                         current_pos += 1
+                        todos = todos[:current_pos] + [("??????", "", "", None)] + todos[current_pos:]
+                        if cursor + 2 < max_rows:
+                            cursor += 1
 
                         # rerender todos
                         for index, todo in enumerate(todos):
@@ -127,6 +140,8 @@ class List(Command):
                         else:
                             todos = todos[:current_pos] + todos[current_pos + 1:]
                             current_pos -= 1
+                            if cursor + 2 < max_rows:
+                                cursor -= 1
                             menu.clear()
                     elif command == COMMANDS.EDIT:
                         menu.render_commands(todos_count, mode=COMMAND_MODES.EDIT)
