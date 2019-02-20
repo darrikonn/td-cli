@@ -75,9 +75,13 @@ class List(Command):
                     )
                 )
 
-                for index, todo in enumerate(todos):
+                start_pos = current_pos - cursor
+                todos_count = len(todos)
+                menu.render_test(cursor, current_pos, max_rows, todos_count)
+                to_be_rendered = todos[start_pos : (start_pos + max_rows)]
+                for index, todo in enumerate(to_be_rendered):
                     is_deleted = todo[0] in deleted_todos
-                    menu.render_todo(todo, index, current_pos, is_deleted)
+                    menu.render_todo(todo, index, cursor, is_deleted)
 
                 current_todo = todos[current_pos]
                 commands_offset = min(max_rows, todos_count)
@@ -125,25 +129,25 @@ class List(Command):
                         todos[current_pos] = current_todo[:3] + (not current_todo[3],)
                     elif command == COMMANDS.ADD:
                         # add empty line
-                        todos = todos[:current_pos + 1] + [("??????", "", "", None)] + todos[current_pos + 1:]
                         current_pos += 1
                         todos = todos[:current_pos] + [("??????", "", "", None)] + todos[current_pos:]
                         if cursor + 2 < max_rows:
                             cursor += 1
 
                         # rerender todos
-                        for index, todo in enumerate(todos):
+                        start_pos2 = current_pos - cursor
+                        to_be_rendered2 = todos[start_pos2 : (start_pos2 + max_rows)]
+                        for index, todo in enumerate(to_be_rendered2):
                             is_deleted = todo[0] in deleted_todos
-                            menu.render_todo(todo, index, current_pos, is_deleted)
+                            menu.render_todo(todo, index, cursor, is_deleted)
 
                         # render add commands
-                        menu.render_commands(todos_count, mode=COMMAND_MODES.ADD)
+                        menu.render_commands(min(todos_count + 1, max_rows), mode=COMMAND_MODES.ADD)
 
-                        new_todo_name = menu.edit_text("", current_pos)
+                        new_todo_name = menu.edit_text("", cursor)
                         if new_todo_name is not None:
                             new_id = self.service.todo.add(new_todo_name, new_todo_name, group[0], False)
                             todos[current_pos] = (new_id, new_todo_name, new_todo_name, False)
-                            todos_count += 1
                             group = (group[0], group[1] + 1, group[2] + 1, group[3])
                         else:
                             todos = todos[:current_pos] + todos[current_pos + 1:]
