@@ -111,15 +111,15 @@ class Menu:
         # restore the terminal to its original operating mode.
         curses.endwin()
 
-    def _clear_commands(self, offset):
+    def _clear_commands(self, offset, number_of_commands=NUMBER_OF_COMMANDS):
         # clear screen for commands
-        for i in range(NUMBER_OF_COMMANDS):
+        for i in range(number_of_commands):
             self.stdscr.move(offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2), 0)
             self.clear_leftovers()
 
     def _render_add_commands(self, offset):
         # clear screen for previous commands
-        self._clear_commands(offset)
+        self._clear_commands(offset - 2, NUMBER_OF_COMMANDS + 1)
 
         # save
         self.stdscr.addstr(
