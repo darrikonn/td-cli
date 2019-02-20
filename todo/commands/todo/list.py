@@ -4,7 +4,6 @@ from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 from todo.renderers import RenderOutput, RenderOutputWithTextwrap
 from todo.utils import interpret_state, singular_or_plural
-from todo.utils.menu import Menu
 
 
 class List(Command):
@@ -45,8 +44,12 @@ class List(Command):
         )
 
     def _render_todos_interactive(self, todos, group, state):  # noqa: C901
-        todos_count = len(todos)
-        if todos_count == 0:
+        try:
+            from todo.utils.menu import Menu
+        except ImportError as e:
+            raise TodoException("Sorry! The interactive mode is not supported by your system", e)
+
+        if len(todos) == 0:
             return RenderOutput(
                 "No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed"
             ).render(state=interpret_state(state), name=group[0] or "global")
