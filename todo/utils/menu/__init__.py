@@ -404,10 +404,8 @@ class Menu:
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
         X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
 
-        movement_tracker = MovementTracker(text, X_ORIGIN, self.cols)
-        self.stdscr.addstr(
-            Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
-        )
+        tracker = HorizontalTracker(text, X_ORIGIN, self.cols)
+        self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, tracker.get_hellip_string(), self.color.blue)
 
         self.clear_leftovers()
         self.refresh()
@@ -419,33 +417,31 @@ class Menu:
                 if key in self.commands.enter:
                     break
                 elif key in self.commands.escape:
-                    movement_tracker.erase_string()
+                    tracker.erase_string()
                     break
                 elif key == curses.KEY_LEFT:
-                    movement_tracker.move_left()
+                    tracker.move_left()
                 elif key == 262:  # fn + KEY_LEFT
-                    movement_tracker.move_to_start()
+                    tracker.move_to_start()
                 elif key == 360:  # fn + KEY_RIGHT
-                    movement_tracker.move_to_end()
+                    tracker.move_to_end()
                 elif key == curses.KEY_RIGHT:
-                    movement_tracker.move_right()
+                    tracker.move_right()
                 elif key == 8 or key == 127 or key == curses.KEY_BACKSPACE:
-                    movement_tracker.delete()
+                    tracker.delete()
                 elif key == 330:  # fn + KEY_BACKSPACE
-                    movement_tracker.delete_backwards()
+                    tracker.delete_backwards()
                 elif not curses.keyname(key).startswith(b"KEY_"):
-                    movement_tracker.add(chr(key))
+                    tracker.add(chr(key))
 
                 # clear the line and rewrite string
                 self.stdscr.move(Y_ORIGIN, X_ORIGIN)
                 self.clear_leftovers()
-                self.stdscr.addstr(
-                    Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
-                )
+                self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, tracker.get_hellip_string(), self.color.blue)
 
                 # move cursor to correct place and refresh screen
-                self.stdscr.move(Y_ORIGIN, movement_tracker.get_cursor_pos())
+                self.stdscr.move(Y_ORIGIN, tracker.get_cursor_pos())
                 self.stdscr.refresh()
         finally:
             curses.curs_set(False)
-        return movement_tracker.get_string()
+        return tracker.get_string()
