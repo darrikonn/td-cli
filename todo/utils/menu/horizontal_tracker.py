@@ -1,7 +1,7 @@
 from todo.utils import hellip_postfix, hellip_prefix
 
 
-class MovementTracker:
+class HorizontalTracker:
     __slots__ = ("_string", "_string_pos", "_cursor_pos", "_x_origin", "_terminal_width")
 
     def __init__(self, string, x_origin, terminal_width):
@@ -58,7 +58,7 @@ class MovementTracker:
 
     def delete_backwards(self):
         if self._string_pos < self._string_length:
-            self._string = self._string[: self._string_pos] + self._string[self._string_pos + 1:]
+            self._string = self._string[: self._string_pos] + self._string[self._string_pos + 1 :]
         if self._string_pos > self._relative_cursor_pos:
             self._cursor_pos = min(self._cursor_pos + 1, self._terminal_width - 1)
 
