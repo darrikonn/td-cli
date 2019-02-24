@@ -4,6 +4,7 @@ from todo.exceptions import TodoException
 from todo.parser.subparsers import (
     AddGroupParser,
     AddTodoParser,
+    CountTodosParser,
     GroupParser,
     ListGroupsParser,
     ListTodosParser,
@@ -29,6 +30,7 @@ class Parser:
       {...}                   commands
         add (a)               add todo
         add-group (ag)        add group
+        count (c)             count todos
         [id]                  manage todo
         group (g)             manage group
         list (ls, l)          list todos       *DEFAULT*
@@ -52,6 +54,9 @@ class Parser:
         # add group
         "ag": AddGroupParser,
         "add-group": AddGroupParser,
+        # count todos
+        "c": CountTodosParser,
+        "count": CountTodosParser,
         # get group
         "g": GroupParser,
         "group": GroupParser,

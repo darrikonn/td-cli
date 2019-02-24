@@ -7,6 +7,7 @@ class Commands:
     commands_dict = {
         COMMANDS.ADD_TODO: todo.Add,
         COMMANDS.COMPLETE_TODO: todo.Complete,
+        COMMANDS.COUNT_TODOS: todo.Count,
         COMMANDS.DELETE_TODO: todo.Delete,
         COMMANDS.EDIT_TODO: todo.Edit,
         COMMANDS.GET_TODO: todo.Get,

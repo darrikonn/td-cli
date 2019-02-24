@@ -1,6 +1,7 @@
 # flake8: noqa: F401
 from .add import Add
 from .complete import Complete
+from .count import Count
 from .delete import Delete
 from .edit import Edit
 from .get import Get

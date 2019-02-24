@@ -1,6 +1,7 @@
 class COMMANDS:
     ADD_TODO = "add_todo"
     COMPLETE_TODO = "complete_todo"
+    COUNT_TODOS = "count_todos"
     DELETE_TODO = "delete_todo"
     EDIT_TODO = "edit_todo"
     GET_TODO = "get_todo"
