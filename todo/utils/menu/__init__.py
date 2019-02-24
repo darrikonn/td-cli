@@ -7,7 +7,7 @@ from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 from todo.utils import strikethrough, hellip_postfix
 
-from .movement_tracker import MovementTracker
+from .horizontal_tracker import HorizontalTracker
 
 X_OFFSET = 2
 Y_OFFSET = 4

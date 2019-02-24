@@ -6,4 +6,5 @@ from .delete import Delete
 from .edit import Edit
 from .get import Get
 from .list import List
+from .list_interactive import ListInteractive
 from .uncomplete import Uncomplete
