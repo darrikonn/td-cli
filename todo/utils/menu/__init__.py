@@ -7,7 +7,7 @@ from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
 from todo.utils import strikethrough, hellip_postfix
 
-from .movement_tracker import MovementTracker
+from .horizontal_tracker import HorizontalTracker
 
 X_OFFSET = 2
 Y_OFFSET = 4
@@ -111,11 +111,45 @@ class Menu:
         # restore the terminal to its original operating mode.
         curses.endwin()
 
-    def _clear_commands(self, offset):
+    def _clear_commands(self, offset, number_of_commands=NUMBER_OF_COMMANDS):
         # clear screen for commands
-        for i in range(NUMBER_OF_COMMANDS):
+        for i in range(number_of_commands):
             self.stdscr.move(offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * (i + 2), 0)
             self.clear_leftovers()
+
+    def _render_add_commands(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset - 2, NUMBER_OF_COMMANDS + 1)
+
+        # save
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN,
+            "enter",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN * 5,
+            "to save new title",
+            self.color.grey,
+        )
+
+        # abort
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "escape",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to exit edit mode without saving",
+            self.color.grey,
+        )
 
     def _render_edit_commands(self, offset):
         # clear screen for previous commands
@@ -318,8 +352,8 @@ class Menu:
             # render non-active cursor
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET, " ")
 
-        # render empty state
-        if is_deleted:
+        if is_deleted or todo[3] is None:
+            # render empty state
             self.stdscr.addstr(offset + Y_OFFSET + MARGIN + NEXT_LINE, X_OFFSET + MARGIN, " ")
         else:
             self.stdscr.addstr(
@@ -355,7 +389,9 @@ class Menu:
         self.clear_leftovers()
 
     def render_commands(self, offset, mode=COMMAND_MODES.DEFAULT):
-        if mode == COMMAND_MODES.DEFAULT:
+        if mode == COMMAND_MODES.ADD:
+            self._render_add_commands(offset)
+        elif mode == COMMAND_MODES.DEFAULT:
             self._render_default_commands(offset)
         elif mode == COMMAND_MODES.DELETE:
             self._render_delete_commands(offset)
@@ -368,10 +404,8 @@ class Menu:
         Y_ORIGIN = offset + Y_OFFSET + MARGIN + NEXT_LINE
         X_ORIGIN = X_OFFSET + MARGIN * 5 + 2
 
-        movement_tracker = MovementTracker(text, X_ORIGIN, self.cols)
-        self.stdscr.addstr(
-            Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
-        )
+        tracker = HorizontalTracker(text, X_ORIGIN, self.cols)
+        self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, tracker.get_hellip_string(), self.color.blue)
 
         self.clear_leftovers()
         self.refresh()
@@ -383,33 +417,31 @@ class Menu:
                 if key in self.commands.enter:
                     break
                 elif key in self.commands.escape:
-                    movement_tracker.erase_string()
+                    tracker.erase_string()
                     break
                 elif key == curses.KEY_LEFT:
-                    movement_tracker.move_left()
+                    tracker.move_left()
                 elif key == 262:  # fn + KEY_LEFT
-                    movement_tracker.move_to_start()
+                    tracker.move_to_start()
                 elif key == 360:  # fn + KEY_RIGHT
-                    movement_tracker.move_to_end()
+                    tracker.move_to_end()
                 elif key == curses.KEY_RIGHT:
-                    movement_tracker.move_right()
+                    tracker.move_right()
                 elif key == 8 or key == 127 or key == curses.KEY_BACKSPACE:
-                    movement_tracker.delete()
+                    tracker.delete()
                 elif key == 330:  # fn + KEY_BACKSPACE
-                    movement_tracker.delete_backwards()
+                    tracker.delete_backwards()
                 elif not curses.keyname(key).startswith(b"KEY_"):
-                    movement_tracker.add(chr(key))
+                    tracker.add(chr(key))
 
                 # clear the line and rewrite string
                 self.stdscr.move(Y_ORIGIN, X_ORIGIN)
                 self.clear_leftovers()
-                self.stdscr.addstr(
-                    Y_ORIGIN, X_ORIGIN, movement_tracker.get_hellip_string(), self.color.blue
-                )
+                self.stdscr.addstr(Y_ORIGIN, X_ORIGIN, tracker.get_hellip_string(), self.color.blue)
 
                 # move cursor to correct place and refresh screen
-                self.stdscr.move(Y_ORIGIN, movement_tracker.get_cursor_pos())
+                self.stdscr.move(Y_ORIGIN, tracker.get_cursor_pos())
                 self.stdscr.refresh()
         finally:
             curses.curs_set(False)
-        return movement_tracker.get_string()
+        return tracker.get_string()
