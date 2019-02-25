@@ -23,10 +23,6 @@ class ListInteractive(Command):
             raise TodoException("<Group: {name}> not found".format(name=args.group))
 
         todos = self.service.todo.get_all(group[0], args.state)
-        if len(todos) == 0:
-            return RenderOutput(
-                "No{state} {bold}{blue}{name}{reset} {bold}todos{reset} to be listed"
-            ).render(state=interpret_state(args.state), name=group[0] or "global")
 
         with Menu() as menu:
             menu.clear()

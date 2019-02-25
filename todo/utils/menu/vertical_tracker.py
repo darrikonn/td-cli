@@ -12,11 +12,12 @@ class VerticalTracker:
 
     def __init__(self, todos, group):
         _, rows = os.get_terminal_size()
+        start_pos = 0 if len(todos) > 0 else -1
         self._rows = rows - self.PADDING
         self._todos = todos
         self._group = group
-        self._current_pos = 0
-        self._cursor = 0
+        self._current_pos = start_pos
+        self._cursor = start_pos
         self._deleted_todos = set()
 
     @property
@@ -34,7 +35,9 @@ class VerticalTracker:
 
     @property
     def current_todo(self):
-        return self.Todo(*self._current_todo)
+        if self.todos_count > 0:
+            return self.Todo(*self._current_todo)
+        return self.Todo(*((None,) * len(Todo._fields)))
 
     @property
     def group(self):

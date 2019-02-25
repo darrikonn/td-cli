@@ -185,22 +185,22 @@ class Menu:
             self.color.grey,
         )
 
-    def _render_delete_commands(self, offset):
+    def _render_empty_commands(self, offset):
         # clear screen for previous commands
         self._clear_commands(offset)
 
-        # recover
+        # add
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
             X_OFFSET + MARGIN,
-            "r",
+            "a",
             curses.A_BOLD | self.color.grey,
         )
         self.clear_leftovers()
         self.stdscr.addstr(
             offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
             X_OFFSET + MARGIN * 5,
-            "to recover deleted todo",
+            "to add a todo",
             self.color.grey,
         )
 
@@ -391,6 +391,8 @@ class Menu:
     def render_commands(self, offset, mode=COMMAND_MODES.DEFAULT):
         if mode == COMMAND_MODES.ADD:
             self._render_add_commands(offset)
+        elif mode == COMMAND_MODES.EMPTY:
+            self._render_empty_commands(offset)
         elif mode == COMMAND_MODES.DEFAULT:
             self._render_default_commands(offset)
         elif mode == COMMAND_MODES.DELETE:
