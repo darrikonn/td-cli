@@ -219,6 +219,55 @@ class Menu:
             self.color.grey,
         )
 
+    def _render_delete_commands(self, offset):
+        # clear screen for previous commands
+        self._clear_commands(offset)
+
+        # add
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN,
+            "a",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 1,
+            X_OFFSET + MARGIN * 5,
+            "to add a todo",
+            self.color.grey,
+        )
+
+        # recover
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN,
+            "r",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 2,
+            X_OFFSET + MARGIN * 5,
+            "to recover deleted todo",
+            self.color.grey,
+        )
+
+        # quit
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            X_OFFSET + MARGIN,
+            "q",
+            curses.A_BOLD | self.color.grey,
+        )
+        self.clear_leftovers()
+        self.stdscr.addstr(
+            offset + Y_OFFSET + MARGIN * 2 + NEXT_LINE * 3,
+            X_OFFSET + MARGIN * 5,
+            "to quit",
+            self.color.grey,
+        )
+
     def _render_default_commands(self, offset):
         # clear screen for previous commands
         self._clear_commands(offset)
