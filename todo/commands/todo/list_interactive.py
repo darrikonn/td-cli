@@ -2,12 +2,31 @@ from todo.commands.base import Command
 from todo.constants import COMMAND_MODES
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
-from todo.renderers import RenderOutput
-from todo.utils import interpret_state, singular_or_plural
+from todo.utils import singular_or_plural
 from todo.utils.menu.vertical_tracker import VerticalTracker
 
 
 class ListInteractive(Command):
+    DELETE_MODE_COMMANDS = (
+        COMMANDS.ADD,
+        COMMANDS.QUIT,
+        COMMANDS.RECOVER,
+        COMMANDS.UP,
+        COMMANDS.DOWN,
+    )
+    EMPTY_MODE_COMMANDS = (COMMANDS.ADD, COMMANDS.QUIT)
+    DEFAULT_MODE_COMMANDS = (
+        COMMANDS.ADD,
+        COMMANDS.QUIT,
+        COMMANDS.DELETE,
+        COMMANDS.EDIT,
+        COMMANDS.TOGGLE,
+        COMMANDS.UP,
+        COMMANDS.DOWN,
+    )
+    # ADD_MODE_COMMANDS is a special case outside of this scope
+    # EDIT_MODE_COMMANDS is a special case outside of this scope
+
     def run(self, args):  # noqa: C901
         try:
             from todo.utils.menu import Menu
@@ -42,13 +61,15 @@ class ListInteractive(Command):
 
                 self._render_todos(menu, tracker)
 
-                is_current_deleted = tracker.is_deleted(tracker.current_todo.id)
-                if is_current_deleted:
+                mode = self._get_mode(tracker)
+                if mode == COMMAND_MODES.EMPTY:
+                    menu.render_commands(tracker.commands_offset, mode=COMMAND_MODES.EMPTY)
+                elif mode == COMMAND_MODES.DELETE:
                     menu.render_commands(tracker.commands_offset, mode=COMMAND_MODES.DELETE)
                 else:
                     menu.render_commands(tracker.commands_offset)
 
-                command = self._interpret_command(menu.get_command(), is_current_deleted)
+                command = self._interpret_command(menu.get_command(), mode)
 
                 if command == COMMANDS.DOWN:
                     tracker.move_down()
@@ -85,15 +106,21 @@ class ListInteractive(Command):
 
             tracker.delete_todos(self.service.todo)
 
-    def _interpret_command(self, command, is_current_deleted):
-        if command in (COMMANDS.UP, COMMANDS.DOWN, COMMANDS.QUIT):
+    def _get_mode(self, tracker):
+        if tracker.todos_count == 0:
+            return COMMAND_MODES.EMPTY
+        elif tracker.is_deleted(tracker.current_todo.id):
+            return COMMAND_MODES.DELETE
+        return COMMAND_MODES.DEFAULT
+
+    def _interpret_command(self, command, mode):
+        if mode == COMMAND_MODES.DELETE and command in self.DELETE_MODE_COMMANDS:
             return command
-        elif is_current_deleted:
-            if command == COMMANDS.RECOVER:
-                return command
-            return None
-        else:
+        elif mode == COMMAND_MODES.EMPTY and command in self.EMPTY_MODE_COMMANDS:
             return command
+        elif mode == COMMAND_MODES.DEFAULT and command in self.DEFAULT_MODE_COMMANDS:
+            return command
+        return None
 
     def _render_todos(self, menu, tracker):
         for index, todo in enumerate(tracker.todos):
