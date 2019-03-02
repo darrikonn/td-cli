@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from pathlib import Path
 from urllib.request import pathname2url
 
 from todo.settings import config
@@ -14,8 +15,7 @@ class Service:
     service_dict = {"todo": TodoService, "group": GroupService}
 
     def __init__(self):
-        database_path = os.path.expanduser("~/.{}.db".format(config["database_name"]))
-        db_uri = "file:{}".format(pathname2url(database_path))
+        db_uri = "file:{}".format(pathname2url(self._get_database_path()))
 
         try:
             self.connection = sqlite3.connect("{}?mode=rw".format(db_uri), uri=True)
@@ -25,6 +25,9 @@ class Service:
         self._link_services()
 
         self.cursor.execute("PRAGMA foreign_keys = ON")
+
+    def _get_database_path(self):
+        return os.path.expanduser(Path("~/.{}.db".format(config["database_name"])))
 
     def _initialise_database(self, db_uri):
         self.connection = sqlite3.connect(db_uri, uri=True)
