@@ -1,6 +1,7 @@
 import configparser
 import os
 from functools import lru_cache
+from pathlib import Path
 from subprocess import check_output
 
 CONFIG_FILE_NAME = "~/.td.cfg"
@@ -36,7 +37,7 @@ def _get_config():
         settings["editor"] = environment_editor
 
     # from root config
-    config_file = os.path.expanduser(CONFIG_FILE_NAME)
+    config_file = os.path.expanduser(Path(CONFIG_FILE_NAME))
     if os.path.exists(config_file):
         _update_from_config(config_file)
 
