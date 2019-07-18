@@ -1,6 +1,6 @@
-from todo.commands import group, todo
-from todo.services import Service
+from todo.commands import config, group, todo
 from todo.constants import COMMANDS
+from todo.services import Service
 
 
 class Commands:
@@ -13,6 +13,7 @@ class Commands:
         COMMANDS.GET_TODO: todo.Get,
         COMMANDS.LIST_TODOS: todo.List,
         COMMANDS.UNCOMPLETE_TODO: todo.Uncomplete,
+        COMMANDS.INITIALIZE_CONFIG: config.Initialize,
         COMMANDS.ADD_GROUP: group.Add,
         COMMANDS.DELETE_GROUP: group.Delete,
         COMMANDS.GET_GROUP: group.Get,

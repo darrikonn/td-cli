@@ -150,6 +150,19 @@ opened in your editor where you can edit the todo's details.
 
 <hr />
 
+## Initialize configuration
+```
+usage: td init-config
+       td ic
+
+initialize config
+
+optional arguments:
+  -h, --help         show this help message and exit
+```
+
+<hr />
+
 ## List groups
 ```
 usage: td list-groups [--completed] [--uncompleted]

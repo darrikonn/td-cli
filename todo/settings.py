@@ -7,6 +7,9 @@ from subprocess import check_output
 CONFIG_FILE_NAME = "~/.td.cfg"
 CONFIG_SECTION = "settings"
 DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None}
+EXAMPLE_CONFIG = """[settings]
+group: {group}
+"""
 
 
 @lru_cache()

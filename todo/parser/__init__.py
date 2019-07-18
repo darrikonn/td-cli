@@ -6,6 +6,7 @@ from todo.parser.subparsers import (
     AddTodoParser,
     CountTodosParser,
     GroupParser,
+    InitializeConfigParser,
     ListGroupsParser,
     ListTodosParser,
     TodoParser,
@@ -33,6 +34,7 @@ class Parser:
         count (c)             count todos
         [id]                  manage todo
         group (g)             manage group
+        init-config (ig)      initialize config
         list (ls, l)          list todos       *DEFAULT*
         list-groups (lg, lsg) list groups
 
@@ -60,6 +62,9 @@ class Parser:
         # get group
         "g": GroupParser,
         "group": GroupParser,
+        # initialize config
+        "ic": InitializeConfigParser,
+        "init-config": InitializeConfigParser,
         # list groups
         "lg": ListGroupsParser,
         "lsg": ListGroupsParser,

@@ -13,6 +13,7 @@ class COMMANDS:
     GET_GROUP = "get_group"
     LIST_GROUPS = "list_groups"
     PRESET_GROUP = "preset_group"
+    INITIALIZE_CONFIG = "initialize_config"
 
 
 class INTERACTIVE_COMMANDS:
