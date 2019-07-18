@@ -37,7 +37,7 @@ class VerticalTracker:
     def current_todo(self):
         if self.todos_count > 0:
             return self.Todo(*self._current_todo)
-        return self.Todo(*((None,) * len(Todo._fields)))
+        return self.Todo(*((None,) * len(self.Todo._fields)))
 
     @property
     def group(self):

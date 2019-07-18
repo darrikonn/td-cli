@@ -49,7 +49,7 @@ class ListInteractive(Command):
             tracker = VerticalTracker(todos, group)
             while True:
                 menu.refresh()
-                menu.render_header("{group_name}".format(group_name=tracker.group.name))
+                menu.render_header("{group_name}".format(group_name=tracker.group.name or "global"))
                 menu.render_subheader(
                     "{items} item{singular_or_plural}: {completed} completed, {uncompleted} left".format(
                         items=tracker.group.items,
