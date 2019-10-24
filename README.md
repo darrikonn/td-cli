@@ -2,25 +2,26 @@
   <img src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.png" width=80 alt="Icon"/>
 </p>
 
-<h1 align="center">
-  td-cli
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5694851/67482097-be2ecc80-f652-11e9-899d-1d9750929b7e.png" />
+  <br />
   <br />
   <a href="https://pypi.org/project/td-cli/">
-    <img src="https://img.shields.io/pypi/v/td-cli.svg?style=flat-square">
+    <img src="https://img.shields.io/pypi/v/td-cli.svg?style=flat-square"/>
   </a>
   <a href="https://pypi.org/project/td-cli/">
-    <img src="https://img.shields.io/pypi/dm/td-cli?style=flat-square">
+    <img src="https://img.shields.io/pypi/dm/td-cli?style=flat-square"/>
   </a>
   <a href="https://github.com/darrikonn/td-cli/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/Licence-MIT-yellow.svg?longCache=true&style=flat-square">
+    <img src="https://img.shields.io/badge/Licence-MIT-yellow.svg?longCache=true&style=flat-square"/>
   </a>
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Made With-Python-red.svg?longCache=true&style=flat-square">
+    <img src="https://img.shields.io/badge/Made With-Python-red.svg?longCache=true&style=flat-square"/>
   </a>
   <a href="https://github.com/alebcay/awesome-shell#command-line-productivity">
-    <img height="20" src="https://user-images.githubusercontent.com/2769158/44446193-327a6580-a5a1-11e8-91e2-21ca857f95d4.png">
+    <img height="20" src="https://user-images.githubusercontent.com/2769158/44446193-327a6580-a5a1-11e8-91e2-21ca857f95d4.png"/>
   </a>
-</h1>
+</h3>
 
 <pre>
   <p align="center"><a href="https://pypi.org/project/td-cli/"><strong>td-cli</strong></a> is a command line todo manager, <br/>where you can organize and manage your todos across multiple projects</p>
