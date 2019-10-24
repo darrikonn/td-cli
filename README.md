@@ -2,9 +2,9 @@
   <img src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.png" width=80 alt="Icon"/>
 </p>
 
-<h1 align="center">td-cli</h1>
-
-<p align="center">
+<h1 align="center">
+  td-cli
+  <br />
   <a href="https://pypi.org/project/td-cli/">
     <img src="https://img.shields.io/pypi/v/td-cli.svg?style=flat-square">
   </a>
@@ -20,7 +20,8 @@
   <a href="https://github.com/alebcay/awesome-shell#command-line-productivity">
     <img height="20" src="https://user-images.githubusercontent.com/2769158/44446193-327a6580-a5a1-11e8-91e2-21ca857f95d4.png">
   </a>
-</p>
+</h1>
+
 
 <p align="center"><a href="https://pypi.org/project/td-cli/"><strong>td-cli</strong></a> is a command line todo manager, <br/>where you can organize and manage your todos across multiple projects</p>
 <p align="center"><img class="img-responsive" width="500" src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.gif" alt="gif"/></p>
