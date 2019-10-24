@@ -1,11 +1,25 @@
-<p align="center"><img src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.png" width=80 alt="Icon"/></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.png" width=80 alt="Icon"/>
+  <h1>td-cli</h1>
+</p>
 
-<h1 align="center">td-cli</h1>
+<p align="center">
+  <a href="https://pypi.org/project/td-cli/">
+    <img src="https://img.shields.io/pypi/dm/td-cli?style=flat-square">
+  </a>
+  <a href="https://github.com/darrikonn/td-cli/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/Licence-MIT-blue.svg?longCache=true&style=flat-square">
+  </a>
+  <img src="https://img.shields.io/badge/Made With-Python-red.svg?longCache=true&style=flat-square">
+  <a href="https://github.com/alebcay/awesome-shell#command-line-productivity">
+    <img height="20" src="https://user-images.githubusercontent.com/2769158/44446193-327a6580-a5a1-11e8-91e2-21ca857f95d4.png">
+  </a>
+</p>
 
 <p align="center"><a href="https://pypi.org/project/td-cli/"><strong>td-cli</strong></a> is a command line todo manager, <br/>where you can organize and manage your todos across multiple projects</p>
 <p align="center"><img class="img-responsive" width="500" src="https://raw.githubusercontent.com/darrikonn/td-cli/master/img/td-cli.gif" alt="gif"/></p>
 <p align="center"><img src="https://badge.fury.io/py/td-cli.svg" /></p>
-
+https://badge.fury.io/py/td-cli.svg?style=for-the-badge
 <hr />
 
 ## Installation
