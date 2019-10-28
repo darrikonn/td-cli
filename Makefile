@@ -1,25 +1,56 @@
-FLAKE8=$(shell which flake8 || echo venv/bin/flake8)
+CODE_STYLE_FILE_LIST=todo
 
-lint:
-	$(FLAKE8) todo
+ARGS=$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+$(eval $(ARGS):;@:)
+
+### TARGETS ###
+
+venv:
+	virtualenv venv
+
+requirements:
+	venv/bin/pip install -e ".[dev]"
+	venv/bin/pip install -e ".[deploy]"
+
+flake8:
+	venv/bin/flake8 ${CODE_STYLE_FILE_LIST}
+
+black:
+	venv/bin/black --target-version py37 --check ${CODE_STYLE_FILE_LIST}
+
+black_format:
+	venv/bin/black --target-version py37 ${CODE_STYLE_FILE_LIST}
+
+isort:
+	venv/bin/isort -c -rc ${CODE_STYLE_FILE_LIST}
+
+isort_format:
+	venv/bin/isort -rc ${CODE_STYLE_FILE_LIST}
+
+mypy:
+	venv/bin/mypy ${CODE_STYLE_FILE_LIST}
+
+lint: flake8 black isort mypy
+
+format: black_format isort_format
 
 clean:
 	-rm -r dist build td_cli.egg-info 2> /dev/null
 
 build:
-	python3 setup.py sdist bdist_wheel
+	venv/bin/python3 setup.py sdist bdist_wheel
 
 upload_test:
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	venv/bin/twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 upload:
-	twine upload dist/*
+	venv/bin/twine upload dist/*
 
 install_test:
-	python3 -m pip install --index-url https://test.pypi.org/simple/ td-cli
+	venv/bin/python3 -m pip install --index-url https://test.pypi.org/simple/ td-cli
 
 install:
-	python3 -m pip install td-cli
+	venv/bin/python3 -m pip install td-cli
 
 publish_test: clean build upload_test install_test
 
