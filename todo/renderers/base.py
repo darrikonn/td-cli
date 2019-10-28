@@ -14,7 +14,7 @@ class Render(ABC):
             bold=Style.BOLD,
             normal=Style.NORMAL,
             reset=Style.RESET_ALL,
-            **kwargs
+            **kwargs,
         )
 
     @abstractmethod

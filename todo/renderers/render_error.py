@@ -19,6 +19,6 @@ class RenderError(Render):
                 print(
                     self._format(
                         "\nRun with `{bold}--verbose/-v{reset}` to get more detailed error message",
-                        **kwargs
+                        **kwargs,
                     )
                 )

@@ -29,7 +29,7 @@ def set_default_subparser(self, name, args, positional_args):
             return args.insert(positional_args, name)
 
 
-argparse.ArgumentParser.set_default_subparser = set_default_subparser
+setattr(argparse.ArgumentParser, "set_default_subparser", set_default_subparser)
 
 
 class BaseParser:
