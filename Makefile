@@ -12,6 +12,8 @@ requirements:
 	venv/bin/pip install -e ".[dev]"
 	venv/bin/pip install -e ".[deploy]"
 
+bootstrap: venv requirements
+
 flake8:
 	venv/bin/flake8 ${CODE_STYLE_FILE_LIST}
 
