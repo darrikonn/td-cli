@@ -1,0 +1,124 @@
+version: 2.1
+description: |
+  Will install dev and packaging extra dependencies from
+  setup.py.
+
+workflows:
+  version: 2.1
+  lint:
+    jobs:
+      - build
+      - flake8:
+          requires:
+            - build
+      - black:
+          requires:
+            - build
+      - isort:
+          requires:
+            - build
+      - mypy:
+          requires:
+            - build
+
+executors:
+  python:
+    description: Python image build image
+    parameters:
+      version:
+        description: Python version to use
+        type: string
+        default: "3.7"
+    docker:
+      - image: circleci/python:<<parameters.version>>
+
+references:
+  container_config: &container_config
+    working_directory: ~/project
+    executor:
+      name: python
+      version: <<parameters.python-version>>
+    parameters:
+      python-version:
+        description: Python version to use
+        type: string
+        default: "3.7"
+      cache-version:
+        description: A cache version that may be used for cache busting
+        type: string
+        default: "v1"
+
+commands:
+  # Use a venv so we don't have to run as root to make caches work
+  setup_venv_and_install_deps:
+    description: |
+      Setup a python venv for the project.
+      Install project dependencies into the virtual environment using
+      pip.
+
+      Installs the dependencies declared in setup.py, including any
+      test, dev, and packaging extra dependencies
+    parameters:
+      cache-version:
+        description: A cache version that may be used for cache busting
+        type: string
+        default: "v1"
+    steps:
+      - restore_cache:
+          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
+      - run: python -m venv venv
+      - run: echo ". venv/bin/activate" >> $BASH_ENV
+      - run: pip install -e .[test,dev,packaging]
+      - save_cache:
+          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
+          paths:
+            - venv
+
+jobs:
+  build:
+    description: Build and install dependencies
+    <<: *container_config
+    steps:
+      - checkout
+      - setup_venv_and_install_deps:
+          cache-version: <<parameters.cache-version>>
+      - persist_to_workspace:
+          root: ~/project
+          paths: 
+            - venv
+            - Makefile
+            - todo
+            - pyproject.toml
+            - setup.cfg
+
+  isort:
+    description: Execute import order checks with isort
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: make isort
+
+  black:
+    description: Execute code format checks with black
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: make black
+
+  flake8:
+    description: Execute code format checks with flake8
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: make flake8
+
+  mypy:
+    description: Execute code format checks with mypy
+    <<: *container_config
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: make mypy
