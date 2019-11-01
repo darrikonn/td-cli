@@ -6,4 +6,4 @@ class RenderInput(Render):
         self.string_to_format = string_to_format
 
     def render(self, **kwargs):
-        return input(self._format(self.string_to_format, **kwargs)).lower()
+        return input(self._format(f"{self.string_to_format}%s" % "{reset}", **kwargs)).lower()

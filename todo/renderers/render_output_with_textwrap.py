@@ -19,4 +19,4 @@ class RenderOutputWithTextwrap(Render):
             width=cols,
             subsequent_indent=kwargs.get("subsequent_indent"),
         )
-        print(wrapper.fill(self._format(self.text_to_wrap, **kwargs)))
+        print(wrapper.fill(self._format(f"{self.text_to_wrap}%s" % "{reset}", **kwargs)))

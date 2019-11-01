@@ -6,4 +6,4 @@ class RenderOutput(Render):
         self.string_to_format = string_to_format
 
     def render(self, **kwargs):
-        print(self._format(self.string_to_format, **kwargs))
+        print(self._format(f"{self.string_to_format}%s" % "{reset}", **kwargs))

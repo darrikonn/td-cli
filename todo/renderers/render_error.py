@@ -11,10 +11,10 @@ class RenderError(Render):
     def render(self, **kwargs):
         if self.verbose:
             print(self._format("{red}{title}{reset}:", title=self.title))
-            print(self._format(str(self.detailed_error), **kwargs))
+            print(self._format(f"{str(self.detailed_error)}%s" % "{reset}", **kwargs))
         else:
             print(self._format("{red}{title}{reset}:", title=self.title))
-            print(self._format(str(self.error), **kwargs))
+            print(self._format(f"{str(self.error)}" % "{reset}", **kwargs))
             if self.detailed_error != self.error and not self.verbose:
                 print(
                     self._format(
