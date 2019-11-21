@@ -1,5 +1,6 @@
-import os
 from collections import namedtuple
+
+from todo.utils import get_terminal_size
 
 
 class VerticalTracker:
@@ -11,7 +12,7 @@ class VerticalTracker:
     Todo = namedtuple("Todo", ("id", "name", "details", "completed"))
 
     def __init__(self, todos, group):
-        _, rows = os.get_terminal_size()
+        _, rows = get_terminal_size()
         start_pos = 0 if len(todos) > 0 else -1
         self._rows = rows - self.PADDING
         self._todos = todos
