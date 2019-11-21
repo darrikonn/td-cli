@@ -1,5 +1,6 @@
 import textwrap
-from os import get_terminal_size
+
+from todo.utils import get_terminal_size
 
 from .base import Render
 

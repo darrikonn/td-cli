@@ -5,7 +5,7 @@ from collections import namedtuple
 from todo.constants import COMMAND_MODES
 from todo.constants import INTERACTIVE_COMMANDS as COMMANDS
 from todo.exceptions import TodoException
-from todo.utils import hellip_postfix, strikethrough
+from todo.utils import get_terminal_size, hellip_postfix, strikethrough
 
 from .horizontal_tracker import HorizontalTracker
 
@@ -69,7 +69,7 @@ class Menu:
 
     def __init__(self):
         os.environ.setdefault("ESCDELAY", "25")
-        self.cols, _ = os.get_terminal_size()
+        self.cols, _ = get_terminal_size()
         self.stdscr = curses.initscr()
         try:
             self._setup_screen()

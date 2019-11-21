@@ -1,3 +1,4 @@
+from os import get_terminal_size as os_get_terminal_size
 import random
 import tempfile
 from subprocess import call
@@ -58,3 +59,9 @@ def hellip_prefix(string, sub_length):
 
 def hellip_postfix(string, sub_length):
     return string[:sub_length] + "…"
+
+def get_terminal_size():
+    try:
+        return os_get_terminal_size()
+    except OSError:
+        return 80, 43
