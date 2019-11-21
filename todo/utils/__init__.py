@@ -1,6 +1,6 @@
-from os import get_terminal_size as os_get_terminal_size
 import random
 import tempfile
+from os import get_terminal_size as os_get_terminal_size
 from subprocess import call
 
 from pkg_resources import get_distribution
@@ -59,6 +59,7 @@ def hellip_prefix(string, sub_length):
 
 def hellip_postfix(string, sub_length):
     return string[:sub_length] + "…"
+
 
 def get_terminal_size():
     try:
