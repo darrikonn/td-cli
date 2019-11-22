@@ -34,7 +34,7 @@ class Parser:
         count (c)             count todos
         [id]                  manage todo
         group (g)             manage group
-        init-config (ig)      initialize config
+        init-config (ic)      initialize config
         list (ls, l)          list todos       *DEFAULT*
         list-groups (lg, lsg) list groups
 
