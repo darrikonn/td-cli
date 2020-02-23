@@ -7,3 +7,5 @@ include:
   - README.md
   - LICENSE
   - API.md
+
+theme: jekyll-theme-midnight
