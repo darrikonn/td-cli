@@ -8,4 +8,4 @@ include:
   - LICENSE
   - API.md
 
-theme: jekyll-theme-midnight
+theme: jekyll-theme-slate
