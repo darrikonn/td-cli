@@ -2,9 +2,7 @@ import configparser
 import os
 from functools import lru_cache
 from pathlib import Path
-from subprocess import check_output
 
-CONFIG_FILE_NAME = "~/.td.cfg"
 CONFIG_SECTION = "settings"
 DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None}
 EXAMPLE_CONFIG = """[settings]
@@ -13,14 +11,16 @@ group: {group}
 
 
 @lru_cache()
-def get_git_project_config():
-    """ returns the absolute path of the repository root """
-    try:
-        base = check_output("git rev-parse --show-toplevel 2> /dev/null", shell=True)
-        path = base.decode("utf-8").strip()
-        return "{path}/.td.cfg".format(path=path)
-    except Exception:
-        return ""
+def get_project_config(filepath):
+    """ returns the absolute path of nearest config """
+    config_file = Path.joinpath(filepath, ".td.cfg")
+
+    if Path.home() >= filepath:
+        return None
+    elif Path.exists(config_file):
+        return config_file
+    else:
+        return get_project_config(filepath.parent)
 
 
 @lru_cache()
@@ -40,16 +40,16 @@ def _get_config():
         settings["editor"] = environment_editor
 
     # from root config
-    config_file = os.path.expanduser(Path(CONFIG_FILE_NAME))
-    if os.path.exists(config_file):
+    config_file = Path.joinpath(Path.home(), ".config", "td-cli", "td.cfg")
+    if Path.exists(config_file):
         _update_from_config(config_file)
 
     settings["group"] = None
 
-    # from git project config
-    git_config_file = get_git_project_config()
-    if os.path.exists(git_config_file):
-        _update_from_config(git_config_file)
+    # from project config
+    project_config_file = get_project_config(Path.cwd())
+    if project_config_file:
+        _update_from_config(project_config_file)
 
     return settings
 

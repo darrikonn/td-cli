@@ -1,58 +1,77 @@
+### VARIABLES ###
+
+RUN=poetry run
+DATE=`date +%Y-%m-%d`
 CODE_STYLE_FILE_LIST=todo
 
 ARGS=$(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 $(eval $(ARGS):;@:)
 
+
 ### TARGETS ###
 
-venv:
-	virtualenv venv
+# Install poetry
+poetry:
+	pip3 install poetry
 
+# Install requirements
 requirements:
-	venv/bin/pip install -e ".[dev]"
-	venv/bin/pip install -e ".[deploy]"
+	poetry install --no-root
 
-bootstrap: venv requirements
+# Install poetry and requirements
+dev: poetry requirements
 
+# Spin up shell in virtual environment
+venv:
+	poetry shell
+
+# Lint using flake8
 flake8:
-	venv/bin/flake8 ${CODE_STYLE_FILE_LIST}
+	${RUN} flake8 ${CODE_STYLE_FILE_LIST}
 
+# Lint using black
 black:
-	venv/bin/black --target-version py37 --check ${CODE_STYLE_FILE_LIST}
+	${RUN} black --target-version py38 --check ${CODE_STYLE_FILE_LIST}
 
+# Format using black
 black_format:
-	venv/bin/black --target-version py37 ${CODE_STYLE_FILE_LIST}
+	${RUN} black --target-version py38 ${CODE_STYLE_FILE_LIST}
 
+# Lint using isort
 isort:
-	venv/bin/isort -c -rc ${CODE_STYLE_FILE_LIST}
+	${RUN} isort -c -rc ${CODE_STYLE_FILE_LIST}
 
+# Format using isort
 isort_format:
-	venv/bin/isort -rc ${CODE_STYLE_FILE_LIST}
+	${RUN} isort -rc ${CODE_STYLE_FILE_LIST}
 
+# Lint using mypy
 mypy:
-	venv/bin/mypy ${CODE_STYLE_FILE_LIST}
+	${RUN} mypy ${CODE_STYLE_FILE_LIST}
 
+# Lint using all methods combined
 lint: flake8 black isort mypy
 
+# Format using all methods combined
 format: black_format isort_format
 
 clean:
 	-rm -r dist build td_cli.egg-info 2> /dev/null
 
 build:
-	venv/bin/python3 setup.py sdist bdist_wheel
+	${RUN} python setup.py sdist bdist_wheel
 
 upload_test:
-	venv/bin/twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	${RUN} upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 upload:
-	venv/bin/twine upload dist/*
+	${RUN} upload dist/*
 
 install_test:
-	venv/bin/python3 -m pip install --index-url https://test.pypi.org/simple/ td-cli
+	${RUN} python -m pip install --index-url https://test.pypi.org/simple/ td-cli
 
 install:
-	venv/bin/python3 -m pip install td-cli
+	${RUN} python -m pip install td-cli
 
 publish_test: clean build upload_test install_test
 

@@ -28,13 +28,15 @@ executors:
       version:
         description: Python version to use
         type: string
-        default: "3.7"
+        default: "3.8"
     docker:
       - image: circleci/python:<<parameters.version>>
+        environment:
+          POETRY_VIRTUALENVS_PATH: /home/circleci/td-cli/.cache
 
 references:
   container_config: &container_config
-    working_directory: ~/project
+    working_directory: ~/td-cli
     executor:
       name: python
       version: <<parameters.python-version>>
@@ -42,37 +44,34 @@ references:
       python-version:
         description: Python version to use
         type: string
-        default: "3.7"
+        default: "3.8"
       cache-version:
         description: A cache version that may be used for cache busting
         type: string
-        default: "v1"
+        default: "v2"
 
 commands:
   # Use a venv so we don't have to run as root to make caches work
   setup_venv_and_install_deps:
     description: |
       Setup a python venv for the project.
-      Install project dependencies into the virtual environment using
-      pip.
+      Install project dependencies into a virtual environment.
 
-      Installs the dependencies declared in setup.py, including any
-      test, dev, and packaging extra dependencies
+      Installs the dependencies declared in pyproject.toml, including all
+      dev dependencies.
     parameters:
       cache-version:
         description: A cache version that may be used for cache busting
         type: string
-        default: "v1"
+        default: "v2"
     steps:
       - restore_cache:
-          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
-      - run: python -m venv venv
-      - run: echo ". venv/bin/activate" >> $BASH_ENV
-      - run: pip install -e .[test,dev,packaging]
+          key: <<parameters.cache-version>>-poetry-cache-{{ checksum "poetry.lock" }}
+      - run: make requirements
       - save_cache:
-          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
+          key: <<parameters.cache-version>>-poetry-cache-{{ checksum "poetry.lock" }}
           paths:
-            - venv
+            - .cache
 
 jobs:
   build:
@@ -83,9 +82,9 @@ jobs:
       - setup_venv_and_install_deps:
           cache-version: <<parameters.cache-version>>
       - persist_to_workspace:
-          root: ~/project
-          paths: 
-            - venv
+          root: ~/td-cli
+          paths:
+            - .cache
             - Makefile
             - todo
             - pyproject.toml
@@ -96,7 +95,7 @@ jobs:
     <<: *container_config
     steps:
       - attach_workspace:
-          at: ~/project
+          at: ~/td-cli
       - run: make isort
 
   black:
@@ -104,7 +103,7 @@ jobs:
     <<: *container_config
     steps:
       - attach_workspace:
-          at: ~/project
+          at: ~/td-cli
       - run: make black
 
   flake8:
@@ -112,7 +111,7 @@ jobs:
     <<: *container_config
     steps:
       - attach_workspace:
-          at: ~/project
+          at: ~/td-cli
       - run: make flake8
 
   mypy:
@@ -120,5 +119,5 @@ jobs:
     <<: *container_config
     steps:
       - attach_workspace:
-          at: ~/project
+          at: ~/td-cli
       - run: make mypy
