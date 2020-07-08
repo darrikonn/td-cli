@@ -18,6 +18,9 @@ poetry:
 requirements:
 	poetry install --no-root
 
+deploy_requirements:
+	${RUN} pip install wheel
+
 # Install poetry and requirements
 dev: poetry requirements
 
@@ -62,10 +65,10 @@ build:
 	${RUN} python setup.py sdist bdist_wheel
 
 upload_test:
-	${RUN} upload --repository-url https://test.pypi.org/legacy/ dist/*
+	${RUN} twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 upload:
-	${RUN} upload dist/*
+	${RUN} twine upload dist/*
 
 install_test:
 	${RUN} python -m pip install --index-url https://test.pypi.org/simple/ td-cli
