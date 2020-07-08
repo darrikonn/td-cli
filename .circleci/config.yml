@@ -65,14 +65,14 @@ commands:
         default: "v1"
     steps:
       - restore_cache:
-          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
+          key: <<parameters.cache-version>>-poetry-cache-{{ checksum "poetry.lock" }}
       - run: python -m venv venv
       - run: echo ". venv/bin/activate" >> $BASH_ENV
       - run: pip install -e .[test,dev,packaging]
       - save_cache:
-          key: <<parameters.cache-version>>-pip-cache-{{ checksum "setup.py" }}
+          key: <<parameters.cache-version>>-poetry-cache-{{ checksum "poetry.lock" }}
           paths:
-            - venv
+            - /home/circleci/.cache/pypoetry/virtualenvs
 
 jobs:
   build:
@@ -84,8 +84,8 @@ jobs:
           cache-version: <<parameters.cache-version>>
       - persist_to_workspace:
           root: ~/project
-          paths: 
-            - venv
+          paths:
+            - /home/circleci/.cache/pypoetry/virtualenvs
             - Makefile
             - todo
             - pyproject.toml
