@@ -5,13 +5,15 @@ from subprocess import call
 
 from pkg_resources import get_distribution
 
+from todo.settings import config
+
 
 def generate_random_int():
     return "%06i" % random.randrange(10 ** 6)
 
 
 def get_user_input(editor, initial_message=b""):
-    with tempfile.NamedTemporaryFile(suffix=".tmp") as tf:
+    with tempfile.NamedTemporaryFile(suffix=f".{config['format']}") as tf:
         tf.write(initial_message)
         tf.flush()
         call([editor, "+set backupcopy=yes", tf.name])

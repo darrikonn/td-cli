@@ -4,7 +4,7 @@ from functools import lru_cache
 from pathlib import Path
 
 CONFIG_SECTION = "settings"
-DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None}
+DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None, "format": "tmp"}
 EXAMPLE_CONFIG = """[settings]
 group: {group}
 """
