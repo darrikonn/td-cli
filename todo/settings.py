@@ -2,7 +2,7 @@ import configparser
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 from todo.exceptions import TodoException
 
@@ -29,9 +29,9 @@ def get_project_config(filepath):
 @lru_cache()
 def get_home() -> Tuple[Path, str]:
     # try from TD_CLI_HOME environment variable
-    td_cli_env_dir = os.environ.get("TD_CLI_HOME")
-    if td_cli_env_dir:
-        td_cli_env_dir = Path.expanduser(Path(td_cli_env_dir))
+    td_cli_env: Optional[str] = os.environ.get("TD_CLI_HOME")
+    if td_cli_env:
+        td_cli_env_dir: Path = Path.expanduser(Path(td_cli_env))
         if not Path.exists(td_cli_env_dir):
             raise TodoException(
                 f'TD_CLI_HOME environment variable set to "{td_cli_env_dir}", but directory does not exist'
@@ -40,16 +40,16 @@ def get_home() -> Tuple[Path, str]:
         return (td_cli_env_dir, "")
 
     # try from XDG_CONFIG_HOME environment variable
-    xdg_config_home = os.environ.get("XDG_CONFIG_HOME")
+    xdg_config_home: Optional[str] = os.environ.get("XDG_CONFIG_HOME")
     if xdg_config_home:
-        xdg_config_home = Path.expanduser(Path(xdg_config_home))
-        if not Path.exists(xdg_config_home):
+        xdg_config_home_dir: Path = Path.expanduser(Path(xdg_config_home))
+        if not Path.exists(xdg_config_home_dir):
             raise TodoException(
                 f'XDG_CONFIG_HOME environment variable set to "{xdg_config_home}", but directory does not exist'
             )
 
-        config_dir = Path.joinpath(xdg_config_home, "td-cli")
-        if not config_dir:
+        config_dir = Path.joinpath(xdg_config_home_dir, "td-cli")
+        if not config_dir.exists():
             Path.mkdir(config_dir)
         return (config_dir, "")
 

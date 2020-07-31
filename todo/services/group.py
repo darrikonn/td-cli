@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from todo.exceptions import TodoException
 from todo.services.base import GLOBAL, BaseService
 from todo.settings import config, get_project_config
@@ -116,7 +118,7 @@ class GroupService(BaseService):
                     "{bold}<Group: %s>{reset} does not exist, falling back to currently active group"
                     % config["group"],
                     "Your config file at {bold}%s{reset} tries to\noverride the "
-                    % (get_project_config() or "~")
+                    % (get_project_config(Path.cwd()) or "~")
                     + "default group with `{bold}%s{reset}`, but " % config["group"]
                     + "{bold}<Group: %s>{reset} does not exist." % config["group"],
                     "WARNING",
