@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 from urllib.request import pathname2url
 
-from todo.settings import config
+from todo.settings import config, get_home
 
 from .group import GroupService
 from .todo import TodoService
@@ -27,7 +27,10 @@ class Service:
         self.cursor.execute("PRAGMA foreign_keys = ON")
 
     def _get_database_path(self):
-        return os.path.expanduser(Path("~/.{}.db".format(config["database_name"])))
+        home_dir, prefix = get_home()
+        database_name = f"{prefix}{config['database_name']}.db"
+
+        return os.path.expanduser(Path.joinpath(home_dir, database_name))
 
     def _initialise_database(self, db_uri):
         self.connection = sqlite3.connect(db_uri, uri=True)
