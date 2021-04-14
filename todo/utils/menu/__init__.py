@@ -464,7 +464,8 @@ class Menu:
             # show cursor
             curses.curs_set(True)
             while True:
-                key = self.stdscr.getch()
+                char_key = self.stdscr.get_wch()
+                key = ord(char_key)
                 if key in self.commands.enter:
                     break
                 elif key in self.commands.escape:
@@ -483,7 +484,7 @@ class Menu:
                 elif key == 330:  # fn + KEY_BACKSPACE
                     tracker.delete_backwards()
                 elif not curses.keyname(key).startswith(b"KEY_"):
-                    tracker.add(chr(key))
+                    tracker.add(char_key)
 
                 # clear the line and rewrite string
                 self.stdscr.move(Y_ORIGIN, X_ORIGIN)
