@@ -465,7 +465,8 @@ class Menu:
             curses.curs_set(True)
             while True:
                 char_key = self.stdscr.get_wch()
-                key = ord(char_key)
+                key = char_key if isinstance(char_key, int) else ord(char_key)
+
                 if key in self.commands.enter:
                     break
                 elif key in self.commands.escape:
