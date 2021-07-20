@@ -37,11 +37,15 @@
 pip3 install td-cli
 ```
 
-For <b>Windows 10</b> it's best to use [**Windows Terminal**](https://github.com/microsoft/terminal), you also need [**windows-curses**](https://pypi.org/project/windows-curses/) installed.
+### Windows 10
+
+In order to use the interactive mode on Windows, you'll have to install [**windows-curses**](https://pypi.org/project/windows-curses/)
 
 ```bash
 pip install windows-curses
 ```
+
+In addition to that, [**Windows Terminal**](https://github.com/microsoft/terminal) is recommended for better UX.
 
 ## Getting started
 
