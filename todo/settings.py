@@ -10,12 +10,13 @@ CONFIG_SECTION = "settings"
 DEFAULT_CONFIG = {"database_name": "todo", "editor": "vi", "group": None, "format": "tmp"}
 EXAMPLE_CONFIG = """[settings]
 group: {group}
+completed: 0
 """
 
 
 @lru_cache()
 def get_project_config(filepath):
-    """ returns the absolute path of nearest config """
+    """returns the absolute path of nearest config"""
     config_file = Path.joinpath(filepath, ".td.cfg")
 
     if Path.home() >= filepath:

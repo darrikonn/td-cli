@@ -1,5 +1,8 @@
+from ast import literal_eval
+
 from todo.constants import COMMANDS
 from todo.parser.base import BaseParser, set_value
+from todo.settings import config
 
 
 class ListTodosParser(BaseParser):
@@ -30,6 +33,7 @@ class ListTodosParser(BaseParser):
             "-c",
             dest="state",
             nargs=0,
+            default=bool(literal_eval(config["completed"])) if config.get("completed") else None,
             action=set_value(True),
             help="filter by completed todos",
         )

@@ -9,7 +9,7 @@ from todo.settings import config
 
 
 def generate_random_int():
-    return "%06i" % random.randrange(10 ** 6)
+    return "%06i" % random.randrange(10**6)
 
 
 def get_user_input(editor, initial_message=b""):
