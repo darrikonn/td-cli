@@ -110,6 +110,15 @@ When editing a todo, `td <id> edit`, you can both specify the todo's `name` and 
 editor: nvim
 ```
 
+### Only list uncompleted todos
+
+When listing todos, by default td-cli will list both completed and uncompleted todos. If you want to only list uncompleted todos by default, then you can apply the completed config:
+
+```cfg
+[settings]
+completed: 0
+```
+
 ### Group
 
 When listing todos, you have the option of specifying what group to list from:
