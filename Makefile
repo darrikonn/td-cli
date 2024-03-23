@@ -68,7 +68,7 @@ upload_test:
 	${RUN} twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 upload:
-	${RUN} twine upload dist/*
+	${RUN} twine upload --repository td-cli dist/*
 
 install_test:
 	${RUN} python -m pip install --index-url https://test.pypi.org/simple/ td-cli
