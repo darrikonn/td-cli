@@ -15,6 +15,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --completed, -c       filter by completed todos
   --uncompleted, -u     filter by uncompleted todos
+  --raw, -r             only show todos
   --group GROUP, -g GROUP
                         filter by name of group
   --interactive, -i     toggle interactive mode
@@ -25,15 +26,16 @@ optional arguments:
 
 ## List todos
 ```
-usage: td [--completed] [--uncompleted] [--group GROUP] [--interactive]
-       td list [-c] [-u] [-g GROUP] [-i]
-       td ls [-c] [-u] [-g GROUP] [-i]
-       td l [-c] [-u] [-g GROUP] [-i]
+usage: td [--completed] [--uncompleted] [--raw] [--group GROUP] [--interactive]
+       td list [-c] [-u] [-r] [-g GROUP] [-i]
+       td ls [-c] [-u] [-r] [-g GROUP] [-i]
+       td l [-c] [-u] [-r] [-g GROUP] [-i]
 
 optional arguments:
   -h, --help            show this help message and exit
   --completed, -c       filter by completed todos
   --uncompleted, -u     filter by uncompleted todos
+  --raw, -r             only show todos
   --group GROUP, -g GROUP
                         filter by name of group
   --interactive, -i     toggle interactive mode

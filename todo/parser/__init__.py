@@ -42,6 +42,7 @@ class Parser:
       -h, --help            show this help message and exit
       --completed, -c       filter by completed todos
       --uncompleted, -u     filter by uncompleted todos
+      --raw, -r             only show todos
       --group GROUP, -g GROUP
                             filter by name of group
       --interactive, -i     toggle interactive mode

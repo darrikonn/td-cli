@@ -7,15 +7,16 @@ from todo.settings import config
 
 class ListTodosParser(BaseParser):
     """
-    usage: td [--completed] [--uncompleted] [--group GROUP] [--interactive]
-           td l [-c] [-u] [-g GROUP] [-i]
-           td ls [-c] [-u] [-g GROUP] [-i]
-           td list [-c] [-u] [-g GROUP] [-i]
+    usage: td [--completed] [--uncompleted] [--raw] [--group GROUP] [--interactive]
+           td l [-c] [-u] [-r] [-g GROUP] [-i]
+           td ls [-c] [-u] [-r] [-g GROUP] [-i]
+           td list [-c] [-u] [-r] [-g GROUP] [-i]
 
     list todos
 
     optional arguments:
       -h, --help            show this help message and exit
+      --raw, -r             only show todos
       --completed, -c       filter by completed todos
       --uncompleted, -u     filter by uncompleted todos
       --group GROUP, -g GROUP
@@ -44,6 +45,14 @@ class ListTodosParser(BaseParser):
             nargs=0,
             action=set_value(False),
             help="filter by uncompleted todos",
+        )
+        self.parser.add_argument(
+            "--raw",
+            "-r",
+            dest="raw",
+            nargs=0,
+            action=set_value(False),
+            help="only show todos",
         )
         self.parser.add_argument("--group", "-g", action="store", help="filter by name of group")
         self.parser.add_argument(
