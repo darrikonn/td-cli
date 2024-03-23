@@ -51,7 +51,7 @@ class ListTodosParser(BaseParser):
             "-r",
             dest="raw",
             nargs=0,
-            action=set_value(False),
+            action=set_value(True),
             help="only show todos",
         )
         self.parser.add_argument("--group", "-g", action="store", help="filter by name of group")
