@@ -42,11 +42,11 @@ black_format:
 
 # Lint using isort
 isort:
-	${RUN} isort -c -rc ${CODE_STYLE_FILE_LIST}
+	${RUN} isort -c ${CODE_STYLE_FILE_LIST}
 
 # Format using isort
 isort_format:
-	${RUN} isort -rc ${CODE_STYLE_FILE_LIST}
+	${RUN} isort ${CODE_STYLE_FILE_LIST}
 
 # Lint using mypy
 mypy:

@@ -5,7 +5,6 @@ line-length = 100
 
 ################### ISORT ###################
 [tool.isort]
-not_skip = "__init__.py"
 force_grid_wrap = 0
 include_trailing_comma = true
 line_length = 100
@@ -15,7 +14,7 @@ order_by_type = "1"
 known_first_party = ["todo"]
 known_third_party = []
 
-sections = ["FUTURE", "STDLIB", "THIRDPARTY", "CORE", "FIRSTPARTY", "LOCALFOLDER"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 
 ################### POETRY ###################

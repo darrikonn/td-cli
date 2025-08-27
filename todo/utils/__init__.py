@@ -1,9 +1,8 @@
 import random
 import tempfile
+from importlib.metadata import PackageNotFoundError, version
 from os import get_terminal_size as os_get_terminal_size
 from subprocess import call
-
-from importlib.metadata import version, PackageNotFoundError
 
 from todo.settings import config
 
