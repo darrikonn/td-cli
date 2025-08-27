@@ -28,7 +28,7 @@ executors:
       version:
         description: Python version to use
         type: string
-        default: "3.11"
+        default: "3.12"
     docker:
       - image: cimg/python:<<parameters.version>>
         environment:
@@ -44,7 +44,7 @@ references:
       python-version:
         description: Python version to use
         type: string
-        default: "3.11"
+        default: "3.12"
       cache-version:
         description: A cache version that may be used for cache busting
         type: string
