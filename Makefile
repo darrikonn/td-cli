@@ -74,7 +74,7 @@ install_test:
 	${RUN} python -m pip install --index-url https://test.pypi.org/simple/ td-cli
 
 install:
-	${RUN} python -m pip install td-cli
+	${RUN} python -m pip install --upgrade td-cli
 
 publish_test: clean build upload_test install_test
 
