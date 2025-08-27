@@ -3,7 +3,7 @@ import tempfile
 from os import get_terminal_size as os_get_terminal_size
 from subprocess import call
 
-from pkg_resources import get_distribution
+from importlib.metadata import version, PackageNotFoundError
 
 from todo.settings import config
 
@@ -48,7 +48,10 @@ def docstring(*sub):
 
 
 def get_version():
-    return get_distribution("td-cli").version
+    try:
+        return version("td-cli")
+    except PackageNotFoundError:
+        return "unknown"
 
 
 def strikethrough(string):

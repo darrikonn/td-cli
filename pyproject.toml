@@ -21,7 +21,7 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "CORE", "FIRSTPARTY", "LOCALFOLDER
 ################### POETRY ###################
 [tool.poetry]
 name = "td-cli"
-version = "2.2.2"
+version = "2.2.3"
 description = "A command line todo manager"
 package-mode = false
 
