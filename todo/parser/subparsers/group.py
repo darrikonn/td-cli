@@ -75,6 +75,14 @@ class GroupParser(BaseParser):
             help="filter by uncompleted todos",
         )
         list_parser.add_argument(
+            "--raw",
+            "-r",
+            dest="raw",
+            nargs=0,
+            action=set_value(True),
+            help="only show todos",
+        )
+        list_parser.add_argument(
             "--interactive", "-i", action="store_true", help="toggle interactive mode"
         )
         list_parser.set_defaults(command=COMMANDS.GET_GROUP)
