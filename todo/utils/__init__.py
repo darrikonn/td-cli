@@ -1,7 +1,12 @@
 import random
 import tempfile
 from importlib.metadata import PackageNotFoundError, version
-from os import get_terminal_size as os_get_terminal_size
+from os import (
+    fdopen as os_path_fdopen,
+    get_terminal_size as os_get_terminal_size,
+    remove as os_path_remove,
+)
+from os.path import basename as os_path_basename
 from subprocess import call
 
 from todo.settings import config
@@ -12,14 +17,30 @@ def generate_random_int():
 
 
 def get_user_input(editor, initial_message=b""):
-    with tempfile.NamedTemporaryFile(suffix=f".{config['format']}") as tf:
-        tf.write(initial_message)
-        tf.flush()
-        call([editor, "+set backupcopy=yes", tf.name])
+    fd, temp_path = tempfile.mkstemp(suffix=f".{config['format']}")
+    try:
+        with os_path_fdopen(fd, "wb") as tf:
+            tf.write(initial_message)
+            tf.flush()
 
-        tf.seek(0)
-        edited_message = tf.read()
-        return edited_message.decode("utf-8").strip()
+        editor_name = os_path_basename(editor).lower()
+        if "vim" in editor_name:
+            cmd = [editor, "+set", "backupcopy=yes", temp_path]
+        else:
+            cmd = [editor, temp_path]
+
+        call(cmd)
+
+        with open(temp_path, "r", encoding="utf-8") as f:
+            edited_message = f.read().strip()
+
+        return edited_message
+
+    finally:
+        try:
+            os_path_remove(temp_path)
+        except OSError:
+            pass
 
 
 def singular_or_plural(n):
