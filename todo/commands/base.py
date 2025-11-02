@@ -9,11 +9,16 @@ class Command(ABC):
 
     def _get_todo_or_raise(self, id):
         group = self.service.group.get_active_group()
-        todo = self.service.todo.get(id, group[0])
-        if todo is None:
+        todos = self.service.todo.get_all_matching(id, group[0])
+        if not todos:
             raise TodoException("{bold}<Todo: %s>{reset} not found" % id)
+        if len(todos) > 1:
+            raise TodoException(
+                "{bold}<Todo: %s>{reset} matches multiple todos. Please provide a more specific ID."
+                % id
+            )
 
-        return todo
+        return todos[0]
 
     def _get_group_or_raise(self, name):
         group = self.service.group.get(name)

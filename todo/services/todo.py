@@ -114,17 +114,18 @@ class TodoService(BaseService):
         self.connection.commit()
 
     # GET
-    def get(self, id, group):
+    def get_all_matching(self, id, group):
+        """Get all todos matching the given id pattern."""
         self.cursor.execute(
             """
             SELECT id, group_name, name, details, completed
             FROM todo
-            WHERE id LIKE ('%' || ? || '%')
+            WHERE id LIKE (? || '%')
             ORDER BY group_name = ? DESC, completed, modified DESC;
             """,
             (id, group),
         )
-        return self.cursor.fetchone()
+        return self.cursor.fetchall()
 
     def get_all(self, group=None, completed=None):
         group_name = self._interpret_group_name(group)
