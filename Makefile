@@ -1,6 +1,6 @@
 ### VARIABLES ###
 
-RUN=poetry run
+RUN=uv run
 DATE=`date +%Y-%m-%d`
 CODE_STYLE_FILE_LIST=todo
 
@@ -10,23 +10,73 @@ $(eval $(ARGS):;@:)
 
 ### TARGETS ###
 
-# Install poetry
-poetry:
-	pip3 install poetry
+.PHONY: check_python check_uv install_uv install_python
 
-# Install requirements
-requirements:
-	poetry install --no-root
+PYTHON_VERSION := 3.12
+
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# Check if uv is installed and install if not
+check_uv:
+	@if ! command -v uv >/dev/null 2>&1; then \
+		$(MAKE) install_uv; \
+	else \
+		echo "uv is already installed."; \
+	fi
+
+# Install uv based on platform
+install_uv:
+ifeq ($(UNAME_S),Darwin)
+	@echo "Installing uv on macOS..."
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install uv || true; \
+	else \
+		echo "Homebrew not found. Installing uv via official installer..."; \
+		curl -LsSf https://astral.sh/uv/install.sh | sh; \
+	fi
+else ifeq ($(UNAME_S),Linux)
+	@echo "Installing uv on Linux..."
+	curl -LsSf https://astral.sh/uv/install.sh | sh
+else ifeq ($(OS),Windows_NT)
+	@echo "Installing uv on Windows..."
+	@if command -v scoop >/dev/null 2>&1; then \
+		echo "Installing uv via scoop..."; \
+		scoop install uv || true; \
+	else \
+		echo "Installing uv via PowerShell..."; \
+		powershell -Command "irm https://astral.sh/uv/install.ps1 | iex" || powershell -Command "Invoke-WebRequest -UseBasicParsing https://astral.sh/uv/install.ps1 | Invoke-Expression"; \
+	fi
+else
+	@echo "Installing uv (generic installer)..."
+	curl -LsSf https://astral.sh/uv/install.sh | sh
+endif
+
+# Check if Python 3.12 is available and install if not
+check_python: check_uv
+	@if ! uv python list 2>/dev/null | grep -q "$(PYTHON_VERSION)"; then \
+		echo "Python $(PYTHON_VERSION) not found. Installing..."; \
+		uv python install $(PYTHON_VERSION) || true; \
+	else \
+		echo "Python $(PYTHON_VERSION) is already available."; \
+	fi
+
+# Install uv
+uv: check_uv
+
+# Install requirements (including dev dependencies)
+requirements: check_python
+	uv sync --extra dev
 
 deploy_requirements:
 	${RUN} pip install wheel
 
-# Install poetry and requirements
-dev: poetry requirements
+# Install uv, Python, and requirements
+dev: check_python requirements
 
 # Spin up shell in virtual environment
 venv:
-	poetry shell
+	uv shell
 
 # Lint using flake8
 flake8:
@@ -59,7 +109,7 @@ lint: flake8 black isort mypy
 format: black_format isort_format
 
 clean:
-	-rm -r dist build td_cli.egg-info 2> /dev/null
+	-rm -rf dist build td_cli.egg-info .pytest_cache .mypy_cache
 
 build:
 	${RUN} python setup.py sdist bdist_wheel

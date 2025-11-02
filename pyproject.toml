@@ -17,35 +17,33 @@ known_third_party = []
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 
-################### POETRY ###################
-[tool.poetry]
+################### PROJECT ###################
+[project]
 name = "td-cli"
 version = "2.2.3"
 description = "A command line todo manager"
-package-mode = false
-
-authors = [
-    "Darri Steinn Konn Konradsson <darrikonn@gmail.com>"
-]
-
 readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "Darri Steinn Konn Konradsson", email = "darrikonn@gmail.com"}
+]
+keywords = ["td-cli"]
+dependencies = []
 
+[project.urls]
 repository = "https://github.com/darrikonn/td-cli"
 homepage = "https://github.com/darrikonn/td-cli"
 
-keywords = ["td-cli"]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.17.1"
-black = "^25.1.0"
-isort = "^6.0.1"
-ipdb = "^0.13.13"
-ipython = "^9.4.0"
-flake8 = "^7.3.0"
-wheel = "^0.45.1"
-twine = "^6.1.0"
-types-setuptools = "^80.9.0.2025082"
-setuptools = "^80.9.0"
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.17.1",
+    "black>=25.1.0",
+    "isort>=6.0.1",
+    "ipdb>=0.13.13",
+    "ipython>=9.4.0",
+    "flake8>=7.3.0",
+    "wheel>=0.45.1",
+    "twine>=6.1.0",
+    "types-setuptools>=80.9.0.2025082",
+    "setuptools>=80.9.0",
+]
