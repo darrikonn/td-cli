@@ -4,9 +4,7 @@ import shlex
 import subprocess
 import tempfile
 from importlib.metadata import PackageNotFoundError, version
-from os import (
-    get_terminal_size as os_get_terminal_size,
-)
+from os import get_terminal_size as os_get_terminal_size
 
 from todo.settings import config
 
