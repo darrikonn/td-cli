@@ -8,7 +8,7 @@ from todo.renderers import RenderInput, RenderOutput, RenderOutputWithTextwrap
 class Delete(Command):
     def run(self, args):
         try:
-            todo = self._get_todo_or_raise(args.id)
+            todo = self._get_todo_or_raise(args.id, return_first_match=False)
             if not args.skip_prompt:
                 choice = RenderInput(
                     "[?] Are you sure you want to delete todo {bold}{todo_id}{normal}? [Y|n] "
