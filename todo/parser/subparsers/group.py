@@ -4,8 +4,8 @@ from todo.parser.base import BaseParser, set_value
 
 class GroupParser(BaseParser):
     """
-    usage: td group [name] {list,delete,preset} ...
-           td g [name] {l,d,p} ...
+    usage: td group [name] {list,delete,preset,edit} ...
+           td g [name] {l,d,p,e} ...
 
     manage group
 
@@ -15,6 +15,7 @@ class GroupParser(BaseParser):
         list (ls, l)        list group's todos
         delete (d)          delete group and its todos
         preset (p)          set group as the default group when listing todos
+        edit (e)            edit group
 
     optional arguments:
       -h, --help  show this help message and exit
@@ -84,3 +85,16 @@ class GroupParser(BaseParser):
         )
         list_parser.epilog = "`td group [name]` is the shortcut to `td group [name] list`"
         list_parser.description = "list group's todos"
+
+        edit_parser = self._add_parser(
+            subparser,
+            "edit",
+            aliases=["e"],
+            help="edit group",
+        )
+        edit_parser.add_argument(
+            "--name", "-n", dest="new_name", action="store", help="update group's name"
+        )
+        edit_parser.set_defaults(command=COMMANDS.EDIT_GROUP)
+        edit_parser.usage = "td group [name] edit [--name NAME]\n       td group [name] e [-n NAME]"
+        edit_parser.description = "edit group"

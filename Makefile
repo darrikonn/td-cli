@@ -79,3 +79,7 @@ install:
 publish_test: clean build upload_test install_test
 
 publish: clean build upload install
+
+# Run tests with pytest
+tests:
+	${RUN} pytest tests/

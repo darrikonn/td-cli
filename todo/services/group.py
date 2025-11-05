@@ -48,14 +48,52 @@ class GroupService(BaseService):
 
     # PUT
     def edit_name(self, new_name, old_name):
+        old_group_name = self._interpret_group_name(old_name)
+        new_group_name = self._interpret_group_name(new_name)
+
+        # Get the old group's in_use value to preserve it
         self.cursor.execute(
             """
-            UPDATE "group"
-            SET name = ?
+            SELECT in_use
+            FROM "group"
             WHERE name = ?;
             """,
-            (self._interpret_group_name(new_name), self._interpret_group_name(old_name)),
+            (old_group_name,),
         )
+        result = self.cursor.fetchone()
+        if result is None:
+            return
+        in_use = result[0]
+
+        # Use a transaction: insert new group, update todos, delete old group
+        # This keeps foreign keys valid at each step
+        self.cursor.execute(
+            """
+            INSERT INTO "group" (name, in_use)
+            VALUES (?, ?);
+            """,
+            (new_group_name, in_use),
+        )
+
+        # Update all todos that reference the old group name
+        self.cursor.execute(
+            """
+            UPDATE todo
+            SET group_name = ?
+            WHERE group_name = ?;
+            """,
+            (new_group_name, old_group_name),
+        )
+
+        # Delete the old group
+        self.cursor.execute(
+            """
+            DELETE FROM "group"
+            WHERE name = ?;
+            """,
+            (old_group_name,),
+        )
+
         self.connection.commit()
 
     def use(self, name):
