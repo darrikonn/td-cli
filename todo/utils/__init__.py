@@ -1,13 +1,12 @@
+import os
 import random
+import shlex
+import subprocess
 import tempfile
 from importlib.metadata import PackageNotFoundError, version
 from os import (
-    fdopen as os_path_fdopen,
     get_terminal_size as os_get_terminal_size,
-    remove as os_path_remove,
 )
-from os.path import basename as os_path_basename
-from subprocess import call
 
 from todo.settings import config
 
@@ -16,30 +15,33 @@ def generate_random_int():
     return "%06i" % random.randrange(10**6)
 
 
-def get_user_input(editor, initial_message=b""):
+def get_user_input(editor: str, initial_message=b"") -> str:
     fd, temp_path = tempfile.mkstemp(suffix=f".{config['format']}")
     try:
-        with os_path_fdopen(fd, "wb") as tf:
-            tf.write(initial_message)
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as tf:
+            tf.write(initial_message.decode("utf-8"))
             tf.flush()
 
-        editor_name = os_path_basename(editor).lower()
-        if "vim" in editor_name:
-            cmd = [editor, "+set", "backupcopy=yes", temp_path]
-        else:
-            cmd = [editor, temp_path]
+        parts = shlex.split(editor)
+        editor_name = os.path.basename(parts[0]).lower()
 
-        call(cmd)
+        if "vim" in editor_name:
+            parts.extend(["-c", "set backupcopy=yes"])
+        elif editor_name in {"code", "code-insiders"} and "--wait" not in parts:
+            parts.append("--wait")
+        elif editor_name in {"subl", "sublime_text"} and "-w" not in parts:
+            parts.append("-w")
+        elif editor_name in {"atom"} and "--wait" not in parts:
+            parts.append("--wait")
+
+        subprocess.run([*parts, temp_path], check=True)
 
         with open(temp_path, "r", encoding="utf-8") as f:
-            edited_message = f.read().strip()
-
-        return edited_message
-
+            return f.read().strip()
     finally:
         try:
-            os_path_remove(temp_path)
-        except OSError:
+            os.remove(temp_path)
+        except Exception:
             pass
 
 
