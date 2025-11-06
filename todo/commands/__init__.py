@@ -16,6 +16,7 @@ class Commands:
         COMMANDS.INITIALIZE_CONFIG: config.Initialize,
         COMMANDS.ADD_GROUP: group.Add,
         COMMANDS.DELETE_GROUP: group.Delete,
+        COMMANDS.EDIT_GROUP: group.Edit,
         COMMANDS.GET_GROUP: group.Get,
         COMMANDS.LIST_GROUPS: group.List,
         COMMANDS.PRESET_GROUP: group.Preset,

@@ -10,6 +10,7 @@ class COMMANDS:
     UNCOMPLETE_TODO = "uncomplete_todo"
     ADD_GROUP = "add_group"
     DELETE_GROUP = "delete_group"
+    EDIT_GROUP = "edit_group"
     GET_GROUP = "get_group"
     LIST_GROUPS = "list_groups"
     PRESET_GROUP = "preset_group"
