@@ -115,6 +115,14 @@ class TodoService(BaseService):
 
     # GET
     def get(self, id, group):
+        self._get_matching_todos(id, group)
+        return self.cursor.fetchone()
+
+    def get_matching_todos(self, id, group):
+        self._get_matching_todos(id, group)
+        return self.cursor.fetchall()
+
+    def _get_matching_todos(self, id, group):
         self.cursor.execute(
             """
             SELECT id, group_name, name, details, completed
@@ -124,7 +132,6 @@ class TodoService(BaseService):
             """,
             (id, group),
         )
-        return self.cursor.fetchone()
 
     def get_all(self, group=None, completed=None):
         group_name = self._interpret_group_name(group)
