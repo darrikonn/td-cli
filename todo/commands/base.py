@@ -13,7 +13,10 @@ class Command(ABC):
         if len(todos) == 0:
             raise TodoException("{bold}<Todo: %s>{reset} not found" % id)
         elif return_first_match is False and len(todos) > 1:
-            raise TodoException("{bold}Found multiple todos with id %s{reset}" % id)
+            raise TodoException(
+                "{bold}Found multiple todos with id '%s'\nOnly a single target is valid for this command.{reset}"
+                % id
+            )
 
         return todos[0]
 
