@@ -1,8 +1,10 @@
+import os
 import random
+import shlex
+import subprocess
 import tempfile
 from importlib.metadata import PackageNotFoundError, version
 from os import get_terminal_size as os_get_terminal_size
-from subprocess import call
 
 from todo.settings import config
 
@@ -11,15 +13,34 @@ def generate_random_int():
     return "%06i" % random.randrange(10**6)
 
 
-def get_user_input(editor, initial_message=b""):
-    with tempfile.NamedTemporaryFile(suffix=f".{config['format']}") as tf:
-        tf.write(initial_message)
-        tf.flush()
-        call([editor, "+set backupcopy=yes", tf.name])
+def get_user_input(editor: str, initial_message=b"") -> str:
+    fd, temp_path = tempfile.mkstemp(suffix=f".{config['format']}")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="") as tf:
+            tf.write(initial_message.decode("utf-8"))
+            tf.flush()
 
-        tf.seek(0)
-        edited_message = tf.read()
-        return edited_message.decode("utf-8").strip()
+        parts = shlex.split(editor)
+        editor_name = os.path.basename(parts[0]).lower()
+
+        if "vim" in editor_name:
+            parts.extend(["-c", "set backupcopy=yes"])
+        elif editor_name in {"code", "code-insiders"} and "--wait" not in parts:
+            parts.append("--wait")
+        elif editor_name in {"subl", "sublime_text"} and "-w" not in parts:
+            parts.append("-w")
+        elif editor_name in {"atom"} and "--wait" not in parts:
+            parts.append("--wait")
+
+        subprocess.run([*parts, temp_path], check=True)
+
+        with open(temp_path, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    finally:
+        try:
+            os.remove(temp_path)
+        except Exception:
+            pass
 
 
 def singular_or_plural(n):
