@@ -21,6 +21,7 @@ def main(args=None):
         Commands(command).run(arguments)
     except TodoException as exc:
         RenderError(exc.message, exc.details, verbose, exc.type).render()
+        return 1
     except Exception as exc:
         RenderError(
             "An unknown error occurred when running `{bold}{command}{reset}`",
@@ -28,3 +29,5 @@ def main(args=None):
             verbose,
             "Exception",
         ).render(command=("td " + " ".join(args)).strip())
+        return 1
+    return 0
